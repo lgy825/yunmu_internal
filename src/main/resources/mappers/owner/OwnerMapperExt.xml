@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yunmu.core.dao.owner.OwnerMapper" >
+<mapper namespace="com.yunmu.core.dao.owner.OwnerMapperExt" >
   <resultMap id="BaseResultMap" type="com.yunmu.core.model.owner.OwnerExt" >
     <!--
       WARNING - @mbggenerated
@@ -114,7 +114,7 @@
     SELECT owner_name as ownerName from yunmu_owner where id=#{id}
   </select>
 
-  <select id="getOwnerByCondition" resultMap="BaseResultMap" parameterType="com.muyun.core.model.owner.Owner">
+  <select id="getOwnerByCondition" resultMap="BaseResultMap" parameterType="com.yunmu.core.model.owner.Owner">
     SELECT
     <include refid="Base_Column_List" />
     FROM yunmu_owner
