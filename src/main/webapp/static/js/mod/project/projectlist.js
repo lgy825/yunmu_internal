@@ -3,7 +3,6 @@ $(function(){
 
     loadPage();
 
-
     $("#searchBtn").click(function () {
         loadPage();
     });
@@ -47,7 +46,7 @@ $(function(){
 
 
     $("#projectTable").on("click", ".shutbtn", function () {
-        var sid = $(this).data("sid");
+        var id = $(this).data("sid");
         layer.confirm('停用后该项目就会被停用？', function () {
             $.ajax({
                        url: ctx + "project/disableproject",
@@ -76,7 +75,7 @@ $(function(){
     });
 
     $("#projectTable").on("click", ".openbtn", function () {
-        var sid = $(this).data("sid");
+        var id = $(this).data("sid");
         layer.confirm('是否继续启用项目？', function () {
             $.ajax({
                        url: ctx + "project/undisableproject",

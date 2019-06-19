@@ -107,7 +107,7 @@
                         </a>
                         <ul class="child-list color-white none">
                             <li class="child-menu">
-                                <a href="javascript:layer.alert('功能开发中，请耐心等待!');" target="homepage">项目列表</a>
+                                <a href="${ctx}/project/toProjectlist" target="homepage">项目列表</a>
                             </li>
                             <li class="child-menu">
                                 <a href="javascript:layer.alert('功能开发中，请耐心等待!');" target="homepage">管理项目</a>

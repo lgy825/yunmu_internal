@@ -1,10 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>项目管理</title>
+    <title>用户管理</title>
     <%@include file="/static/commons/common.jspf" %>
+
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
     <script src="${ctx}/static/js/lib/mricode.pagination.js"></script>
@@ -12,32 +14,32 @@
     <script id="trTmpl" type="text/x-jrender">
         <thead>
                 <tr>
-                    <th style='width: 13%;'><div>项目名称</div></th>
-                    <th style='width: 10%;'><div>项目类型</div></th>
-                    <th style='width: 17%;'><div>项目描述</div></th>
-                    <th style='width: 12%;'><div>添加时间</div></th>
-                    <th style='width: 12%;'><div>创建人</div></th>
-                    <th style='width: 12%;'><div>状态</div></th>
-                    <th style='width: 24%;'><div>操作</div></th>
+                    <th style='width: 15%;'><div>用户名</div></th>
+                    <th style='width: 20%;'><div>管理项目名称</div></th>
+                    <th style='width: 10%;'><div>电话</div></th>
+                    <th style='width: 15%;'><div>邮箱</div></th>
+                    <th style='width: 10%;'><div>添加时间</div></th>
+                    <th style='width: 10%;'><div>状态</div></th>
+                    <th style='width: 20%;'><div>操作</div></th>
                 </tr>
         </thead>
         <tbody>
         {{for list}}
             <tr>
                 <td>
+                    <div>{{:loginName}}</div>
+                </td>
+                <td>
                     <div>{{:projectName}}</div>
                 </td>
                 <td>
-                    <div>{{:typaName}}</div>
+                    <div>{{:userTel}}</div>
                 </td>
                 <td>
-                    <div>{{:projectDesc}}</div>
+                    <div>{{:userEmail}}</div>
                 </td>
                 <td>
                     <div>{{dateTime:createTime}}</div>
-                </td>
-                <td>
-                    <div>{{:createBy}}</div>
                 </td>
                 <td>
                     <div>
@@ -50,11 +52,10 @@
                 </td>
                 <td>
                     <div class="">
-
-                        <a href="${ctx}/project/toedit?id={{:id}}">
+                        <a href="${ctx}/sysuser/toedit.do?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
-                        {{if status == 0}}
+                        {{if disabledFlg == 1}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">
@@ -69,13 +70,13 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">项目管理</div>
+        <div class="b_title">用户管理</div>
         <div class="hr">
             <hr>
         </div>
         <div class="pdtrl20">
-            <a href="${ctx}/project/toaddProject">
-                <input type="button" class="blue_btn" value="新建项目">
+            <a href="${ctx}/sysuser/toadd.do">
+                <input type="button" class="blue_btn" value="新建用户">
             </a>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">
@@ -84,8 +85,7 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
-                    <input id="uName" type="text" class="inpW ml20" placeholder="项目名称">
-<%--                    <input id="uTel" type="text" class="inpW ml20" placeholder="电话">--%>
+                    <input id="loginName" type="text" class="inpW ml20" placeholder="用户名">
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                 </div>
@@ -93,7 +93,7 @@
         </div>
         <div class="pdtrl20">
             <div class="scroll-table">
-                <table id="projectTable" class="seller-lib sell-type vip-type tr-bg" cellpadding="0" cellspacing="0">
+                <table id="userTable" class="seller-lib sell-type vip-type tr-bg" cellpadding="0" cellspacing="0">
                 </table>
             </div>
             <div class="page" id="tablPage">
@@ -102,8 +102,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${ctx}/static/js/mod/project/projectlist.js"></script>
-<%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
+<script type="text/javascript" src="${ctx}/static/js/mod/sys/user/userlist.js"></script>
 <script>
     $(function () {
         fullScreen($('.scroll-table'),264);
