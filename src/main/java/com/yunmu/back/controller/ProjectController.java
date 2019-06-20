@@ -9,11 +9,13 @@ import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.project.ProjectExt;
 import com.yunmu.core.model.project.ProjectType;
 import com.yunmu.core.util.IdUtils;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +58,7 @@ public class ProjectController extends BaseController {
     @RequestMapping("/saveProject")
     @ResponseBody
     public Result<Boolean> saveProject(Project project) {
-        if(StringUtils.isBlank(project.getId())) {
+        if (StringUtils.isBlank(project.getId())) {
             project.setId(IdUtils.getId(11));
             try {
                 projectService.insert(project);
@@ -64,21 +66,21 @@ public class ProjectController extends BaseController {
                 return createFailedResult(e1.getMessage(), false);
             }
         } else {
-            return  createSuccessResult(projectService.update(project));
+            return createSuccessResult(projectService.update(project));
         }
         return createSuccessResult(true);
     }
 
     @RequestMapping("/getProjectTypeAll")
     @ResponseBody
-    public Result<List<ProjectType>> getOrdeSourceAll(){
+    public Result<List<ProjectType>> getOrdeSourceAll() {
         return createSuccessResult(projectService.getProjectType());
     }
 
     @RequestMapping("/get")
     @ResponseBody
     public Result<Project> update(String id) {
-        if(StringUtils.isBlank(id)) {
+        if (StringUtils.isBlank(id)) {
             return createFailedResult("查询失败");
         }
         return createSuccessResult(projectService.getProjectById(id));
@@ -87,7 +89,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping("/toedit")
     public String toEdit(String id, Model model) {
-        if(StringUtils.isBlank(id)) {
+        if (StringUtils.isBlank(id)) {
             return "project/projectlist";
         }
         model.addAttribute("projectId", id);
@@ -97,7 +99,7 @@ public class ProjectController extends BaseController {
     @RequestMapping("/disableproject")
     @ResponseBody
     public Result<Boolean> disableOwner(String id) {
-        Project project=new Project();
+        Project project = new Project();
         project.setId(id);
         project.setStatus(1);
         return createSuccessResult(projectService.update(project));
@@ -106,9 +108,19 @@ public class ProjectController extends BaseController {
     @RequestMapping("/undisableproject")
     @ResponseBody
     public Result<Boolean> undisableowner(String id) {
-        Project project=new Project();
+        Project project = new Project();
         project.setId(id);
         project.setStatus(0);
         return createSuccessResult(projectService.update(project));
     }
+
+
+    @RequestMapping("/getProject")
+    @ResponseBody
+    public Result<List<Project>> getCinema() {
+
+        return createSuccessResult(projectService.getProjects());
+
+    }
+
 }

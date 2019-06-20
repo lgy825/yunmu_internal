@@ -2,9 +2,11 @@ package com.yunmu.back.controller.sys;
 
 import com.yunmu.back.service.sys.SysUserService;
 import com.yunmu.core.base.BaseController;
+import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.sys.SysUser;
 import com.yunmu.core.model.sys.SysUserExt;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,4 +46,25 @@ public class SysUserController extends BaseController {
         return createSuccessPageResult(sysUserService.getPageByCondition(params));
     }
 
+
+    @RequestMapping("/nameexist")
+    @ResponseBody
+    public Result<Boolean> nameExist(SysUserExt sysUserExt) {
+        return createSuccessResult(sysUserService.nameExist(sysUserExt));
+    }
+
+    @RequestMapping("/get")
+    @ResponseBody
+    public Result<SysUserExt> update(String id) {
+        if(StringUtils.isBlank(id)) {
+            return createFailedResult("查询失败");
+        }
+        return createSuccessResult(sysUserService.getUserExt(id));
+    }
+
+
+    @RequestMapping("/toadd")
+    public String toAdd() {
+        return "sys/user/newuser";
+    }
 }

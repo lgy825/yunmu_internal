@@ -8,6 +8,7 @@ import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.dao.project.ProjectMapperExt;
 import com.yunmu.core.dao.project.ProjectTypeMapper;
 import com.yunmu.core.model.project.Project;
+import com.yunmu.core.model.project.ProjectExample;
 import com.yunmu.core.model.project.ProjectExt;
 import com.yunmu.core.model.project.ProjectType;
 import com.yunmu.core.util.ShiroUtils;
@@ -101,5 +102,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectById(String id) {
         return projectMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Project> getProjects() {
+        ProjectExample projectExample = new ProjectExample();
+        ProjectExample.Criteria criteria = projectExample.createCriteria();
+        criteria.andDelFlagEqualTo(0);
+        return projectMapper.selectByExample(projectExample);
     }
 }

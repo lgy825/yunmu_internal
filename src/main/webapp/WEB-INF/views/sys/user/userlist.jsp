@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户管理</title>
+    <title>员工管理</title>
     <%@include file="/static/commons/common.jspf" %>
 
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
@@ -14,11 +14,11 @@
     <script id="trTmpl" type="text/x-jrender">
         <thead>
                 <tr>
-                    <th style='width: 15%;'><div>用户名</div></th>
-                    <th style='width: 20%;'><div>管理项目名称</div></th>
-                    <th style='width: 10%;'><div>电话</div></th>
+                    <th style='width: 10%;'><div>用户名</div></th>
+                    <th style='width: 15%;'><div>管理项目名称</div></th>
+                    <th style='width: 15%;'><div>电话</div></th>
                     <th style='width: 15%;'><div>邮箱</div></th>
-                    <th style='width: 10%;'><div>添加时间</div></th>
+                    <th style='width: 15%;'><div>添加时间</div></th>
                     <th style='width: 10%;'><div>状态</div></th>
                     <th style='width: 20%;'><div>操作</div></th>
                 </tr>
@@ -75,8 +75,8 @@
             <hr>
         </div>
         <div class="pdtrl20">
-            <a href="${ctx}/sysuser/toadd.do">
-                <input type="button" class="blue_btn" value="新建用户">
+            <a href="${ctx}/sysuser/toadd">
+                <input type="button" class="blue_btn" value="新建员工">
             </a>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">

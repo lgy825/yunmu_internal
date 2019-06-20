@@ -19,4 +19,6 @@ public interface ProjectService {
     List<ProjectType> getProjectType();
 
     Project getProjectById(String id);
+
+    List<Project> getProjects();
 }
