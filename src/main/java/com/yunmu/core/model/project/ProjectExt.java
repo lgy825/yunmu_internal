@@ -48,6 +48,26 @@ public class ProjectExt implements Serializable {
 
     private Integer status;
 
+    private String companyCode;
+
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
     public Integer getStatus() {
         return status;
     }

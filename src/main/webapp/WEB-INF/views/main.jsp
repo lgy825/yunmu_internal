@@ -137,7 +137,7 @@
                         </a>
                         <ul class="child-list color-white none">
                             <li class="child-menu">
-                                <a href="javascript:layer.alert('功能开发中，请耐心等待!');" target="homepage">权限管理</a>
+                                <a href="${ctx}/company/toCompanylist" target="homepage">公司管理</a>
                             </li>
                             <li class="child-menu">
                                 <a href="${ctx}/sysuser/toUserlist" target="homepage">员工管理</a>

@@ -7,6 +7,8 @@ import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.hourse.HourseMapperExt;
 import com.yunmu.core.dao.owner.OwnerMapper;
 import com.yunmu.core.dao.owner.OwnerMapperExt;
+import com.yunmu.core.dao.project.ProjectMapper;
+import com.yunmu.core.dao.project.ProjectMapperExt;
 import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
@@ -38,6 +40,8 @@ public class OwnerServiceImpl implements OwnerService {
     private HourseMapperExt hourseMapperExt;
     @Autowired
     private OwnerMapper ownerMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
 
     @Override
     public GenericPage<OwnerExt> getPageByCondition(Map<String, Object> params) {
@@ -66,6 +70,7 @@ public class OwnerServiceImpl implements OwnerService {
         for(OwnerExt ownerExt:ownerExtList){
             int count=hourseMapperExt.getHouseCountByCondition(ownerExt.getId());
             ownerExt.setHourseCount(count);
+            ownerExt.setProjectName(projectMapper.selectByPrimaryKey(ownerExt.getProjectId()).getProjectName());
         }
         return new GenericPage<>(pageIndex, pageSize, ownerExtList, pageInfo.getTotal());
     }
@@ -80,7 +85,7 @@ public class OwnerServiceImpl implements OwnerService {
         if(owner!=null){
             owner.setToken("123456");
             owner.setStatus(1);
-            owner.setCreateBy(ShiroUtils.getUserId());
+            owner.setCreateBy("lgy");
             owner.setCreateTime(new Date());
             if(owner.getOwnerPwd()!=null){
                 owner.setOwnerPwd(MD5Util.string2MD5(owner.getOwnerPwd()));

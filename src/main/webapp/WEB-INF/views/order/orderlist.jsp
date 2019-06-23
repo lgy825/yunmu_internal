@@ -28,19 +28,19 @@
         {{for list}}
             <tr>
                 <td>
-                    <div>{{:oId}}</div>
+                    <div>{{:id}}</div>
                 </td>
                 <td>
-                    <div>{{:hNumber}}</div>
+                    <div>{{:hourseNumber}}</div>
                 </td>
                 <td>
                     <div>
-                           {{dateTime:oStartDate}}
+                           {{dateTime:orderStartDate}}
                     </div>
                 </td>
                 <td>
                     <div>
-                           {{dateTime:oEndDate}}
+                           {{dateTime:orderEndTime}}
                     </div>
                 </td>
                 <td>
@@ -48,27 +48,27 @@
                 </td>
                 <td>
                     <div>
-                    {{if oRecAmount == null || oRecAmount=='' }}
+                    {{if orderActAmount == null || orderActAmount=='' }}
                             0
                     {{else}}
-                           {{:oRecAmount}}
+                           {{:orderActAmount}}
                     {{/if}}
                     </div>
                 </td>
                 <td>
                     <div>
-                    {{if oActAmount == null || oActAmount ==''}}
+                    {{if orderRecAmount == null || orderRecAmount ==''}}
                             0
                     {{else}}
-                           {{:oActAmount}}
+                           {{:orderRecAmount}}
                     {{/if}}
                     </div>
                 </td>
                 <td>
                     <div>
-                        {{if oStatus == '0'}}
+                        {{if orderStatus == '0'}}
                             成功
-                        {{else oStatus == '1'}}
+                        {{else orderStatus == '1'}}
                              失败
                         {{/if}}
                     </div>
@@ -112,7 +112,7 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
-                    <input id="oId" type="text" class="inpW ml20" placeholder="订单号">
+                    <input id="orderId" type="text" class="inpW ml20" placeholder="订单号">
                     <%--<input id="hId" type="text" class="inpW ml20" placeholder="房间号">--%>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">

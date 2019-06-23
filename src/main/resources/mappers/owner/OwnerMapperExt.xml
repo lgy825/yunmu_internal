@@ -135,6 +135,6 @@
     SELECT
     <include refid="Base_Column_List" />
     FROM yunmu_owner
-    WHERE ownerName = #{ownerName} OR ownerTel = #{ownerTel}
+    WHERE owner_name = #{ownerName} OR owner_tel = #{ownerTel}
   </select>
 </mapper>

@@ -13,11 +13,12 @@
         <thead>
                 <tr>
                     <th style='width: 8%;'><div>用户名</div></th>
-                    <th style='width: 8%;'><div>电话</div></th>
-                    <th style='width: 8%;'><div>邮箱</div></th>
+                    <th style='width: 9%;'><div>所属项目</div></th>
+                    <th style='width: 9%;'><div>电话</div></th>
+                    <th style='width: 9%;'><div>邮箱</div></th>
                     <th style='width: 10%;'><div>添加时间</div></th>
                     <th style='width: 10%;'><div>托管房屋数</div></th>
-                    <th style='width: 18%;'><div>地址</div></th>
+                    <th style='width: 15%;'><div>地址</div></th>
                     <th style='width: 8%;'><div>状态</div></th>
                     <th style='width: 22%;'><div>操作</div></th>
                 </tr>
@@ -27,6 +28,9 @@
             <tr>
                 <td>
                     <div>{{:ownerName}}</div>
+                </td>
+                <td>
+                    <div>{{:projectName}}</div>
                 </td>
                 <td>
                     <div>{{:ownerTel}}</div>

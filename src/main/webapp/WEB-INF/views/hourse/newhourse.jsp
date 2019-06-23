@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>房子信息录入</title>
+    <title>新增房间信息</title>
     <%@include file="/static/commons/common.jspf" %>
 </head>
 <body>
 <div class="p20">
     <div class="bgc-ff">
         <!-- 广告投放 -->
-        <div class="b_title">录入房子信息</div>
+        <div class="b_title">新增房间信息</div>
         <div class="hr">
             <hr>
         </div>
@@ -29,6 +29,12 @@
                     <select id="typeCodeSel" class="select ml16 wid-238">
                     </select>
                     <span class="color-lred ml8 mt6">* 选择房子的类型，必选</span>
+                </div>
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">所属项目</div>
+                    <select id="projectSel" class="select ml16 wid-238">
+                    </select>
+                    <span class="color-lred ml8 mt6">* 选择所属的项目，必选</span>
                 </div>
                 <div class="mt12">
                     <div class="align-r">房间号</div>

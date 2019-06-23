@@ -5,18 +5,29 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.base.Joiner;
 import com.yunmu.back.service.sys.SysUserService;
 import com.yunmu.core.constant.GenericPage;
-import com.yunmu.core.dao.sys.SysUserMapper;
-import com.yunmu.core.dao.sys.SysUserMapperExt;
-import com.yunmu.core.dao.sys.SysUserProjectMapper;
-import com.yunmu.core.dao.sys.SysUserRoleMapper;
+import com.yunmu.core.constant.PermisionConstants;
+import com.yunmu.core.dao.company.CompanyMapper;
+import com.yunmu.core.dao.company.CompanyMapperExt;
+import com.yunmu.core.dao.project.ProjectMapper;
+import com.yunmu.core.dao.sys.*;
+import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.project.ProjectExample;
 import com.yunmu.core.model.sys.*;
+import com.yunmu.core.util.IdUtils;
+import com.yunmu.core.util.MD5Util;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,14 +35,26 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserServiceImpl implements SysUserService {
 
+    private static final Logger logger= LoggerFactory.getLogger(SysUserServiceImpl.class);
+
     @Autowired
     private SysUserMapperExt sysUserMapperExt;
     @Autowired
     private SysUserMapper sysUserMapper;
     @Autowired
-    private SysUserProjectMapper projectMapper;
+    private SysUserProjectMapper sysUserProjectMapper;
+
+    @Autowired
+    private SysUserProjectMapperExt sysUserProjectMapperExt;
+
+    @Autowired
+    private ProjectMapper projectMapper;
+
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
+
+    @Autowired
+    private CompanyMapperExt companyMapperExt;
     @Override
     public GenericPage<SysUserExt> getPageByCondition(Map<String, Object> params) {
         int pageIndex = 1, pageSize = 10;
@@ -55,12 +78,206 @@ public class SysUserServiceImpl implements SysUserService {
         }
         Page<SysUserExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<SysUserExt> sysUserExts=sysUserMapperExt.getSysUserPage(params);
+
+        if(sysUserExts!=null){
+            for(SysUserExt sysUserExt:sysUserExts){
+                String projectName="";
+                List<String> projectIds=sysUserProjectMapperExt.getProjectIdsByUserId(sysUserExt.getId());
+                if(projectIds.size()>0){
+                    for(int i=0;i<projectIds.size();i++){
+                        if(i<2){
+                            projectName+=projectMapper.selectByPrimaryKey(projectIds.get(i)).getProjectName();
+                            if(i<projectIds.size()-2){
+                                projectName+=",";
+                            }
+                        }else{
+                            projectName+="...";
+                            break;
+                        }
+                    }
+
+                }
+                sysUserExt.setProjectName(projectName);
+                sysUserExt.setCompanyName(companyMapperExt.getCompanyByCode(sysUserExt.getCompanyCode()).getCompanyName());
+            }
+        }
         return new GenericPage<>(pageIndex, pageSize, sysUserExts, pageInfo.getTotal());
     }
 
     @Override
-    public Boolean insert(SysUser sysUser) {
-        return null;
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean insert(SysUserExt sysUserExt) {
+
+        if(sysUserExt != null) {
+            SysUser sysUser = new SysUser();
+            BeanUtils.copyProperties(sysUserExt, sysUser);
+            String userId = IdUtils.uuid2();
+            sysUser.setId(userId);
+            try {
+                sysUser.setPassword(MD5Util.getEncryptedPwd(sysUserExt.getPassword()));
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                logger.error("加密密码失败:"+ sysUser.getPassword(), e);
+                throw new DataException("保存用户失败");
+            }
+            sysUser.setCreateTime(new Date());
+            sysUser.setDelFlag(0);
+            sysUser.setStatus(0);
+            sysUser.setUpdateTime(new Date());
+
+            // TODO 判断是否影核账号
+
+            SysUserExample sysUserExample = new SysUserExample();
+            SysUserExample.Criteria sysUserCri = sysUserExample.createCriteria();
+            sysUserCri.andDelFlagEqualTo(0);
+
+            sysUserCri.andLoginNameEqualTo(sysUser.getLoginName());
+            if(sysUserMapper.countByExample(sysUserExample) > 0) {
+                throw new DataException("用户名已存在");
+            }
+
+            sysUserMapper.insertSelective(sysUser);
+
+            if(sysUser.getChooseProjectId() == 2) {
+                List<SysUserProject> sysUserCinemaList = null;
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(sysUserExt.getCinemas())) {
+                    sysUserCinemaList = new ArrayList<>();
+                    if (sysUserExt.getCinemas().contains(",")) {
+                        String[] cinemaCodes = sysUserExt.getCinemas().split(",");
+                        for (String ccode : cinemaCodes) {
+                            SysUserProject sysUserCinema = new SysUserProject();
+                            sysUserCinema.setUserId(userId);
+                            sysUserCinema.setProjectId(ccode);
+                            sysUserCinemaList.add(sysUserCinema);
+                        }
+                    } else {
+                        SysUserProject sysUserCinema = new SysUserProject();
+                        sysUserCinema.setUserId(userId);
+                        sysUserCinema.setProjectId(sysUserExt.getCinemas());
+                        sysUserCinemaList.add(sysUserCinema);
+                    }
+                } else {
+                    throw new DataException("请选择影院后提交");
+                }
+                sysUserMapperExt.insertBatchUserCinema(sysUserCinemaList);
+            }
+
+//            List<SysUserRole> sysUserRoleList = null;
+//            if(org.apache.commons.lang3.StringUtils.isNotBlank(sysUserExt.getRoles())) {
+//                sysUserRoleList = new ArrayList<>();
+//                if(sysUserExt.getRoles().contains(",")) {
+//                    String[] roles = sysUserExt.getRoles().split(",");
+//                    for(String ccode: roles) {
+//                        SysUserRole sysUserRoleKey = new SysUserRole();
+//                        sysUserRoleKey.setUserId(userId);
+//                        sysUserRoleKey.setRoleId(ccode);
+//                        sysUserRoleList.add(sysUserRoleKey);
+//                    }
+//                } else {
+//                    SysUserRole sysUserRoleKey = new SysUserRole();
+//                    sysUserRoleKey.setUserId(userId);
+//                    sysUserRoleKey.setRoleId(sysUserExt.getRoles());
+//                    sysUserRoleList.add(sysUserRoleKey);
+//                }
+//            } else {
+//                throw new DataException("请选择角色后提交");
+//            }
+            //sysUserMapperExt.insertBatchUserRole(sysUserRoleList);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean update(SysUserExt sysUserExt) {
+
+        if(sysUserExt != null) {
+            String userId = sysUserExt.getId();
+            SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+
+            int compareCount = 0;
+            if(sysUser.getLoginName().equals(sysUserExt.getLoginName())) {
+                compareCount = 1;
+            }
+            sysUserExt.setCompanyCode(null);
+            BeanUtils.copyProperties(sysUserExt, sysUser);
+            sysUser.setUpdateTime(new Date());
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(sysUser.getPassword())) {
+                try {
+                    sysUser.setPassword(MD5Util.getEncryptedPwd(sysUserExt.getPassword()));
+                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                    logger.error("加密密码失败:" + sysUser.getPassword(), e);
+                    throw new DataException("保存用户失败");
+                }
+            } else {
+                sysUser.setPassword(null);
+            }
+
+            SysUserExample sysUserExample = new SysUserExample();
+            SysUserExample.Criteria sysUserCri = sysUserExample.createCriteria();
+            sysUserCri.andDelFlagEqualTo(0);
+            sysUserCri.andLoginNameEqualTo(sysUser.getLoginName());
+
+            if(sysUserMapper.countByExample(sysUserExample) > compareCount) {
+                throw new DataException("用户名已存在");
+            }
+
+            sysUserMapper.updateByPrimaryKeySelective(sysUser);
+
+
+            SysUserProjectExample projectExample = new SysUserProjectExample();
+            SysUserProjectExample.Criteria cinemaCri = projectExample.createCriteria();
+            cinemaCri.andUserIdEqualTo(userId);
+            sysUserProjectMapper.deleteByExample(projectExample);
+            if(sysUser.getChooseProjectId() == 2) {
+                List<SysUserProject> sysUserCinemaList = null;
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(sysUserExt.getCinemas())) {
+                    sysUserCinemaList = new ArrayList<>();
+                    if (sysUserExt.getCinemas().contains(",")) {
+                        String[] cinemaCodes = sysUserExt.getCinemas().split(",");
+                        for (String ccode : cinemaCodes) {
+                            SysUserProject sysUserProject = new SysUserProject();
+                            sysUserProject.setUserId(userId);
+                            sysUserProject.setProjectId(ccode);
+                            sysUserCinemaList.add(sysUserProject);
+                        }
+                    } else {
+                        SysUserProject sysUserCinema = new SysUserProject();
+                        sysUserCinema.setUserId(userId);
+                        sysUserCinema.setProjectId(sysUserExt.getCinemas());
+                        sysUserCinemaList.add(sysUserCinema);
+                    }
+                } else {
+                    throw new DataException("请选择项目后提交");
+                }
+                sysUserMapperExt.insertBatchUserCinema(sysUserCinemaList);
+            }
+
+//            List<SysUserRole> sysUserRoleList = null;
+//            if(org.apache.commons.lang3.StringUtils.isNotBlank(sysUserExt.getRoles())) {
+//                sysUserRoleList = new ArrayList<>();
+//                if(sysUserExt.getRoles().contains(",")) {
+//                    String[] roles = sysUserExt.getRoles().split(",");
+//                    for(String ccode: roles) {
+//                        SysUserRole sysUserRoleKey = new SysUserRole();
+//                        sysUserRoleKey.setUserId(userId);
+//                        sysUserRoleKey.setRoleId(ccode);
+//                        sysUserRoleList.add(sysUserRoleKey);
+//                    }
+//                } else {
+//                    SysUserRole sysUserRoleKey = new SysUserRole();
+//                    sysUserRoleKey.setUserId(userId);
+//                    sysUserRoleKey.setRoleId(sysUserExt.getRoles());
+//                    sysUserRoleList.add(sysUserRoleKey);
+//                }
+//            } else {
+//                throw new DataException("请选择角色后提交");
+//            }
+            SysUserRoleExample roleExample = new SysUserRoleExample();
+            SysUserRoleExample.Criteria roleCri = roleExample.createCriteria();
+            roleCri.andUserIdEqualTo(userId);
+            sysUserRoleMapper.deleteByExample(roleExample);
+            //sysUserMapperExt.insertBatchUserRole(sysUserRoleList);
+        }
+        return true;
     }
 
     @Override
@@ -96,7 +313,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysUserProjectExample projectExample = new SysUserProjectExample();
         SysUserProjectExample.Criteria cinemaCri = projectExample.createCriteria();
         cinemaCri.andUserIdEqualTo(id);
-        List<SysUserProject> sysUserCinemaList = projectMapper.selectByExample(projectExample);
+        List<SysUserProject> sysUserCinemaList = sysUserProjectMapper.selectByExample(projectExample);
         if(sysUserCinemaList != null && !sysUserCinemaList.isEmpty()) {
             List<String> ccodes = sysUserCinemaList.stream().map(SysUserProject::getProjectId).collect(Collectors.toList());
             sysUserExt.setCinemas(Joiner.on(",").join(ccodes));

@@ -12,13 +12,14 @@
     <script id="trTmpl" type="text/x-jrender">
         <thead>
                 <tr>
-                    <th style='width: 13%;'><div>项目名称</div></th>
+                    <th style='width: 10%;'><div>项目名称</div></th>
                     <th style='width: 10%;'><div>项目类型</div></th>
-                    <th style='width: 17%;'><div>项目描述</div></th>
-                    <th style='width: 12%;'><div>添加时间</div></th>
-                    <th style='width: 12%;'><div>创建人</div></th>
-                    <th style='width: 12%;'><div>状态</div></th>
-                    <th style='width: 24%;'><div>操作</div></th>
+                    <th style='width: 10%;'><div>所属公司</div></th>
+                    <th style='width: 15%;'><div>项目描述</div></th>
+                    <th style='width: 10%;'><div>添加时间</div></th>
+                    <th style='width: 10%;'><div>创建人</div></th>
+                    <th style='width: 10%;'><div>状态</div></th>
+                    <th style='width: 25%;'><div>操作</div></th>
                 </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
                 </td>
                 <td>
                     <div>{{:typaName}}</div>
+                </td>
+                <td>
+                    <div>{{:companyName}}</div>
                 </td>
                 <td>
                     <div>{{:projectDesc}}</div>
@@ -54,6 +58,7 @@
                         <a href="${ctx}/project/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         {{if status == 0}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}

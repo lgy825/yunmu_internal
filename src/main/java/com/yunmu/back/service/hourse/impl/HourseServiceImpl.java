@@ -62,7 +62,7 @@ public class HourseServiceImpl implements HourseService {
         Page<OwnerExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<HourseExt> hourseExts=hourseMapperExt.getHoursePage(params);
         for(HourseExt hourseExt:hourseExts){
-            hourseExt.setOwnerName(ownerService.getOwnerRealName(hourseExt.getId()));
+            hourseExt.setOwnerName(ownerService.getOwnerRealName(hourseExt.getOwnerCode()));
             HourseType hourseType=hourseTypeService.getHourseByIdById(hourseExt.getTypeCode());
             hourseExt.setTypeName(hourseType.getTypeName());
 
@@ -73,11 +73,11 @@ public class HourseServiceImpl implements HourseService {
     @Override
     public boolean insert(Hourse hourse) {
         if(hourse!=null) {
-            hourse.setCreateBy(ShiroUtils.getUserId());
+            hourse.setCreateBy("lgy");
             hourse.setCreateTime(new Date());
             hourse.setDelFlag(0);
             try {
-                hourseMapper.insert(hourse);
+                hourseMapper.insertSelective(hourse);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -95,7 +95,7 @@ public class HourseServiceImpl implements HourseService {
     @Override
     public Boolean update(Hourse hourse) {
         try {
-            hourse.setUpdateBy(ShiroUtils.getUserId());
+            hourse.setUpdateBy("lgy");
             hourse.setUpdateTime(new Date());
             hourseMapper.updateByPrimaryKeySelective(hourse);
             return true;
@@ -108,7 +108,12 @@ public class HourseServiceImpl implements HourseService {
     @Override
     public boolean deleteByPrimaryKey(String id) {
         try {
-            hourseMapper.deleteByPrimaryKey(id);
+            Hourse hourse=new Hourse();
+            hourse.setId(id);
+            hourse.setDelFlag(1);
+            hourse.setUpdateBy("lgy");
+            hourse.setUpdateTime(new Date());
+            hourseMapper.updateByPrimaryKeySelective(hourse);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

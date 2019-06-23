@@ -19,7 +19,7 @@
             <hr>
         </div>
         <div class="p20">
-            <input id="oId" type="hidden" value="${oId}" />
+            <input id="orderId" type="hidden" value="${orderId}" />
             <div class="bgc-ff full-white">
                 <!-- 必填选项 -->
                 <div class="mt12 clearfix">
@@ -37,12 +37,24 @@
                     </select>
                     <span class="color-lred ml8 mt6">*请选择订单来源*</span>
                 </div>
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">房屋类型</div>
+                    <select id="typeCodeSel" class="select ml16 wid-238">
+                    </select>
+                    <span class="color-lred ml8 mt6">* 选择房子的类型，必选</span>
+                </div>
                 <!-- 必填选项 -->
                 <div class="mt12 clearfix">
                     <div class="align-r mr8 mt6">房间号</div>
                     <select id="hourseSel" class="select ml16 wid-238">
                     </select>
                     <span class="color-lred ml8 mt6">*请选择所属房间*</span>
+                </div>
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">所属项目</div>
+                    <select id="projectSel" class="select ml16 wid-238">
+                    </select>
+                    <span class="color-lred ml8 mt6">* 选择所属的项目，必选</span>
                 </div>
                 <div class="mt12 searchBox">
                     <div class="b_label lab_wid1 relative">订单日期<i class="whats"></i><p class="modify-what">设置订单的开始时间和结束时间</p></div>
@@ -58,6 +70,7 @@
                     <input id="oRecAmount" maxlength="5" type="text" class="inpW set-inpwid ml8" placeholder="请输入房费">
                     <span class="color-lred ml8 none">* 不超过5个字，不能出现其他特殊字符</span>
                 </div>
+
                 <div class="pl88 mt30">
                     <input id="saveBtn" type="button" class="blue_btn blue_btn30" value="创建完成">
                     <a href="${ctx}/order/toOrderlist">

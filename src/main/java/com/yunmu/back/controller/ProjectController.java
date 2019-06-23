@@ -42,14 +42,12 @@ public class ProjectController extends BaseController {
 
     @RequestMapping("/getpage")
     @ResponseBody
-    public PageResult<ProjectExt> getShopPageByCondition(HttpServletRequest request,
+    public PageResult<ProjectExt> getPage(HttpServletRequest request,
                                                          Integer pageIndex,
                                                          Integer pageSize,
-                                                         String ownerTel,
-                                                         String ownerName) {
+                                                         String projectName) {
         Map<String, Object> params = new HashMap<>();
-        params.put("ownerTel", ownerTel);
-        params.put("ownerName", ownerName);
+        params.put("projectName", projectName);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
         return createSuccessPageResult(projectService.getPageByCondition(params));
@@ -121,6 +119,13 @@ public class ProjectController extends BaseController {
 
         return createSuccessResult(projectService.getProjects());
 
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Result<Boolean> deleteHourse(String id) {
+
+        return createSuccessResult(projectService.delete(id));
     }
 
 }

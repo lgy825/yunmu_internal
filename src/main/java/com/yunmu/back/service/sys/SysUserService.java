@@ -12,7 +12,9 @@ public interface SysUserService {
 
     GenericPage<SysUserExt> getPageByCondition(Map<String, Object> params);
 
-    Boolean insert(SysUser sysUser);
+    Boolean insert(SysUserExt sysUserExt);
+
+    Boolean update(SysUserExt sysUserExt);
 
     Boolean nameExist(SysUserExt sysUserExt);
 

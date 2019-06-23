@@ -6,9 +6,12 @@ import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.sys.SysUser;
 import com.yunmu.core.model.sys.SysUserExt;
+import com.yunmu.core.util.IdUtils;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -65,6 +68,27 @@ public class SysUserController extends BaseController {
 
     @RequestMapping("/toadd")
     public String toAdd() {
+        return "sys/user/newuser";
+    }
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public Result<Boolean> save(SysUserExt sysUserExt) {
+        if(StringUtils.isBlank(sysUserExt.getId())) {
+            sysUserExt.setCreateBy(IdUtils.getId(11));
+            return createSuccessResult(sysUserService.insert(sysUserExt));
+        } else {
+            sysUserExt.setUpdateBy(ShiroUtils.getUserId());
+            return createSuccessResult(sysUserService.update(sysUserExt));
+        }
+    }
+
+    @RequestMapping("/toedit")
+    public String toEdit(String id, Model model) {
+        if(StringUtils.isBlank(id)) {
+            return "sys/user/userlist";
+        }
+        model.addAttribute("userId", id);
         return "sys/user/newuser";
     }
 }

@@ -30,8 +30,8 @@ $(function(){
             remote: {
                 url: ctx + 'hourse/getpage',
                 params:{
-                    hNumber: $.trim($("#hNumber").val()),
-                    hNumberArea:$.trim($("#hNumberArea").val())
+                    hourseNumber: $.trim($("#hourseNumber").val()),
+                    areaCode:$.trim($("#areaCode").val())
                 },
                 success: function (data) {
                     // data为ajax返回数据

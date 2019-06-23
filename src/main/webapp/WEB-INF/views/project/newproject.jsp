@@ -28,6 +28,12 @@
                     </select>
                     <span class="color-lred ml8 mt6">* 请选择项目类型，必选</span>
                 </div>
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">*项目所属公司*</div>
+                    <select id="companySel" class="select ml16 wid-238">
+                    </select>
+                    <span class="color-lred ml8 mt6">* 请选择所属公司，必选</span>
+                </div>
                 <div class="mt12">
                     <div class="align-r">联系电话</div>
                     <input id="projectTel" maxlength="11" type="text" class="inpW set-inpwid ml8" placeholder="请输入联系电话">

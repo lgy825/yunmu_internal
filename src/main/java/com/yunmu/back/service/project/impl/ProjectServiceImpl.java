@@ -4,9 +4,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yunmu.back.service.project.ProjectService;
 import com.yunmu.core.constant.GenericPage;
+import com.yunmu.core.dao.company.CompanyMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.dao.project.ProjectMapperExt;
 import com.yunmu.core.dao.project.ProjectTypeMapper;
+import com.yunmu.core.model.company.Company;
+import com.yunmu.core.model.company.CompanyExt;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.project.ProjectExample;
 import com.yunmu.core.model.project.ProjectExt;
@@ -31,6 +34,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectTypeMapper projectTypeMapper;
+
+    @Autowired
+    private CompanyMapperExt companyMapperExt;
 
     @Override
     public GenericPage<ProjectExt> getPageByCondition(Map<String, Object> params) {
@@ -59,6 +65,11 @@ public class ProjectServiceImpl implements ProjectService {
         for(ProjectExt projectExt:projectExts){
             ProjectType projectType=projectTypeMapper.selectByPrimaryKey(projectExt.getTypeCode());
             projectExt.setTypaName(projectType.getTypeName());
+            CompanyExt companyExt=companyMapperExt.getCompanyByCode(projectExt.getCompanyCode());
+            if(companyExt!=null){
+                projectExt.setCompanyName(companyExt.getCompanyName());
+            }
+
         }
         return new GenericPage<>(pageIndex, pageSize, projectExts, pageInfo.getTotal());
     }
@@ -110,5 +121,16 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectExample.Criteria criteria = projectExample.createCriteria();
         criteria.andDelFlagEqualTo(0);
         return projectMapper.selectByExample(projectExample);
+    }
+
+    @Override
+    public boolean delete(String id) {
+        Project project=new Project();
+        project.setDelFlag(1);
+        project.setId(id);
+        project.setUpdateBy("lgy");
+        project.setUpdateTime(new Date());
+        projectMapper.updateByPrimaryKeySelective(project);
+        return true;
     }
 }

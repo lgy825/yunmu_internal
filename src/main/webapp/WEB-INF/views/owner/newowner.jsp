@@ -22,6 +22,12 @@
                     <input id="ownerName" maxlength="15" type="text" class="inpW set-inpwid ml8" placeholder="请输入用户名">
                     <span class="color-lred ml8">*必填项，不超过15个字母或数字，不能出现其他特殊字符</span>
                 </div>
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">所属项目</div>
+                    <select id="projectSel" class="select ml16 wid-238">
+                    </select>
+                    <span class="color-lred ml8 mt6">* 选择所属的项目，必选</span>
+                </div>
                 <div class="mt12">
                     <div class="align-r">登录密码</div>
                     <input id="ownerPwd" maxlength="15" type="text" class="inpW set-inpwid ml8" placeholder="请输入登录密码">
@@ -30,7 +36,7 @@
                 <div class="mt12">
                     <div class="align-r">邮箱</div>
                     <input id="ownerEmail" maxlength="15" type="text" class="inpW set-inpwid ml8" placeholder="请输入邮箱">
-                    <span class="color-lred ml8">必填项，请输入正确的邮箱格式，可为空</span>
+                    <span class="color-lred ml8">请输入正确的邮箱格式，可为空</span>
                 </div>
                 <div class="mt12">
                     <div class="align-r">电话</div>

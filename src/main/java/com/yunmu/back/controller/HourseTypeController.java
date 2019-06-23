@@ -33,7 +33,7 @@ public class HourseTypeController extends BaseController {
 
     @RequestMapping("/toHourseTypelist")
     public String toHourseTypelist() {
-        return "hourse/toHourseTypelist";
+        return "hoursetype/hoursetypelist";
     }
 
     @RequestMapping("/getpage")
@@ -49,7 +49,7 @@ public class HourseTypeController extends BaseController {
         return createSuccessPageResult(hourseTypeService.getPageByCondition(params));
     }
 
-    @RequestMapping("/saveHourse")
+    @RequestMapping("/save")
     @ResponseBody
     public Result<Boolean> save(HourseType hourseType) {
         if(StringUtils.isBlank(hourseType.getId())) {
@@ -65,23 +65,6 @@ public class HourseTypeController extends BaseController {
         return createSuccessResult(true);
     }
 
-    @RequestMapping("/tolook")
-    public String toLook(String id, Model model) {
-        if(StringUtils.isBlank(id)) {
-            return "hourseType/hourseTypelist";
-        }
-        model.addAttribute("hourseId", id);
-        return "hourse/lookhourse";
-    }
-
-    @RequestMapping("/toedit")
-    public String toEdit(String id, Model model) {
-        if(StringUtils.isBlank(id)) {
-            return "hourseType/hourseTypelist";
-        }
-        model.addAttribute("hourseId", id);
-        return "hourseType/newhourseType";
-    }
 
     @RequestMapping("/get")
     @ResponseBody
@@ -92,16 +75,12 @@ public class HourseTypeController extends BaseController {
         return createSuccessResult(hourseTypeService.getHourseByIdById(id));
     }
 
-    @RequestMapping("/toaddHourse")
-    public String toaddHourse() {
-        return "hourse/newhourse";
-    }
 
-    @RequestMapping("/deleteHourse")
+    @RequestMapping("/delete")
     @ResponseBody
-    public Result<Boolean> deleteHourse(String hId) {
+    public Result<Boolean> deleteHourse(String id) {
 
-        return createSuccessResult(hourseTypeService.deleteByPrimaryKey(hId));
+        return createSuccessResult(hourseTypeService.deleteByPrimaryKey(id));
     }
 
 

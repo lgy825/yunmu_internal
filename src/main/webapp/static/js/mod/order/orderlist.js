@@ -1,9 +1,6 @@
 $(function(){
 
-
     loadPage();
-
-
     $("#searchBtn").click(function () {
         loadPage();
     });
@@ -30,9 +27,8 @@ $(function(){
             remote: {
                 url: ctx + 'order/getpage',
                 params:{
-                    oId: $.trim($("#oId").val())
-                    //hId:$.trim($("#hId").val())
-                    //hNumberArea:$.trim($("#hNumberArea").val())
+                    orderId: $.trim($("#orderId").val())
+
                 },
                 success: function (data) {
                     // data为ajax返回数据
@@ -44,8 +40,8 @@ $(function(){
     }
 
     $("#resetBtn").click(function () {
-        $("#hNumber").val("").trigger('change');
-        $("#hNumberArea").val("");
+        $("#orderId").val("");
+        //$("#hNumberArea").val("");
     });
 
     $("#orderTable").on("click", ".deleteOrder", function (){

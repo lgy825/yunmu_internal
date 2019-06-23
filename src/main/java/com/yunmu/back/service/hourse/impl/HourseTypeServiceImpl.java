@@ -6,6 +6,7 @@ import com.yunmu.back.service.hourse.HourseTypeService;
 import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.hourse.HourseTypeMapper;
 import com.yunmu.core.dao.hourse.HourseTypeMapperExt;
+import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.model.hourse.HourseType;
 import com.yunmu.core.model.hourse.HourseTypeExt;
 import com.yunmu.core.util.ShiroUtils;
@@ -27,6 +28,8 @@ public class HourseTypeServiceImpl implements HourseTypeService {
     private HourseTypeMapperExt hourseTypeMapperExt;
     @Autowired
     private HourseTypeMapper hourseTypeMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
 
     @Override
     public GenericPage<HourseTypeExt> getPageByCondition(Map<String, Object> params) {
@@ -51,13 +54,16 @@ public class HourseTypeServiceImpl implements HourseTypeService {
         }
         Page<HourseTypeExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<HourseTypeExt> hourseTypeExts=hourseTypeMapperExt.getHourseTypePage(params);
+        for(HourseTypeExt hourseType:hourseTypeExts){
+            hourseType.setProjectName(projectMapper.selectByPrimaryKey(hourseType.getProjectId()).getProjectName());
+        }
         return new GenericPage<>(pageIndex, pageSize, hourseTypeExts, pageInfo.getTotal());
     }
 
     @Override
     public boolean insert(HourseType hourseType) {
         if(hourseType!=null){
-            hourseType.setCreateBy(ShiroUtils.getUserId());
+            hourseType.setCreateBy("lgy");
             hourseType.setCreateTime(new Date());
             hourseType.setDelFlag("0");
             try {
@@ -74,9 +80,9 @@ public class HourseTypeServiceImpl implements HourseTypeService {
     @Override
     public Boolean update(HourseType hourseType) {
         if(hourseType!=null){
-            hourseType.setUpdateBy(ShiroUtils.getUserId());
+            hourseType.setUpdateBy("lgy");
             hourseType.setUpdateTime(new Date());
-            hourseTypeMapper.updateByPrimaryKey(hourseType);
+            hourseTypeMapper.updateByPrimaryKeySelective(hourseType);
             return true;
         }
         return false;
@@ -93,7 +99,7 @@ public class HourseTypeServiceImpl implements HourseTypeService {
             HourseType hourseType=new HourseType();
             hourseType.setDelFlag("1");
             hourseType.setId(id);
-            hourseTypeMapper.updateByPrimaryKey(hourseType);
+            hourseTypeMapper.updateByPrimaryKeySelective(hourseType);
             return true;
         }
         return false;

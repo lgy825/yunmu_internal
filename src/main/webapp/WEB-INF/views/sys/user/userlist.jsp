@@ -15,10 +15,11 @@
         <thead>
                 <tr>
                     <th style='width: 10%;'><div>用户名</div></th>
+                    <th style='width: 10%;'><div>所属公司</div></th>
                     <th style='width: 15%;'><div>管理项目名称</div></th>
-                    <th style='width: 15%;'><div>电话</div></th>
+                    <th style='width: 10%;'><div>电话</div></th>
                     <th style='width: 15%;'><div>邮箱</div></th>
-                    <th style='width: 15%;'><div>添加时间</div></th>
+                    <th style='width: 10%;'><div>添加时间</div></th>
                     <th style='width: 10%;'><div>状态</div></th>
                     <th style='width: 20%;'><div>操作</div></th>
                 </tr>
@@ -28,6 +29,9 @@
             <tr>
                 <td>
                     <div>{{:loginName}}</div>
+                </td>
+                <td>
+                    <div>{{:companyName}}</div>
                 </td>
                 <td>
                     <div>{{:projectName}}</div>
@@ -52,7 +56,7 @@
                 </td>
                 <td>
                     <div class="">
-                        <a href="${ctx}/sysuser/toedit.do?id={{:id}}">
+                        <a href="${ctx}/sysuser/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         {{if disabledFlg == 1}}
@@ -70,7 +74,7 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">用户管理</div>
+        <div class="b_title">员工管理</div>
         <div class="hr">
             <hr>
         </div>
@@ -85,7 +89,7 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
-                    <input id="loginName" type="text" class="inpW ml20" placeholder="用户名">
+                    <input id="loginName" type="text" class="inpW ml20" placeholder="登录名">
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                 </div>

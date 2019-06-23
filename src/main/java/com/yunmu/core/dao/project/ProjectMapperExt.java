@@ -12,4 +12,6 @@ public interface ProjectMapperExt {
 
 
     List<ProjectExt> getProjectPage(Map<String, Object> params);
+
+    int getProjectCount(String companyCode);
 }

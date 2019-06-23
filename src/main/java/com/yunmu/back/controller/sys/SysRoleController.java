@@ -25,11 +25,9 @@ public class SysRoleController extends BaseController {
     public PageResult<SysRoleExt> getShopPageByCondition(HttpServletRequest request,
                                                          Integer pageIndex,
                                                          Integer pageSize,
-                                                         String roleName,
-                                                         String companyCode) {
+                                                         String roleName) {
         Map<String, Object> params = new HashMap<>();
         params.put("roleName", roleName);
-        params.put("companyCode", companyCode);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
         return createSuccessPageResult(sysRoleService.getRolePageByCondition(params));

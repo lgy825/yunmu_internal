@@ -2,25 +2,60 @@ $(function () {
     // 加载数据 -------------
 
     loadProjectType();
-    if ($("#projectId").val()) {
+    loadCompany();
+
+    function loadCompany() {
         $.ajax({
-            url: ctx + "project/get",
+            url: ctx + "company/getpage",
             type: "GET",
             cache: false,
             async: false,
             dataType: 'json',
             data: {
-                id: $("#projectId").val(),
+                pageIndex: 1,
+                pageSize: 99999
             },
             success: function (data) {
                 if (data && data.resultCode === '0') {
-                    su = data.resultData;
-                    $("#projectName").val(su.projectName);
-                    $("#typeCodeSel").val(su.typeCode);
-                    $("#projectDesc").val(su.projectDesc);
-                    $("#projectTel").val(su.projectTel);
-                    $("#projectAddr").val(su.projectAddr);
-                } else {
+                    // // 城市列表
+                    $("#companySel").select2({placeholder: '请选择所属公司'});
+                    $("#companySel").append("<option value='-1'>所属公司</option>");
+                    $(data.resultData.list).each(function (idx, comp) {
+                        $("#companySel").append("<option value='" + comp.companyCode + "'>" + comp.companyName + "</option>");
+                    });
+                    if ($("#projectId").val()) {
+                        $.ajax({
+                            url: ctx + "project/get",
+                            type: "GET",
+                            cache: false,
+                            async: false,
+                            dataType: 'json',
+                            data: {
+                                id: $("#projectId").val(),
+                            },
+                            success: function (data) {
+                                if (data && data.resultCode === '0') {
+                                    su = data.resultData;
+                                    $("#projectName").val(su.projectName);
+                                    $("#typeCodeSel").val(su.typeCode);
+                                    $("#projectDesc").val(su.projectDesc);
+                                    $("#projectTel").val(su.projectTel);
+                                    $("#projectAddr").val(su.projectAddr);
+                                    $("#companySel").val(su.companyCode);
+                                } else {
+                                    if (data.resultDesc) {
+                                        layer.msg(data.resultDesc);
+                                    } else {
+                                        layer.msg('查询失败 !');
+                                    }
+                                }
+                            },
+                            error: function () {
+                                layer.msg('查询失败 !');
+                            }
+                        });
+                    }
+                }else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);
                     } else {
@@ -44,7 +79,11 @@ $(function () {
             return;
         }
         if ($("#typeCodeSel").val() == -1) {
-            layer.msg("请选择房子所属的项目类型");
+            layer.msg("请选择项目所属类型");
+            return;
+        }
+        if ($("#companySel").val() == -1) {
+            layer.msg("请选择项目所属公司");
             return;
         }
         var projectTel = $.trim($("#projectTel").val());
@@ -54,7 +93,6 @@ $(function () {
         }
         var projectAddr=$.trim($("#projectAddr").val());
         var projectDesc=$.trim($("#projectDesc").val());
-
         $.ajax({
             url: ctx + "project/saveProject",
             type: "POST",
@@ -63,6 +101,7 @@ $(function () {
             data: {
                 id:$("#projectId").val(),
                 typeCode: $("#typeCodeSel").val(),
+                companyCode: $("#companySel").val(),
                 projectName:projectName,
                 projectTel: projectTel,
                 projectAddr:projectAddr,
@@ -118,7 +157,6 @@ $(function () {
             }
         });
     }
-
 
 
 });

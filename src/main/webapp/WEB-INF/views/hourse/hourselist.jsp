@@ -38,7 +38,7 @@
                     <div>{{:ownerName}}</div>
                 </td>
                 <td>
-                    <div>{{dateTime:hDate}}</div>
+                    <div>{{dateTime:createTime}}</div>
                 </td>
                 <td>
                     <div>{{:hourseArea}}</div>
@@ -48,10 +48,10 @@
                 </td>
                 <td>
                     <div class="">
-                        <a href="${ctx}/hourse/tolook?hId={{:id}}">
+                        <a href="${ctx}/hourse/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="查看">
                         </a>
-                        <a href="${ctx}/hourse/toedit?hId={{:id}}">
+                        <a href="${ctx}/hourse/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         <input type="button" class="deleteHourse gray_btn mr10" data-sid="{{:id}}" value="删除">
@@ -80,8 +80,8 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
-                    <input id="hNumber" type="text" class="inpW ml20" placeholder="房间号">
-                    <input id="hNumberArea" type="text" class="inpW ml20" placeholder="地区号">
+                    <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
+                    <input id="areaCode" type="text" class="inpW ml20" placeholder="地区号">
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                 </div>

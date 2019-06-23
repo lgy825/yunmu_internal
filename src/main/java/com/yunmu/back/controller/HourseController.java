@@ -75,21 +75,21 @@ public class HourseController extends BaseController {
     }
 
     @RequestMapping("/toedit")
-    public String toEdit(String hId, Model model) {
-        if(StringUtils.isBlank(hId)) {
+    public String toEdit(String id, Model model) {
+        if(StringUtils.isBlank(id)) {
             return "hourse/hourselist";
         }
-        model.addAttribute("hId", hId);
+        model.addAttribute("hourseId", id);
         return "hourse/newhourse";
     }
 
     @RequestMapping("/get")
     @ResponseBody
-    public Result<Hourse> update(String hId) {
-        if(StringUtils.isBlank(hId)) {
+    public Result<Hourse> getHourse(String id) {
+        if(StringUtils.isBlank(id)) {
             return createFailedResult("查询失败");
         }
-        return createSuccessResult(hourseService.getHourseByIdById(hId));
+        return createSuccessResult(hourseService.getHourseByIdById(id));
     }
 
     @RequestMapping("/toaddHourse")
