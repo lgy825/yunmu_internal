@@ -8,6 +8,7 @@ import com.yunmu.core.dao.hourse.HourseTypeMapper;
 import com.yunmu.core.dao.hourse.HourseTypeMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.model.hourse.HourseType;
+import com.yunmu.core.model.hourse.HourseTypeExample;
 import com.yunmu.core.model.hourse.HourseTypeExt;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
@@ -103,5 +104,14 @@ public class HourseTypeServiceImpl implements HourseTypeService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<HourseType> getHourseTypeListById(List<String> ids) {
+        HourseTypeExample hourseTypeExample=new HourseTypeExample();
+        HourseTypeExample.Criteria criteria=hourseTypeExample.createCriteria();
+        criteria.andIdIn(ids);
+
+        return hourseTypeMapper.selectByExample(hourseTypeExample);
     }
 }

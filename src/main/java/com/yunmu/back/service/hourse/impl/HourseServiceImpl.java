@@ -120,4 +120,9 @@ public class HourseServiceImpl implements HourseService {
             return false;
         }
     }
+
+    @Override
+    public List<HourseExt> getAllHourse() {
+        return hourseMapperExt.getAllHourse();
+    }
 }

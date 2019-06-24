@@ -2,6 +2,10 @@ package com.yunmu.bapp.service;
 
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
+import com.yunmu.core.util.AppResponseObj;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 13544 on 2019/6/18.
@@ -9,4 +13,12 @@ import com.yunmu.core.model.owner.OwnerExt;
 public interface AppService {
 
     OwnerExt getOwnerByCondition(Owner owner);
+
+    Boolean update(Owner owner);
+
+    Map<String,Object> getHomeDataByCondition(Map<String,String> params);
+
+    double getIncomeByCondition(Map<String,String> params);
+
+    List<AppResponseObj> getOrderPage(Map<String,String> params);
 }

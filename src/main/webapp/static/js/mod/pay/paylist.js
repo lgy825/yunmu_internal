@@ -2,12 +2,13 @@ $(function(){
 
 
     loadPage();
-    $("#searchBtn").click(function () {
+    $("#search").click(function () {
         loadPage();
     });
 
     $("#resetBtn").click(function () {
         $("#payName").val("");
+        loadPage();
     });
 
     $("#payTable").on("click", ".delete", function (){
@@ -39,63 +40,6 @@ $(function(){
         });
     });
 
-    $("#payNames")
-        .focus(function () {
-            $(this).val($.trim($(this).val()));
-            $(this).removeClass("inputBg");
-            $(this).siblings('.color-lred').removeClass("none");
-            if($(this).val().length > 10) {
-                $(this).siblings('.color-lred').text("* 名称输入过长，不超过10字");
-            } else {
-                $(this).siblings('.color-lred').text("* 名称输入过长，不超过10字");
-            }
-        })
-        .blur(function () {
-            $(this).val($.trim($(this).val()));
-            if ($(this).val() &&
-                $(this).val().length > 0 &&
-                $(this).val().length <= 10) {
-                $(this).addClass("inputBg");
-                $(this).siblings('.color-lred').addClass("none");
-            } else {
-                $(this).removeClass("inputBg");
-                if($(this).val().length > 0) {
-                    $(this).siblings('.color-lred').text("* 名称输入过长，不超过10字");
-                } else {
-                    $(this).siblings('.color-lred').text("* 名称输入过长，不超过10字");
-                }
-                $(this).siblings('.color-lred').removeClass("none");
-            }
-        });
-
-    $("#payAmount")
-        .focus(function () {
-            $(this).val($.trim($(this).val()));
-            $(this).removeClass("inputBg");
-            $(this).siblings('.color-lred').removeClass("none");
-            if(!ValidUtils.validMoney($(this).val())) {
-                $(this).siblings('.color-lred').text("* 金额输入有误，请重新输入");
-            }
-        })
-        .blur(function () {
-            $(this).val($.trim($(this).val()));
-            if ($(this).val() &&
-                $(this).val().length > 0 &&
-                $(this).val().length <= 5) {
-                $(this).addClass("inputBg");
-                $(this).siblings('.color-lred').addClass("none");
-            } else {
-                $(this).removeClass("inputBg");
-                if(!ValidUtils.validMoney($(this).val())) {
-                    $(this).siblings('.color-lred').text("* 金额输入有误，请重新输入");
-                }
-                $(this).siblings('.color-lred').removeClass("none");
-            }
-        });
-    
-    
-
-
 });
 
 function loadPage() {
@@ -119,7 +63,7 @@ function loadPage() {
         remote: {
             url: ctx + 'pay/getpage',
             params:{
-                typeName: $.trim($("#typeName").val())
+                payName: $.trim($("#payName").val())
             },
             success: function (data) {
                 // data为ajax返回数据
@@ -134,13 +78,16 @@ function savePay() {
     if (!payName) {
         layer.msg("请输入支出名称");
         return;
-    } else if (!ValidUtils.validText(typeName, 1, 10)) {
+    } else if (!ValidUtils.validText(payName, 1, 10)) {
         layer.msg("名称不超过10个字母或数字，不能出现其他特殊字符");
         return;
     }
-    var payAmount=$.trim($("#payAmount").val());
+    var payAmount=$.trim($(".payAmount").val());
     if (!payAmount) {
         layer.msg("请输入支出金额");
+        return;
+    }else if (!ValidUtils.validText(payName, 1, 10)) {
+        layer.msg("名称不超过5个数字，不能出现其他特殊字符");
         return;
     }
     var projectId = $.trim($("#projectSel").val());
@@ -148,8 +95,8 @@ function savePay() {
         layer.msg("请选择支出所属的项目");
         return;
     }
-    var payType=$.trim($("#payType").val());
-    if ($("#payType").val() == -1) {
+    var payType=$.trim($("#typeSel").val());
+    if ($("#typeSel").val() == -1) {
         layer.msg("请选择支出所属的类型");
         return;
     }
@@ -193,11 +140,11 @@ function updatePay() {
     if (!payName) {
         layer.msg("请输入支出名称");
         return;
-    } else if (!ValidUtils.validText(typeName, 1, 10)) {
+    } else if (!ValidUtils.validText(payName, 1, 10)) {
         layer.msg("名称不超过10个字母或数字，不能出现其他特殊字符");
         return;
     }
-    var payAmount=$.trim($("#payAmount").val());
+    var payAmount=$.trim($(".payAmount").val());
     if (!payAmount) {
         layer.msg("请输入支出金额");
         return;
@@ -207,7 +154,7 @@ function updatePay() {
     var id=$(".ids").val();
     var payDesc=$.trim($("#payDesc").val());
     $.ajax({
-        url: ctx + "hourseType/save",
+        url: ctx + "pay/save",
         type: "POST",
         cache: false,
         dataType: 'json',
@@ -240,7 +187,7 @@ function updatePay() {
         }
     });
 }
-function deletePay(id) {
+function deletePay(payId) {
     layer.confirm('删除后将无法恢复，是否继续？', function () {
         $.ajax({
             url: ctx + "pay/delete",
@@ -248,7 +195,7 @@ function deletePay(id) {
             cache: false,
             // async: false,
             dataType: 'json',
-            data: {id: id},
+            data: {payId: payId},
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     layer.msg('删除成功 !');

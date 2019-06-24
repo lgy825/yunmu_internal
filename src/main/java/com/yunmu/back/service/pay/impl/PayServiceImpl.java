@@ -88,7 +88,7 @@ public class PayServiceImpl implements PayService{
         if(pay!=null){
             pay.setUpdateBy("lgy");
             pay.setUpdateTime(new Date());
-            payMapper.updateByPrimaryKey(pay);
+            payMapper.updateByPrimaryKeySelective(pay);
             return true;
         }
         return false;
@@ -105,7 +105,7 @@ public class PayServiceImpl implements PayService{
             Pay pay=new Pay();
             pay.setDelFlag(1);
             pay.setPayId(id);
-            payMapper.updateByPrimaryKey(pay);
+            payMapper.updateByPrimaryKeySelective(pay);
             return true;
         }
         return false;

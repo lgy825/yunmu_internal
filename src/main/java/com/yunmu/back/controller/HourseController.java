@@ -1,12 +1,19 @@
 package com.yunmu.back.controller;
 
+import com.google.common.collect.Maps;
 import com.yunmu.back.service.hourse.HourseService;
+import com.yunmu.back.service.hourse.HourseTypeService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
+import com.yunmu.core.constant.ResultConstants;
 import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExt;
+import com.yunmu.core.model.hourse.HourseType;
+import com.yunmu.core.util.HourseTypeAndHourseVo;
 import com.yunmu.core.util.IdUtils;
+import com.yunmu.core.util.ShiroUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 13544 on 2019/5/20.
@@ -28,6 +38,8 @@ public class HourseController extends BaseController {
 
     @Autowired
     private HourseService hourseService;
+    @Autowired
+    private HourseTypeService hourseTypeService;
 
     @RequestMapping("/toHourselist")
     public String toHourselist() {
@@ -102,5 +114,41 @@ public class HourseController extends BaseController {
     public Result<Boolean> deleteHourse(String hId) {
 
         return createSuccessResult(hourseService.deleteByPrimaryKey(hId));
+    }
+
+    @RequestMapping("/getHourseAndType")
+    @ResponseBody
+    public Result<HourseTypeAndHourseVo> getHourseAndType() {
+        // TODO 院线用户和影核账号的逻辑判断
+
+        Map<String, List<HourseExt>> hourseMap = Maps.newHashMap();
+        List<HourseExt> hourseExts = hourseService.getAllHourse();
+        if(CollectionUtils.isNotEmpty(hourseExts)) {
+            hourseExts.forEach(hourseExt -> {
+                if(hourseExt != null) {
+                    String hourseId = hourseExt.getTypeCode();
+                    if(org.apache.commons.lang3.StringUtils.isNotBlank(hourseId)) {
+                        if (hourseMap.containsKey(hourseId)) {
+                            hourseMap.get(hourseId).add(hourseExt);
+                        } else {
+                            List<HourseExt> cinemaListTmp = new ArrayList<>();
+                            cinemaListTmp.add(hourseExt);
+                            hourseMap.put(hourseId, cinemaListTmp);
+                        }
+                    }
+                }
+            });
+        }
+        Result<List<HourseType>> typeListsResult = createSuccessResult(hourseTypeService.getHourseTypeListById(hourseExts.stream().map(hourseExt -> {
+            if (hourseExt == null) {
+                return null;
+            }
+            return hourseExt.getTypeCode();
+        }).collect(Collectors.toList())));
+        if(ResultConstants.RESULT_CODE_FAILED.equals(typeListsResult.getResultCode())) {
+            return createFailedResult(typeListsResult.getResultDesc());
+        }
+
+        return createSuccessResult(new HourseTypeAndHourseVo(typeListsResult.getResultData(), hourseMap));
     }
 }

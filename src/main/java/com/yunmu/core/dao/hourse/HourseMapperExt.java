@@ -12,4 +12,6 @@ public interface HourseMapperExt {
 
     List<HourseExt> getHoursePage(Map<String, Object> params);
 
+    List<HourseExt> getAllHourse();
+
 }

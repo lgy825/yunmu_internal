@@ -13,12 +13,13 @@
         <thead>
                 <tr>
                     <th style='width: 10%;'><div>序号</div></th>
-                    <th style='width: 20%;'><div>支出名称</div></th>
+                    <th style='width: 10%;'><div>支出名称</div></th>
+                    <th style='width: 10%;'><div>支出金额(元)</div></th>
                     <th style='width: 10%;'><div>支出类型</div></th>
                     <th style='width: 10%;'><div>所属项目</div></th>
                     <th style='width: 18%;'><div>类型描述</div></th>
                     <th style='width: 12%;'><div>添加时间</div></th>
-                    <th style='width: 28%;'><div>操作</div></th>
+                    <th style='width: 20%;'><div>操作</div></th>
                 </tr>
         </thead>
         <tbody>
@@ -31,21 +32,24 @@
                     <div>{{:payName}}</div>
                 </td>
                 <td>
+                    <div>{{:payAmount}}</div>
+                </td>
+                <td>
                     <div>{{:typeName}}</div>
                 </td>
                 <td>
                     <div>{{:projectName}}</div>
                 </td>
                 <td>
-                    <div>{{:typeDesc}}</div>
+                    <div>{{:payDesc}}</div>
                 </td>
                 <td>
                     <div>{{dateTime:createTime}}</div>
                 </td>
                 <td>
                     <div class="">
-                        <input type="button" onclick="editType('{{:id}}','{{:projectId}}','{{:typeName}}','{{:payType}}','{{:typeDesc}}')" class="edit gray_btn mr10" value="编辑">
-                        <input type="button"  onclick="deletePay('{{:id}}')" class="gray_btn" value="删除">
+                        <input type="button" onclick="editType('{{:payId}}','{{:projectId}}','{{:typeName}}','{{:payType}}','{{:payDesc}}','{{:payAmount}}')" class="edit gray_btn mr10" value="编辑">
+                        <input type="button"  onclick="deletePay('{{:payId}}')" class="gray_btn" value="删除">
                     </div>
                 </td>
             </tr>
@@ -68,7 +72,7 @@
             <form action="">
                 <div>
                     <input type="text" id="payName" class="inpW ml20"  placeholder="支出名称">
-                    <input type="button" id="searcheType" class="blue_btn ml20" value="查询">
+                    <input type="button" id="search" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置"/>
                 </div>
             </form>
@@ -111,15 +115,14 @@
                        maxlength="10">
                 <span class="color-lred ml8">* 不超过10个字</span>
             </div>
-            <div class="cinema mt12">
+            <div class="mt12">
                 <div class="align-r relative">
-                    支出金额
+                    金额
                     <i class="whats define-layer "></i>
+                    <p class="modify-what">卖品折扣支持小数点后一位</p>
                 </div>
-                <input type="text" id="payAmount" class="inpW set-inpwid ml8" onclick="" placeholder="请输入支出金额"
-                       maxlength="10">
-                <i class="whats define-layer"></i>
-                <p class="modify-what">只可输入数字或小数点</p>
+                <input type="text" class="payAmount inpW inp-wid ml8" placeholder="">
+                <span class="color-lred ml8">* 精确到1位小数</span>
             </div>
             <div class="cinema mt12">
                 <div class="align-r relative">
@@ -166,6 +169,14 @@
 <script>
     $(function () {
         loadProject();
+        loadType();
+        function loadType() {
+            $("#typeSel").select2({placeholder: '请选择所属支出类型'});
+            $("#typeSel").append("<option value='-1'>*支出类型*</option>");
+            $("#typeSel").append("<option value='0'>日支出</option>");
+            $("#typeSel").append("<option value='1'>月支出</option>");
+
+        }
         function loadProject() {
             $.ajax({
                        url: ctx + "project/getpage",
@@ -203,7 +214,7 @@
         $('.add-btn').on('click', function () {
             $('.modality-layer').show();
             $("#payNames").val("");
-            $("#payAmount").val("");
+            $(".payAmount").val("");
             $("#payDesc").val("");
             $(".update").hide();
         });
@@ -215,7 +226,7 @@
 
             $("#payNames").val("");
             $("#payDesc").val("");
-            $("#payAmount").val("");
+            $(".payAmount").val("");
             $(".payNames").removeAttr("disabled");
 
         });
@@ -231,16 +242,15 @@
     });
     function toCancel() {
         $("#payNames").val("");
-        $("#payAmount").val("");
-        $(".discount").val("");
+        $(".payAmount").val("");
         $("#payDesc").val("");
         $('.modality-layer').hide();
         $(".appName").removeAttr("disabled");
     }
-    function editType(id,projectId,payName,payType,payDesc) {
+    function editType(id,projectId,payName,payType,payDesc,payAmount) {
         $('.modality-layer').show();
         $("#payNames").val(payName);
-        $("#payAmount").val("");
+        $(".payAmount").val(payAmount);
         $("#payDesc").val(payDesc);
         $(".ids").val(id);
         $("#projectSel").attr('code', projectId);

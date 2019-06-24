@@ -71,6 +71,18 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public List<OrderSource> getOrderSource() {
+        List<OrderSource> orderSources=orderSourceMapper.getOrderSourceAll();
+        return orderSources;
+    }
+
+    @Override
+    public List<PayWay> getPayWay() {
+        List<PayWay> payWays=payWayMapper.getPayWayAll();
+        return payWays;
+    }
+
     public Map<Integer,String> getAllPayWayMap(){
         List<PayWay> payWays=payWayMapper.getPayWayAll();
         Map<Integer,String> stringMap=new HashMap<>();

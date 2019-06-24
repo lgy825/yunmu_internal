@@ -1,3 +1,4 @@
+var hourseTypeMap={}
 $(function () {
 
     //出事化日其插件
@@ -24,9 +25,11 @@ $(function () {
         timepicker: false
     });
 
-    loadOHourse();
     loadOrderSource();
     loadPayWay();
+    loadProject();
+    loadHourseAndType();
+
     $("#saveBtn").click(function () {
 
         if($("#paySel").val() == -1) {
@@ -100,40 +103,6 @@ $(function () {
             }
         });
     });
-
-    function loadOHourse() {
-        $.ajax({
-            url: ctx + "hourse/getpage",
-            type: "GET",
-            cache: false,
-            async: false,
-            dataType: 'json',
-            data: {
-                pageIndex: 1,
-                pageSize: 99999
-            },
-            success: function (data) {
-                if (data && data.resultCode === '0') {
-                    //
-                    $("#hourseSel").select2({placeholder: '*选择房间*'});
-                    $("#hourseSel").append("<option value='-1'>*选择房间*</option>");
-                    $(data.resultData.list).each(function (idx, hourse) {
-                        $("#hourseSel").append("<option value='" + hourse.hId + "'>" + hourse.hNumber + "</option>");
-                    });
-
-                } else {
-                    if (data.resultDesc) {
-                        layer.msg(data.resultDesc);
-                    } else {
-                        layer.msg('查询失败 !');
-                    }
-                }
-            },
-            error: function () {
-                layer.msg('查询失败 !');
-            }
-        });
-    }
 
     function loadPayWay() {
         $.ajax({
@@ -228,8 +197,217 @@ $(function () {
         });
     }
 
+    function loadProject() {
+        $.ajax({
+            url: ctx + "project/getpage",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                pageIndex: 1,
+                pageSize: 99999
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    // // 城市列表
+                    $("#projectSel").select2({placeholder: '请选择所属项目'});
+                    $("#projectSel").append("<option value='-1'>*所属项目*</option>");
+                    $(data.resultData.list).each(function (idx, pro) {
+                        $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
+                    });
+                }else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
 
 
-    
+    //加载房屋类型和房间号
+    function loadHourseAndType() {
+        $.ajax({
+            url: ctx + "hourse/getHourseAndType",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+
+                if (data && data.resultCode === '0') {
+                    hourseTypeMap = data.resultData.hourseTypeMap;
+                    var hourseType = data.resultData.hourseTypeList;
+                    // 城市列表
+                    $("#typeCodeSel").select2({placeholder: '请房间类型'});
+                    $("#typeCodeSel").append("<option value='-1'>*请房间类型*</option>");
+                    $(hourseType).each(function (idx, type) {
+                        $("#typeCodeSel").append("<option value='" + type.id + "'>" +type.typeName + "</option>");
+                    });
+
+                    $("#typeCodeSel").change(function () {
+                        $("#hourseSel").select2({placeholder: '请选择房间,可多选', multiple: true});
+                        $("#hourseSel").empty();
+                        if($("#typeCodeSel").val() == -1) {
+                            $(_.values(hourseTypeMap)).each(function (idx, hourses) {
+                                $(hourses).each(function (idxtmp, hourse) {
+                                    $("#hourseSel").append("<option value='" + hourse.id + "'>" + hourse.hourseNumber + "</option>");
+                                });
+                            });
+                        } else {
+                            $(hourseTypeMap[$("#typeCodeSel").val()]).each(function (idx, hourse) {
+                                $("#hourseSel").append("<option value='" + hourse.id + "'>" + hourse.hourseNumber + "</option>");
+                            });
+                        }
+                    });
+                    $("#typeCodeSel").trigger('change');
+
+                } else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
 
 });
+
+
+$('.sell_box').on('click', '.radio', function () {
+    //debugger;
+    var _this = $(this),
+        $data_i = _this.attr('data-i'),
+        p_sellList = $('.p_sellList'),
+        p_sellAll = $('.p_sellAll');
+    _this.parent().find(".radio").removeClass("on");
+    if ($data_i == 1) {
+        p_sellList.removeClass('none');
+        p_sellAll.addClass('none');
+        _this.toggleClass('on');
+        loadSell();
+    } else {
+        p_sellList.addClass('none');
+        p_sellAll.removeClass('none');
+        _this.toggleClass('on');
+        //clearSearch();
+
+    }
+});
+
+$('#sellListDiv').on('blur', '.discount', function () {
+    debugger;
+    var _this = $(this);
+    var singePrice = _this.parent().parent().find(".singe_price").attr('sp');
+    var discount = _this.parent().parent().find(".discount").val();
+
+    if(!ValidUtils.validMoney(discount)){
+        layer.msg("卖品立减金额不能为0元或者负数，小数点不能超过2位!");
+        _this.parent().parent().find(".discount").val("0");
+        _this.parent().parent().find(".discount_price").html(singePrice + "元");
+        return;
+    }
+
+    singePrice = (Math.floor(singePrice * 100) - Math.floor(discount * 100)) / 100;
+
+    if(singePrice<0){
+        singePrice = 0;
+    }
+
+    _this.parent().parent().find(".discount_price").html(singePrice + "元");
+    _this.parent().parent().find(".discount_price").attr('dsp',singePrice);
+})
+
+$('#sellListDiv').on('click', '.check', function () {
+    //debugger;
+    var _this = $(this)
+    if (!_this.hasClass("cur")) {
+        var stock = _this.attr("stock");
+        var select_stock = $('.stock').text();
+        select_stock = Number(select_stock) + Number(stock);
+        $('.stock').text(select_stock);
+        var discount = _this.parent().parent().find(".discount").val();
+        var sellId=$(this).attr("sellId");
+        var sellInfoCache ={};
+        sellInfoCache.SellId=sellId;
+        sellInfoCache.disCount=discount;
+        sellInfoCache.stockNum =stock;
+        sellArr.push(sellInfoCache)
+        _this.toggleClass('cur');
+    } else {
+        var stock = _this.attr("stock");
+        var select_stock = $('.stock').text();
+        select_stock = Number(select_stock) - Number(stock);
+        $('.stock').text(select_stock);
+        var discount = _this.parent().parent().find(".discount").val();
+        var sellId=$(this).attr("sellId");
+        _.pullAllWith(sellArr,[{ SellId:sellId,disCount: discount,stockNum:stock}], _.isEqual);
+        _this.toggleClass('cur');
+    }
+})
+
+$("#sellSearch").on('keyup', function () {
+    loadSell();
+});
+var eventInfo;
+function loadSell() {
+    var projectId=$("#projectSel").val();
+    if (projectId == null || projectId == undefined || projectId == "") {
+        layer.msg('请选择适用项目！');
+        return;
+    }
+
+    var payName = $.trim($("#sellSearch").val());
+    if(payName !=null && payName !='' ){
+        eventInfo = null;
+    }
+
+    $('.stock').text("0");
+
+    $.ajax({
+        url: ctx + "sell_event/get_sell_list.do",
+        type: "GET",
+        cache: false,
+        dataType: 'json',
+        contentType: "application/json",
+        data: {
+            "sellName": sellName,
+            "cinemaCode": cinemaCode
+        },
+        success: function (data) {
+            var result = data;
+            if (result && result.resultCode == '0') {
+                var resultData = result.resultData.list;
+                $(resultData).each(function (index, item) {
+                    if(eventInfo!=null){
+
+                    }
+                })
+            }else {
+                if (result.resultDesc) {
+                    layer.msg(result.resultDesc);
+                } else {
+                    layer.msg('没有查询到支出信息!');
+                }
+            }
+
+        } , error: function () {
+            //debugger;
+            layer.msg('系统错误！');
+        }
+    })
+
+
+}
+

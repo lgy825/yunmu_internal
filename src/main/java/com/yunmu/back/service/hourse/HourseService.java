@@ -4,6 +4,7 @@ import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExt;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,4 +21,6 @@ public interface HourseService {
     Boolean update(Hourse hourse);
 
     boolean deleteByPrimaryKey(String hid);
+
+    List<HourseExt> getAllHourse();
 }

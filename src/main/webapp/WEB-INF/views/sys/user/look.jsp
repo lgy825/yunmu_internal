@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>新建用户</title>
-    <%@include file="/commons/common.jspf" %>
+    <%@include file="/static/commons/common.jspf" %>
 </head>
 <body>
 <div class="p20">
