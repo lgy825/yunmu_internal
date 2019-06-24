@@ -125,7 +125,7 @@
                                 <a href="${ctx}/order/toOrderlist" target="homepage">订单管理</a>
                             </li>
                             <li class="child-menu">
-                                <a href="${ctx}/order/toOrderItemlist" target="homepage">支出管理</a>
+                                <a href="${ctx}/pay/toPaylist" target="homepage">支出管理</a>
                             </li>
                         </ul>
                     </li>

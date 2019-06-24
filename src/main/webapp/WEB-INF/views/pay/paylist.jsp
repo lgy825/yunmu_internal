@@ -111,15 +111,15 @@
                        maxlength="10">
                 <span class="color-lred ml8">* 不超过10个字</span>
             </div>
-            <div class="">
+            <div class="cinema mt12">
                 <div class="align-r relative">
                     支出金额
                     <i class="whats define-layer "></i>
                 </div>
-                <input type="hidden" class="ids inpW set-inpwid ml8">
                 <input type="text" id="payAmount" class="inpW set-inpwid ml8" onclick="" placeholder="请输入支出金额"
                        maxlength="10">
-                <span class="color-lred ml8">* 只能入数字符号</span>
+                <i class="whats define-layer"></i>
+                <p class="modify-what">只可输入数字或小数点</p>
             </div>
             <div class="cinema mt12">
                 <div class="align-r relative">
