@@ -336,62 +336,62 @@ public class PayExample {
         }
 
         public Criteria andPayAmountIsNull() {
-            addCriterion("Pay_amount is null");
+            addCriterion("pay_amount is null");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountIsNotNull() {
-            addCriterion("Pay_amount is not null");
+            addCriterion("pay_amount is not null");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountEqualTo(Long value) {
-            addCriterion("Pay_amount =", value, "payAmount");
+            addCriterion("pay_amount =", value, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountNotEqualTo(Long value) {
-            addCriterion("Pay_amount <>", value, "payAmount");
+            addCriterion("pay_amount <>", value, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountGreaterThan(Long value) {
-            addCriterion("Pay_amount >", value, "payAmount");
+            addCriterion("pay_amount >", value, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountGreaterThanOrEqualTo(Long value) {
-            addCriterion("Pay_amount >=", value, "payAmount");
+            addCriterion("pay_amount >=", value, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountLessThan(Long value) {
-            addCriterion("Pay_amount <", value, "payAmount");
+            addCriterion("pay_amount <", value, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountLessThanOrEqualTo(Long value) {
-            addCriterion("Pay_amount <=", value, "payAmount");
+            addCriterion("pay_amount <=", value, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountIn(List<Long> values) {
-            addCriterion("Pay_amount in", values, "payAmount");
+            addCriterion("pay_amount in", values, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountNotIn(List<Long> values) {
-            addCriterion("Pay_amount not in", values, "payAmount");
+            addCriterion("pay_amount not in", values, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountBetween(Long value1, Long value2) {
-            addCriterion("Pay_amount between", value1, value2, "payAmount");
+            addCriterion("pay_amount between", value1, value2, "payAmount");
             return (Criteria) this;
         }
 
         public Criteria andPayAmountNotBetween(Long value1, Long value2) {
-            addCriterion("Pay_amount not between", value1, value2, "payAmount");
+            addCriterion("pay_amount not between", value1, value2, "payAmount");
             return (Criteria) this;
         }
 
@@ -842,6 +842,76 @@ public class PayExample {
 
         public Criteria andDelFlagNotBetween(Integer value1, Integer value2) {
             addCriterion("del_flag not between", value1, value2, "delFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIsNull() {
+            addCriterion("project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIsNotNull() {
+            addCriterion("project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdEqualTo(String value) {
+            addCriterion("project_id =", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotEqualTo(String value) {
+            addCriterion("project_id <>", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThan(String value) {
+            addCriterion("project_id >", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThanOrEqualTo(String value) {
+            addCriterion("project_id >=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThan(String value) {
+            addCriterion("project_id <", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThanOrEqualTo(String value) {
+            addCriterion("project_id <=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLike(String value) {
+            addCriterion("project_id like", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotLike(String value) {
+            addCriterion("project_id not like", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIn(List<String> values) {
+            addCriterion("project_id in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotIn(List<String> values) {
+            addCriterion("project_id not in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdBetween(String value1, String value2) {
+            addCriterion("project_id between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotBetween(String value1, String value2) {
+            addCriterion("project_id not between", value1, value2, "projectId");
             return (Criteria) this;
         }
     }

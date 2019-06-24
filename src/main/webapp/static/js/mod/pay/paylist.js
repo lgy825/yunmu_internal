@@ -6,16 +6,15 @@ $(function(){
         loadPage();
     });
 
-
     $("#resetBtn").click(function () {
-        $("#typeName").val("");
+        $("#payName").val("");
     });
 
-    $("#hoursetypeTable").on("click", ".delete", function (){
+    $("#payTable").on("click", ".delete", function (){
         var sid = $(this).data("sid");
         layer.confirm('删除后将无法恢复，是否继续？', function () {
             $.ajax({
-                url: ctx + "hoursetype/delete",
+                url: ctx + "pay/delete",
                 type: "GET",
                 cache: false,
                 // async: false,
@@ -40,7 +39,7 @@ $(function(){
         });
     });
 
-    $("#typeNames")
+    $("#payNames")
         .focus(function () {
             $(this).val($.trim($(this).val()));
             $(this).removeClass("inputBg");
@@ -64,6 +63,31 @@ $(function(){
                     $(this).siblings('.color-lred').text("* 名称输入过长，不超过10字");
                 } else {
                     $(this).siblings('.color-lred').text("* 名称输入过长，不超过10字");
+                }
+                $(this).siblings('.color-lred').removeClass("none");
+            }
+        });
+
+    $("#payAmount")
+        .focus(function () {
+            $(this).val($.trim($(this).val()));
+            $(this).removeClass("inputBg");
+            $(this).siblings('.color-lred').removeClass("none");
+            if(!ValidUtils.validMoney($(this).val())) {
+                $(this).siblings('.color-lred').text("* 金额输入有误，请重新输入");
+            }
+        })
+        .blur(function () {
+            $(this).val($.trim($(this).val()));
+            if ($(this).val() &&
+                $(this).val().length > 0 &&
+                $(this).val().length <= 5) {
+                $(this).addClass("inputBg");
+                $(this).siblings('.color-lred').addClass("none");
+            } else {
+                $(this).removeClass("inputBg");
+                if(!ValidUtils.validMoney($(this).val())) {
+                    $(this).siblings('.color-lred').text("* 金额输入有误，请重新输入");
                 }
                 $(this).siblings('.color-lred').removeClass("none");
             }
@@ -93,42 +117,54 @@ function loadPage() {
         prevBtnText: '上一页',
         nextBtnText: '下一页',
         remote: {
-            url: ctx + 'hourseType/getpage',
+            url: ctx + 'pay/getpage',
             params:{
                 typeName: $.trim($("#typeName").val())
             },
             success: function (data) {
                 // data为ajax返回数据
-                $("#hoursetypeTable").empty().html($("#trTmpl").render(data.resultData));
+                $("#payTable").empty().html($("#trTmpl").render(data.resultData));
             },
             totalName: 'total'
         }
     });
 }
-function saveType() {
-    var typeName = $.trim($("#typeNames").val());
-    if (!typeName) {
-        layer.msg("请输入类型名称");
+function savePay() {
+    var payName = $.trim($("#payNames").val());
+    if (!payName) {
+        layer.msg("请输入支出名称");
         return;
     } else if (!ValidUtils.validText(typeName, 1, 10)) {
         layer.msg("名称不超过10个字母或数字，不能出现其他特殊字符");
         return;
     }
-    var projectId = $.trim($("#projectSel").val());
-    if ($("#projectSel").val() == -1) {
-        layer.msg("请选择类型所属的项目");
+    var payAmount=$.trim($("#payAmount").val());
+    if (!payAmount) {
+        layer.msg("请输入支出金额");
         return;
     }
-    var typeDesc=$.trim($("#typeDesc").val());
+    var projectId = $.trim($("#projectSel").val());
+    if ($("#projectSel").val() == -1) {
+        layer.msg("请选择支出所属的项目");
+        return;
+    }
+    var payType=$.trim($("#payType").val());
+    if ($("#payType").val() == -1) {
+        layer.msg("请选择支出所属的类型");
+        return;
+    }
+    var payDesc=$.trim($("#payDesc").val());
     $.ajax({
-        url: ctx + "hourseType/save",
+        url: ctx + "pay/save",
         type: "POST",
         cache: false,
         dataType: 'json',
         data: {
-            typeName: typeName,
+            payName: payName,
             projectId:projectId,
-            typeDesc:typeDesc
+            payAmount:payAmount,
+            payType:payType,
+            payDesc:payDesc
         },
         success: function (data) {
             if (data && data.resultCode === '0') {
@@ -152,18 +188,24 @@ function saveType() {
     });
 }
 
-function updateType() {
-    var typeName = $.trim($("#typeNames").val());
-    if (!typeName) {
-        layer.msg("请输入类型名称");
+function updatePay() {
+    var payName = $.trim($("#payNames").val());
+    if (!payName) {
+        layer.msg("请输入支出名称");
         return;
     } else if (!ValidUtils.validText(typeName, 1, 10)) {
         layer.msg("名称不超过10个字母或数字，不能出现其他特殊字符");
         return;
     }
+    var payAmount=$.trim($("#payAmount").val());
+    if (!payAmount) {
+        layer.msg("请输入支出金额");
+        return;
+    }
     var projectId=$("#projectSel").attr('code');
+    var payType=$("#typeSel").attr('code');
     var id=$(".ids").val();
-    var typeDesc=$.trim($("#typeDesc").val());
+    var payDesc=$.trim($("#payDesc").val());
     $.ajax({
         url: ctx + "hourseType/save",
         type: "POST",
@@ -171,9 +213,11 @@ function updateType() {
         dataType: 'json',
         data: {
             id:id,
-            typeName: typeName,
+            payName: payName,
             projectId:projectId,
-            typeDesc:typeDesc
+            payAmount:payAmount,
+            payType:payType,
+            payDesc:payDesc
         },
         success: function (data) {
             if (data && data.resultCode === '0') {
@@ -196,10 +240,10 @@ function updateType() {
         }
     });
 }
-function deleteType(id) {
+function deletePay(id) {
     layer.confirm('删除后将无法恢复，是否继续？', function () {
         $.ajax({
-            url: ctx + "hourseType/delete",
+            url: ctx + "pay/delete",
             type: "GET",
             cache: false,
             // async: false,

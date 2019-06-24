@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>房间类型管理</title>
+    <title>支出管理</title>
     <%@include file="/static/commons/common.jspf" %>
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet"/>
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
@@ -13,7 +13,8 @@
         <thead>
                 <tr>
                     <th style='width: 10%;'><div>序号</div></th>
-                    <th style='width: 20%;'><div>类型名称</div></th>
+                    <th style='width: 20%;'><div>支出名称</div></th>
+                    <th style='width: 10%;'><div>支出类型</div></th>
                     <th style='width: 10%;'><div>所属项目</div></th>
                     <th style='width: 18%;'><div>类型描述</div></th>
                     <th style='width: 12%;'><div>添加时间</div></th>
@@ -25,6 +26,9 @@
             <tr>
                 <td>
                     <div class="">{{:#index+1}}</div>
+                </td>
+                <td>
+                    <div>{{:payName}}</div>
                 </td>
                 <td>
                     <div>{{:typeName}}</div>
@@ -40,8 +44,8 @@
                 </td>
                 <td>
                     <div class="">
-                        <input type="button" onclick="editType('{{:id}}','{{:projectId}}','{{:typeName}}','{{:typeDesc}}')" class="edit gray_btn mr10" value="编辑">
-                        <input type="button"  onclick="deleteType('{{:id}}')" class="gray_btn" value="删除">
+                        <input type="button" onclick="editType('{{:id}}','{{:projectId}}','{{:typeName}}','{{:payType}}','{{:typeDesc}}')" class="edit gray_btn mr10" value="编辑">
+                        <input type="button"  onclick="deletePay('{{:id}}')" class="gray_btn" value="删除">
                     </div>
                 </td>
             </tr>
@@ -56,25 +60,25 @@
 <div class="p20">
     <!-- 卖品类别 -->
     <div class="bgc-ff">
-        <div class="b_title">房间类型</div>
+        <div class="b_title">支出管理</div>
         <div class="hr">
             <hr>
         </div>
         <div class="select-search p20">
             <form action="">
                 <div>
-                    <input type="text" id="typeName" class="inpW ml20"  placeholder="房间类别名称">
+                    <input type="text" id="payName" class="inpW ml20"  placeholder="支出名称">
                     <input type="button" id="searcheType" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置"/>
                 </div>
             </form>
         </div>
         <div class="ml20 mb10">
-            <input type="button" class="blue_btn add-btn" value="新增房间类型">
+            <input type="button" class="blue_btn add-btn" value="新增支出">
         </div>
         <div class="sell-add">
             <div class="scroll-table">
-                <table id="hoursetypeTable" class="sell-type seller-lib modify-type" cellpadding="0"
+                <table id="payTable" class="sell-type seller-lib modify-type" cellpadding="0"
                        cellspacing="0">
                 </table>
             </div>
@@ -89,7 +93,7 @@
 <div class="modality-layer none">
     <div class="modality-box">
         <div class="modality-title clearfix">
-            <span class="fl layer-title">新增房间类型</span>
+            <span class="fl layer-title">新增支出</span>
             <span class="fr layer-close cursor"></span>
         </div>
         <div class="layer-line">
@@ -98,20 +102,43 @@
         <div class="p20">
             <div class="">
                 <div class="align-r relative">
-                    类型名称
+                    支出名称
                     <i class="whats define-layer "></i>
-                    <p class="modify-what">同一个项目的房间类型名称不可重复</p>
+                    <p class="modify-what">同一个项目的支出名称不可重复</p>
                 </div>
                 <input type="hidden" class="ids inpW set-inpwid ml8">
-                <input type="text" id="typeNames" class="inpW set-inpwid ml8" onclick="" placeholder="请输入类型名称"
+                <input type="text" id="payNames" class="inpW set-inpwid ml8" onclick="" placeholder="请输入支出名称"
                        maxlength="10">
                 <span class="color-lred ml8">* 不超过10个字</span>
+            </div>
+            <div class="">
+                <div class="align-r relative">
+                    支出金额
+                    <i class="whats define-layer "></i>
+                </div>
+                <input type="hidden" class="ids inpW set-inpwid ml8">
+                <input type="text" id="payAmount" class="inpW set-inpwid ml8" onclick="" placeholder="请输入支出金额"
+                       maxlength="10">
+                <span class="color-lred ml8">* 只能入数字符号</span>
+            </div>
+            <div class="cinema mt12">
+                <div class="align-r relative">
+                    所属类型
+                    <i class="whats define-layer"></i>
+                    <p class="modify-what">支出只可选择一种类型</p>
+                </div>
+                <form action="" class="inline-block ml8">
+                    <div class="">
+                        <select class="select select-wid" id="typeSel">
+                        </select>
+                    </div>
+                </form>
             </div>
             <div class="cinema mt12">
                 <div class="align-r relative">
                     所属项目
                     <i class="whats define-layer"></i>
-                    <p class="modify-what">房间类别只可选择一个项目</p>
+                    <p class="modify-what">支出只可选择一个项目</p>
                 </div>
                 <form action="" class="inline-block ml8">
                     <div class="">
@@ -125,16 +152,16 @@
                     描述
                     <i class="whats define-layer none-bg"></i>
                 </div>
-                <div class="text-des ml8 fl"><textarea id="typeDesc"></textarea></div>
+                <div class="text-des ml8 fl"><textarea id="payDesc"></textarea></div>
             </div>
             <div class="layer-prompt">
-                <input type="button" class="add blue_btn blue_btn30 mt20 mb10" onclick="saveType()" value="添加">
-                <input type="button" class="update blue_btn blue_btn30 mt20 mb10" onclick="updateType()" value="修改">
+                <input type="button" class="add blue_btn blue_btn30 mt20 mb10" onclick="savePay()" value="添加">
+                <input type="button" class="update blue_btn blue_btn30 mt20 mb10" onclick="updatePay()" value="修改">
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${ctx}/static/js/mod/hoursetype/hoursetypelist.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/pay/paylist.js"></script>
 <%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
 <script>
     $(function () {
@@ -175,8 +202,9 @@
         // 控制模态框
         $('.add-btn').on('click', function () {
             $('.modality-layer').show();
-            $("#typeNames").val("");
-            $("#typeDesc").val("");
+            $("#payNames").val("");
+            $("#payAmount").val("");
+            $("#payDesc").val("");
             $(".update").hide();
         });
         $('.layer-close').on('click', function () {
@@ -185,9 +213,10 @@
             $('.add').show();
             $(".update").show();
 
-            $("#typeNames").val("");
-            $("#typeDesc").val("");
-            $(".typeNames").removeAttr("disabled");
+            $("#payNames").val("");
+            $("#payDesc").val("");
+            $("#payAmount").val("");
+            $(".payNames").removeAttr("disabled");
 
         });
 
@@ -201,18 +230,21 @@
 
     });
     function toCancel() {
-        $("#typeNames").val("");
+        $("#payNames").val("");
+        $("#payAmount").val("");
         $(".discount").val("");
-        $("#remarks").val("");
+        $("#payDesc").val("");
         $('.modality-layer').hide();
         $(".appName").removeAttr("disabled");
     }
-    function editType(id,projectId,typeName,typeDesc) {
+    function editType(id,projectId,payName,payType,payDesc) {
         $('.modality-layer').show();
-        $("#typeNames").val(typeName);
-        $("#typeDesc").val(typeDesc);
+        $("#payNames").val(payName);
+        $("#payAmount").val("");
+        $("#payDesc").val(payDesc);
         $(".ids").val(id);
         $("#projectSel").attr('code', projectId);
+        $("#typeSel").attr('code', payType);
         $(".cinema").hide();
         $('.add').hide();
     }

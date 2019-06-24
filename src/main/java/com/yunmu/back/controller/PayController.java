@@ -1,10 +1,11 @@
 package com.yunmu.back.controller;
 
-import com.yunmu.bapp.pay.PayService;
+import com.yunmu.back.service.pay.PayService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.pay.Pay;
+import com.yunmu.core.model.pay.PayExt;
 import com.yunmu.core.util.IdUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,15 @@ public class PayController extends BaseController{
 
     @RequestMapping("/toPaylist")
     public String toPaylist() {
-        return "pay/toPaylist";
+        return "pay/paylist";
     }
 
     @RequestMapping("/getpage")
     @ResponseBody
-    public PageResult<Pay> getShopPageByCondition(HttpServletRequest request,
-                                                  Integer pageIndex,
-                                                  Integer pageSize,
-                                                  String payName) {
+    public PageResult<PayExt> getShopPageByCondition(HttpServletRequest request,
+                                                     Integer pageIndex,
+                                                     Integer pageSize,
+                                                     String payName) {
         Map<String, Object> params = new HashMap<>();
         params.put("payName", payName);
         params.put("pageIndex", pageIndex + 1);
@@ -45,7 +46,7 @@ public class PayController extends BaseController{
         return createSuccessPageResult(payService.getPageByCondition(params));
     }
 
-    @RequestMapping("/saveHourse")
+    @RequestMapping("/save")
     @ResponseBody
     public Result<Boolean> save(Pay pay) {
         if(StringUtils.isBlank(pay.getPayId())) {
@@ -61,39 +62,8 @@ public class PayController extends BaseController{
         return createSuccessResult(true);
     }
 
-    @RequestMapping("/tolook")
-    public String toLook(String id, Model model) {
-        if(StringUtils.isBlank(id)) {
-            return "pay/paylist";
-        }
-        model.addAttribute("payId", id);
-        return "pay/lookpay";
-    }
 
-    @RequestMapping("/toedit")
-    public String toEdit(String id, Model model) {
-        if(StringUtils.isBlank(id)) {
-            return "pay/paylist";
-        }
-        model.addAttribute("payId", id);
-        return "pay/newpay";
-    }
-
-    @RequestMapping("/get")
-    @ResponseBody
-    public Result<Pay> update(String id) {
-        if(StringUtils.isBlank(id)) {
-            return createFailedResult("查询失败");
-        }
-        return createSuccessResult(payService.getPayByIdById(id));
-    }
-
-    @RequestMapping("/toaddHourse")
-    public String toaddHourse() {
-        return "hourse/newhourse";
-    }
-
-    @RequestMapping("/deleteHourse")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result<Boolean> deleteHourse(String payId) {
 

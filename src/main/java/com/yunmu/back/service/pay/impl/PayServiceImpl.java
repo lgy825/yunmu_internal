@@ -1,12 +1,14 @@
-package com.yunmu.bapp.pay.impl;
+package com.yunmu.back.service.pay.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.yunmu.bapp.pay.PayService;
+import com.yunmu.back.service.pay.PayService;
 import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayMapperExt;
+import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.model.pay.Pay;
+import com.yunmu.core.model.pay.PayExt;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,11 @@ public class PayServiceImpl implements PayService{
     private PayMapperExt payMapperExt;
     @Autowired
     private PayMapper payMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
 
     @Override
-    public GenericPage<Pay> getPageByCondition(Map<String, Object> params) {
+    public GenericPage<PayExt> getPageByCondition(Map<String, Object> params) {
         int pageIndex = 1, pageSize = 10;
         if(params.containsKey("pageIndex")) {
             if(params.get("pageIndex") != null &&
@@ -48,15 +52,24 @@ public class PayServiceImpl implements PayService{
                 }
             }
         }
-        Page<Pay> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
-        List<Pay> hourseTypeExts=payMapperExt.getPayPage(params);
-        return new GenericPage<>(pageIndex, pageSize, hourseTypeExts, pageInfo.getTotal());
+        Page<PayExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
+        List<PayExt> payExts=payMapperExt.getPayPage(params);
+        for(PayExt payExt:payExts ){
+            payExt.setProjectName(projectMapper.selectByPrimaryKey(payExt.getProjectId()).getProjectName());
+            int type=payExt.getPayType();
+            if(type==0){
+                payExt.setTypeName("日支出");
+            }else if(type==1){
+                payExt.setTypeName("月支出");
+            }
+        }
+        return new GenericPage<>(pageIndex, pageSize, payExts, pageInfo.getTotal());
     }
 
     @Override
     public boolean insert(Pay pay) {
         if(pay!=null){
-            pay.setCreateBy(ShiroUtils.getUserId());
+            pay.setCreateBy("lgy");
             pay.setCreateTime(new Date());
             pay.setDelFlag(0);
             try {
@@ -73,7 +86,7 @@ public class PayServiceImpl implements PayService{
     @Override
     public Boolean update(Pay pay) {
         if(pay!=null){
-            pay.setUpdateBy(ShiroUtils.getUserId());
+            pay.setUpdateBy("lgy");
             pay.setUpdateTime(new Date());
             payMapper.updateByPrimaryKey(pay);
             return true;
