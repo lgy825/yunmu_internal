@@ -13,5 +13,10 @@ public interface OrderService {
     GenericPage<OrderExt> getPageByCondition(Map<String, Object> params);
 
     List<PayWay> getPayWay();
+
     List<OrderSource> getOrderSource();
+
+    boolean saveOrder(OrderExt orderExt);
+
+    boolean updateOrder(OrderExt orderExt);
 }

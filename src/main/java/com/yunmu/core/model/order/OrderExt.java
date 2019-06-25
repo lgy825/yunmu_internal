@@ -1,7 +1,10 @@
 package com.yunmu.core.model.order;
 
+import com.yunmu.core.util.ParamVo;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class OrderExt implements Serializable {
     /**
@@ -106,6 +109,25 @@ public class OrderExt implements Serializable {
     private Double incomeAll;
 
     private String hourseNumber;
+
+    List<ParamVo> paramVos;
+    private String hourseCodes;
+
+    public String getHourseCodes() {
+        return hourseCodes;
+    }
+
+    public void setHourseCodes(String hourseCodes) {
+        this.hourseCodes = hourseCodes;
+    }
+
+    public List<ParamVo> getParamVos() {
+        return paramVos;
+    }
+
+    public void setParamVos(List<ParamVo> paramVos) {
+        this.paramVos = paramVos;
+    }
 
     public String getHourseNumber() {
         return hourseNumber;

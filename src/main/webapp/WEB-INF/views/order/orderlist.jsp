@@ -48,15 +48,6 @@
                 </td>
                 <td>
                     <div>
-                    {{if orderActAmount == null || orderActAmount=='' }}
-                            0
-                    {{else}}
-                           {{:orderActAmount}}
-                    {{/if}}
-                    </div>
-                </td>
-                <td>
-                    <div>
                     {{if orderRecAmount == null || orderRecAmount ==''}}
                             0
                     {{else}}
@@ -64,6 +55,16 @@
                     {{/if}}
                     </div>
                 </td>
+                <td>
+                    <div>
+                    {{if orderActAmount == null || orderActAmount=='' }}
+                            0
+                    {{else}}
+                           {{:orderActAmount}}
+                    {{/if}}
+                    </div>
+                </td>
+
                 <td>
                     <div>
                         {{if orderStatus == '0'}}

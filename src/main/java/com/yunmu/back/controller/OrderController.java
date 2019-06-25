@@ -7,10 +7,12 @@ import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.source.OrderSource;
+import com.yunmu.core.util.IdUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -76,5 +78,21 @@ public class OrderController extends BaseController {
     @ResponseBody
     public Result<List<OrderSource>> getOrdeSourceAll(){
         return createSuccessResult(orderSercvice.getOrderSource());
+    }
+
+    //addOrder
+    @RequestMapping("/addOrder")
+    @ResponseBody
+    public Result<Boolean> addOrder(@RequestBody  OrderExt orderExt) {
+        if(StringUtils.isBlank(orderExt.getId())) {
+            try {
+                orderSercvice.saveOrder(orderExt);
+            } catch (Exception e1) {
+                return createFailedResult(e1.getMessage(), false);
+            }
+        } else {
+            return  createSuccessResult(orderSercvice.updateOrder(orderExt));
+        }
+        return createSuccessResult(true);
     }
 }

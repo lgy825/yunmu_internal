@@ -232,7 +232,6 @@ $(function () {
             var searchResult = _.filter(cinemaArr, function (elem) {
                 return elem.cinemaShortName.indexOf(searchStr) != -1;
             });
-
             showCinemaList(searchResult);
 
         } else {
