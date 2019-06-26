@@ -3,6 +3,7 @@ package com.yunmu.bapp.service;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
 import com.yunmu.core.util.AppResponseObj;
+import com.yunmu.core.util.OrderDetailUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,6 @@ public interface AppService {
     double getIncomeByCondition(Map<String,String> params);
 
     List<AppResponseObj> getOrderPage(Map<String,String> params);
+
+    OrderDetailUtil getOrderInfoById(String orderId);
 }

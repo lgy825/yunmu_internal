@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <description>Shiro</description>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!--<bean id="shiroFilter" class="com.ingcore.core.shiro.ChainDefinitionSectionMetaSource">-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--<property name="loginUrl" value="/rest/page/login"/>-->
+        <property name="loginUrl" value="/index/tologin.do"/>
+        <!--<property name="successUrl" value="/index/main.do"/>-->
+        <!--<property name="unauthorizedUrl" value="/rest/page/401"/>-->
+        <property name="unauthorizedUrl" value="/index/tologin.do"/>
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 静态资源允许访问 -->
+                /js/** = anon
+                /img/** = anon
+                /css/** = anon
+                /error.jsp = anon
+                <!-- 允许访问页面-->
+                <!--/index/main.do = anon-->
+                /index/authorizeLogin.do**= anon
+                /index/getCodeImg.do**= anon
+                /index/retrievePwd.do**= anon
+                /index/login.do**= anon
+                /index/flychannle.do**= anon
+                /index/logout.do**= anon
+                <!--&lt;!&ndash; loginout &ndash;&gt;-->
+                <!--/index/logout.do = logout-->
+
+                <!-- 其他资源需要认证 -->
+                /** = authc
+                <!--/**.do = authc-->
+                <!--/** = authc-->
+            </value>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!--登录-->
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    redirect:/index/tologin.do
+                </prop>
+                <!--授权-->
+                <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    redirect:/index/tologin.do
+                </prop>
+            </props>
+        </property>
+        <property name="defaultErrorView" value="/error"/>
+    </bean>
+
+
+
+    <!-- 会话DAO -->
+    <!--<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>-->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"/>
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 定义的是全局的session会话超时时间，此操作会覆盖web.xml文件中的超时时间配置 3小时 -->
+        <property name="globalSessionTimeout" value="10800000"/>
+        <!-- 删除所有无效的Session对象，此时的session被保存在了内存里面 -->
+        <property name="deleteInvalidSessions" value="true"/>
+        <!-- 定义要使用的无效的Session定时调度器 -->
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <!-- 需要让此session可以使用该定时调度器进行检测 -->
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="sessionIdCookie" ref="cookieManager"/>
+    </bean>
+    <!-- 配置session的定时验证检测程序类，以让无效的session释放 -->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+        <!-- 设置session的失效扫描间隔，单位为毫秒 5分钟 -->
+        <property name="sessionValidationInterval" value="60000"/>
+        <!-- 随后还需要定义有一个会话管理器的程序类的引用 -->
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+    <!--使用cookie支持chrome浏览器-->
+    <bean id="cookieManager" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <property name="name" value="shirocookie"/>
+        <property name="path" value="/"/>
+    </bean>
+    <!--Realm实现-->
+    <bean id="myRealm" class="com.yunmu.core.config.MyRealm">
+        <property name="cachingEnabled" value="false"/>
+    </bean>
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <list>
+                <ref bean="myRealm"/>
+            </list>
+        </property>
+        <!-- cacheManager,集合spring缓存工厂 -->
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>

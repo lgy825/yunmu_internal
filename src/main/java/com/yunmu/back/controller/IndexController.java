@@ -2,9 +2,13 @@ package com.yunmu.back.controller;
 
 import com.google.code.kaptcha.Producer;
 
+import com.yunmu.back.service.project.ProjectService;
 import com.yunmu.back.service.sys.SysUserService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
+import com.yunmu.core.constant.PermisionConstants;
+import com.yunmu.core.constant.ResultConstants;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.sys.SysUser;
 import com.yunmu.core.util.ShiroUtils;
 import com.yunmu.core.util.ValidCodeUtil;
@@ -32,6 +36,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
+import static com.yunmu.core.constant.SessionConstants.SESSION_KEY_ALL_MY_CINEMA;
+import static com.yunmu.core.constant.SessionConstants.SESSION_KEY_DEFAULT_CINEMA;
+
 /**
  * Created by 13544 on 2019/5/19.
  */
@@ -47,6 +54,8 @@ public class IndexController extends BaseController {
     private Producer captchaProducerMath;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private ProjectService projectService;
 
 //    @Autowired
 //    private AdminService adminService;
@@ -113,43 +122,67 @@ public class IndexController extends BaseController {
         }
     }
 
-//    @RequestMapping("/login")
-//    @ResponseBody
-//    public Result<String> login(String username,
-//                                String passwd,
-//                                String verifyCode,
-//                                String flag,
-//                                HttpSession session,
-//                                HttpServletResponse response,
-//                                HttpServletRequest request) {
-//        if (!ValidCodeUtil.validate(request, verifyCode)) {
-//            return createFailedResult("验证码错误");
-//        }
-//        Boolean loginSuccess = false;
-//        try {
-//            Admin admin=new Admin();
-//            admin.setAdminName(username);
-//            admin.setAdminPwd(passwd);
-//            loginSuccess=adminService.loginVali(admin);
-//        } catch (Exception e) {
-//            log.error(username + ",登陆失败", e);
-//            return createFailedResult(e.getMessage());
-//        }
-//        if(loginSuccess) {
-//            if ("1".equals(flag)) {
-//                Cookie cookie = new Cookie("cookie_user", username + "-" + passwd + "-" + flag);
-//                cookie.setMaxAge(60 * 60 * 24 * 30); // cookie 保存30天
-//                response.addCookie(cookie);
-//            } else {
-//                Cookie cookie = new Cookie("cookie_user", username + "-" + "" + "-" + flag);
-//                cookie.setMaxAge(60 * 60 * 24 * 30); // cookie 保存30天
-//                response.addCookie(cookie);
-//            }
-//        } else {
-//            return createFailedResult("登录失败");
-//        }
-//        return createSuccessResult("main");
-//    }
+    @RequestMapping("/login")
+    @ResponseBody
+    public Result<String> login(String username,
+                                String passwd,
+                                String verifyCode,
+                                String flag,
+                                HttpSession session,
+                                HttpServletResponse response,
+                                HttpServletRequest request,
+                                Model model) {
+        if (!ValidCodeUtil.validate(request, verifyCode)) {
+            return createFailedResult("验证码错误");
+        }
+        // 获取shiro中信息
+        Subject currentUser = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, passwd, username);
+
+        Boolean loginSuccess = false;
+        try {
+            currentUser.login(token);
+            loginSuccess = currentUser.isAuthenticated();
+        } catch (Exception e) {
+            log.error(username + ",登陆失败", e);
+            return createFailedResult(e.getMessage());
+        }
+
+        if(loginSuccess) {
+            SysUser sysUser = (SysUser)currentUser.getPrincipal();
+            if ("1".equals(flag)) {
+                Cookie cookie = new Cookie("cookie_user", username + "-" + passwd + "-" + flag);
+                cookie.setMaxAge(60 * 60 * 24 * 30); // cookie 保存30天
+                response.addCookie(cookie);
+            } else {
+                Cookie cookie = new Cookie("cookie_user", username + "-" + "" + "-" + flag);
+                cookie.setMaxAge(60 * 60 * 24 * 30); // cookie 保存30天
+                response.addCookie(cookie);
+            }
+            Cookie cookie = new Cookie("cookie_user_flychannle", null);
+            response.addCookie(cookie);
+            SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);
+            String companyCode = sysUser.getCompanyCode();
+            List<Project>  cinemaListResult;
+            if(sysUser.getChooseProjectId() == null) {
+                return createFailedResult("用户已过期");
+            }
+            if(PermisionConstants.USER_CINEMA_CHOOSE_WAY_ALL == sysUser.getChooseProjectId()) {
+                cinemaListResult = projectService.getProjectListByCompanyCode(companyCode);
+            } else {
+                cinemaListResult = sysUserService.getProjectByUserId(sysUser.getId());
+            }
+            if(cinemaListResult.size()==0) {
+                // TODO 请求失败
+                return createFailedResult("查询用户授权影院失败");
+            }
+            session.setAttribute(SESSION_KEY_ALL_MY_CINEMA, cinemaListResult);
+        } else {
+            return createFailedResult("登录失败");
+        }
+
+        return createSuccessResult("index/main.do");
+    }
 
     @RequestMapping("/main")
     public String toindex(Model model) {

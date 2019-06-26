@@ -23,4 +23,6 @@ public interface ProjectService {
     List<Project> getProjects();
 
     boolean delete(String id);
+
+    List<Project> getProjectListByCompanyCode(String companyCode);
 }

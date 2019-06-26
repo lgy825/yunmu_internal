@@ -2,15 +2,31 @@ package com.yunmu.bapp.service.impl;
 
 import com.yunmu.bapp.service.AppService;
 import com.yunmu.core.base.Result;
+import com.yunmu.core.dao.hourse.HourseMapper;
+import com.yunmu.core.dao.order.OrderDetailMapper;
 import com.yunmu.core.dao.order.OrderMapper;
 import com.yunmu.core.dao.order.OrderMapperExt;
 import com.yunmu.core.dao.owner.OwnerMapper;
 import com.yunmu.core.dao.owner.OwnerMapperExt;
+import com.yunmu.core.dao.pay.PayMapper;
+import com.yunmu.core.dao.pay.PayWayMapper;
+import com.yunmu.core.dao.source.OrderSourceMapper;
 import com.yunmu.core.exception.DataException;
+import com.yunmu.core.model.order.Order;
+import com.yunmu.core.model.order.OrderDetail;
+import com.yunmu.core.model.order.OrderDetailExample;
+import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
+import com.yunmu.core.model.pay.Pay;
+import com.yunmu.core.model.pay.PayExample;
+import com.yunmu.core.model.pay.PayWay;
+import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
+import com.yunmu.core.util.OrderDetailUtil;
+import com.yunmu.core.util.OrderItem;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +48,18 @@ public class AppServiceImpl implements AppService{
     private OwnerMapper ownerMapper;
     @Autowired
     private OrderMapperExt orderMapperExt;
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
+    private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private PayMapper payMapper;
+    @Autowired
+    private HourseMapper hourseMapper;
+    @Autowired
+    private PayWayMapper payWayMapper;
+    @Autowired
+    private OrderSourceMapper orderSourceMapper;
 
     @Override
     public OwnerExt getOwnerByCondition(Owner owner) {
@@ -89,6 +117,81 @@ public class AppServiceImpl implements AppService{
     public List<AppResponseObj> getOrderPage(Map<String, String> params) {
         List<AppResponseObj> orderExtList=orderMapperExt.getOrderPageBycondition(params);
         return orderExtList;
+    }
+
+    @Override
+    public OrderDetailUtil getOrderInfoById(String orderId) {
+        //先根据订单号获取订单信息
+        Order order=orderMapper.selectByPrimaryKey(orderId);
+        OrderExt orderExt=new OrderExt();
+        if(order!=null){
+            //根据订单id获取支出信息
+            OrderDetailExample orderDetailExample=new OrderDetailExample();
+            OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
+            criteria.andOrderCodeEqualTo(orderId);
+            criteria.andDelFlagEqualTo(0);
+            List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
+            List<String> payIds= new ArrayList<>();
+            for(OrderDetail orderDetail:orderDetails){
+                payIds.add(orderDetail.getPayCode());
+            }
+            PayExample payExample=new PayExample();
+            PayExample.Criteria criteria1=payExample.createCriteria();
+            criteria1.andDelFlagEqualTo(0);
+            criteria1.andPayIdIn(payIds);
+            List<Pay> payList=payMapper.selectByExample(payExample);
+            orderExt.setPayExts(payList);
+            BeanUtils.copyProperties(order,orderExt);
+            Map<Integer,String> payWays=getAllPayWayMap();
+            Map<String,String> orderSources=getAllOrderSourceMap();
+            if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
+                orderExt.setPayWay(payWays.get(Integer.parseInt(orderExt.getOrderWay())));
+            }
+            if(orderSources.containsKey(orderExt.getOrderSource())){
+                orderExt.setSourceWay(orderSources.get(orderExt.getOrderSource()));
+            }
+            //获取房间号
+            if(orderExt.getHourseCode()!=null){
+                orderExt.setHourseNumber( hourseMapper.selectByPrimaryKey(orderExt.getHourseCode()).getHourseNumber());
+            }
+        }
+        OrderDetailUtil orderDetailUtil=new OrderDetailUtil();
+        orderDetailUtil.setoDate(orderExt.getCreateTime());
+        orderDetailUtil.setoId(orderExt.getId());
+        orderDetailUtil.setoRecAmount(orderExt.getOrderRecAmount().doubleValue());
+        orderDetailUtil.setPayWay(orderExt.getPayWay());
+        orderDetailUtil.setSourceWay(orderExt.getSourceWay());
+        orderDetailUtil.sethNumber(orderExt.getHourseNumber());
+        List<OrderItem> orderItemList=new ArrayList<>();
+        for(Pay pay:orderExt.getPayExts()){
+            OrderItem orderItem=new OrderItem();
+            orderItem.setdId(pay.getPayId());
+            orderItem.setdAmount(pay.getPayAmount().doubleValue());
+            orderItem.setdDate(pay.getCreateTime());
+            orderItem.setdDesc(pay.getPayDesc());
+            orderItem.setdName(pay.getPayName());
+            orderItemList.add(orderItem);
+        }
+        orderDetailUtil.setOrderItems(orderItemList);
+        return orderDetailUtil;
+    }
+
+    public Map<Integer,String> getAllPayWayMap(){
+        List<PayWay> payWays=payWayMapper.getPayWayAll();
+        Map<Integer,String> stringMap=new HashMap<>();
+        for(PayWay payWay:payWays){
+            stringMap.put(payWay.getId(),payWay.getpName());
+        }
+        return stringMap;
+    }
+
+    public Map<String,String> getAllOrderSourceMap(){
+        List<OrderSource> orderSources=orderSourceMapper.getOrderSourceAll();
+        Map<String,String> stringMap=new HashMap<>();
+        for(OrderSource orderSource:orderSources){
+            stringMap.put(orderSource.getId(),orderSource.getName());
+        }
+        return stringMap;
     }
 
 

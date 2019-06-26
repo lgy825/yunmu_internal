@@ -3,9 +3,11 @@ package com.yunmu.bapp.controller;
 import com.yunmu.bapp.service.AppService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
+import com.yunmu.core.model.order.OrderDetail;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
+import com.yunmu.core.util.OrderDetailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,6 +111,17 @@ public class AppController extends BaseController{
         params.put("endTime", appRequestParam.getEndTime());
 
         return createSuccessResult(appService.getOrderPage(params));
+    }
+
+    //根据订单idcha'查看订单的详情
+    @RequestMapping("/getOrderInfoById")
+    @ResponseBody
+    public Result<OrderDetailUtil> getOrderInfoById(@RequestBody AppRequestParam appRequestParam) {
+        if (appRequestParam.getOrderId() == null) {
+            return createFailedResult("500错误,订单id为空");
+        }
+        return createSuccessResult(appService.getOrderInfoById(appRequestParam.getOrderId()));
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.yunmu.back.service.sys;
 
+import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.sys.SysUser;
@@ -19,5 +20,11 @@ public interface SysUserService {
     Boolean nameExist(SysUserExt sysUserExt);
 
     SysUserExt getUserExt(String id);
+
+    List<Project> getProjectByUserId(String userId);
+
+    List<SysUser> getUsersByCondition(Map<String, Object> param);
+
+    boolean getUsersBeDisabled(String userId);
 
 }

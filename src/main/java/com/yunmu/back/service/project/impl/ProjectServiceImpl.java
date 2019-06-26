@@ -133,4 +133,14 @@ public class ProjectServiceImpl implements ProjectService {
         projectMapper.updateByPrimaryKeySelective(project);
         return true;
     }
+
+    @Override
+    public List<Project> getProjectListByCompanyCode(String companyCode) {
+        ProjectExample projectExample=new ProjectExample();
+        ProjectExample.Criteria criteria=projectExample.createCriteria();
+        criteria.andCompanyCodeEqualTo(companyCode);
+        criteria.andDelFlagEqualTo(0);
+        List<Project> projects=projectMapper.selectByExample(projectExample);
+        return projects;
+    }
 }

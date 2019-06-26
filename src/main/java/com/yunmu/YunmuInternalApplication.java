@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.yunmu.back","com.yunmu.bapp","com.yunmu.core"})
+@ComponentScan(basePackages = {"com.yunmu.core.config","com.yunmu.bapp","com.yunmu.core"})
 @MapperScan(basePackages = {"com.yunmu.core.dao"})
 public class YunmuInternalApplication {
 

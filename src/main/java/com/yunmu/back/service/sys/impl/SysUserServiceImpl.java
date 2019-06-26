@@ -11,6 +11,7 @@ import com.yunmu.core.dao.company.CompanyMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.dao.sys.*;
 import com.yunmu.core.exception.DataException;
+import com.yunmu.core.model.company.Company;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.project.ProjectExample;
 import com.yunmu.core.model.sys.*;
@@ -55,6 +56,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private CompanyMapperExt companyMapperExt;
+    @Autowired
+    private CompanyMapper companyMapper;
+
     @Override
     public GenericPage<SysUserExt> getPageByCondition(Map<String, Object> params) {
         int pageIndex = 1, pageSize = 10;
@@ -328,6 +332,60 @@ public class SysUserServiceImpl implements SysUserService {
             sysUserExt.setRoles(Joiner.on(",").join(ccodes));
         }
         return sysUserExt;
+    }
+
+    @Override
+    public List<Project> getProjectByUserId(String userId) {
+        SysUserProjectExample sysUserProjectExample=new SysUserProjectExample();
+        SysUserProjectExample.Criteria criteria=sysUserProjectExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        List<SysUserProject> sysUserProjects=sysUserProjectMapper.selectByExample(sysUserProjectExample);
+
+        //根据获取的项目id获取项目列表
+        List<String> projectIds=new ArrayList<>();
+        for(SysUserProject sysUserProject:sysUserProjects){
+            projectIds.add(sysUserProject.getProjectId());
+        }
+        ProjectExample projectExample=new ProjectExample();
+        ProjectExample.Criteria criteria1=projectExample.createCriteria();
+        criteria1.andIdIn(projectIds);
+        criteria1.andDelFlagEqualTo(0);
+        List<Project> projects=projectMapper.selectByExample(projectExample);
+        return projects;
+    }
+
+    @Override
+    public List<SysUser> getUsersByCondition(Map<String, Object> param) {
+        SysUserExample example = new SysUserExample();
+        SysUserExample.Criteria criteria = example.createCriteria();
+        if(param != null) {
+            if(param.containsKey("loginName")) {
+                criteria.andLoginNameEqualTo(String.valueOf(param.get("loginName")));
+            }
+        }
+        List<SysUser> sysUsers=sysUserMapper.selectByExample(example);
+        return sysUsers;
+    }
+
+    @Override
+    public boolean getUsersBeDisabled(String userId) {
+        if(org.apache.commons.lang3.StringUtils.isBlank(userId)) {
+            return true;
+        }
+        // 判断用户状态
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        if(sysUser == null ||
+                org.apache.commons.lang3.StringUtils.isBlank(sysUser.getCompanyCode()) ||
+                PermisionConstants.DISABLED_YES == sysUser.getStatus()) {
+            return true;
+        }
+        // 判断公司状态
+        Company company = companyMapper.selectByPrimaryKey(sysUser.getCompanyCode());
+        if(company == null || company.getDelFlag()==0) {
+            return true;
+        }
+
+        return false;
     }
 
 

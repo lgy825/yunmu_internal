@@ -8,7 +8,7 @@ package com.yunmu.core.constant;
  */
 public class SessionConstants {
     // 账号所属影院
-    public static final String SESSION_KEY_DEFAULT_CINEMA = "defaultCinema";
+    public static final String SESSION_KEY_DEFAULT_CINEMA = "defaultProject";
     // 账号授权影院
-    public static final String SESSION_KEY_ALL_MY_CINEMA = "myAllCinemas";
+    public static final String SESSION_KEY_ALL_MY_CINEMA = "myAllProjects";
 }
