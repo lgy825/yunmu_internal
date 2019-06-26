@@ -64,7 +64,7 @@
                         <a href="${ctx}/owner/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
-                        {{if uStatus == 0}}
+                        {{if status == 0}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">

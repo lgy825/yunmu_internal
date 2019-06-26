@@ -1,9 +1,18 @@
 package com.yunmu.back.controller;
 
 import com.google.code.kaptcha.Producer;
+
+import com.yunmu.back.service.sys.SysUserService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
+import com.yunmu.core.model.sys.SysUser;
+import com.yunmu.core.util.ShiroUtils;
 import com.yunmu.core.util.ValidCodeUtil;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by 13544 on 2019/5/19.
@@ -35,6 +45,8 @@ public class IndexController extends BaseController {
 
     @Autowired
     private Producer captchaProducerMath;
+    @Autowired
+    private SysUserService sysUserService;
 
 //    @Autowired
 //    private AdminService adminService;
@@ -144,5 +156,38 @@ public class IndexController extends BaseController {
         return "main";
     }
 
+    @RequestMapping("/isout")
+    @ResponseBody
+    public Result<String> isOut() {
+        return createSuccessResult("ingcore");
+    }
+
+
+    /**
+     * 查询密码
+     * @param sysUser
+     * @return
+     */
+    @RequestMapping("/selectPassWorld")
+    @ResponseBody
+    public Result<Boolean> selectPassWorld(SysUser sysUser) {
+        sysUser.setId(ShiroUtils.getUserId());
+        //Result<Boolean> selectWeek = sysUserService.selectPassWorld(sysUser);
+        return null;
+    }
+
+    /**
+     * 修改密码
+     * @param sysUser
+     * @return
+     */
+    @RequestMapping("/updatePassWord")
+    @ResponseBody
+    public Result<Boolean> updatePassWord(SysUser sysUser){
+        sysUser.setId(ShiroUtils.getUserId());
+//        Result<Boolean> updatePassWord =sysUserService.updatePassWord(sysUser);
+////        return updatePassWord;
+        return null;
+    }
 
 }

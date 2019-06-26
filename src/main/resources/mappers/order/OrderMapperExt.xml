@@ -116,54 +116,54 @@
   </select>
 
   <select id="getAmountByCondition" parameterType="java.util.Map" resultType="Double">
-    SELECT IFNULL(sum(o.order_rec_amount),0) as yesAmount
-    from yunmu_order order where order.del_flag=0 and order.hourse_code in(
+    SELECT IFNULL(sum(orderer.order_rec_amount),0) as yesAmount
+    from yunmu_order orderer where orderer.del_flag=0 and orderer.hourse_code in(
       SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
       <if test="ownerId != null and ownerId != ''">
         AND hourse.owner_code = #{ownerId}
       </if>
     )
     <if test="beginTime!=null">
-      AND  order.order_start_date >= #{beginTime}
+      AND  orderer.order_start_date >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND order.order_end_time <![CDATA[<=]]> #{endTime}
+      AND orderer.order_end_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
   <select id="getCountByCondition" parameterType="java.util.Map" resultType="Integer">
-    SELECT count(*)  from yunmu_order order where order.hourse_code in(
+    SELECT count(*)  from yunmu_order orderer where orderer.hourse_code in(
       SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
       <if test="ownerId != null and ownerId != ''">
         AND hourse.owner_code = #{ownerId}
       </if>
     )
     <if test="beginTime!=null">
-      AND  order.order_start_date >= #{beginTime}
+      AND  orderer.order_start_date >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND order.order_end_time <![CDATA[<=]]> #{endTime}
+      AND orderer.order_end_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
   <select id="getPayAmountByCondition" resultType="Double" parameterType="java.util.Map">
-    SELECT IFNULL(sum(o.order_act_amount),0) as yesAmount
-    from yunmu_order order where order.del_flag=0 and order.hourse_code in(
+    SELECT IFNULL(sum(orderer.order_act_amount),0) as yesAmount
+    from yunmu_order orderer where orderer.del_flag=0 and orderer.hourse_code in(
     SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
     <if test="ownerId != null and ownerId != ''">
       AND hourse.owner_code = #{ownerId}
     </if>
     )
     <if test="beginTime!=null">
-      AND  order.order_start_date >= #{beginTime}
+      AND  orderer.order_start_date >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND order.order_end_time <![CDATA[<=]]> #{endTime}
+      AND orderer.order_end_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
   <select id="getOrderPageBycondition" resultType="com.yunmu.core.util.AppResponseObj" parameterType="java.util.Map">
-    SELECT mo.o_id as oId,IFNULL(sum(mo.order_rec_amount),0) as incomeAll,DATE_FORMAT(mo.order_start_date, '%Y%m%d') days,mo.order_start_date as date
+    SELECT mo.id as oId,IFNULL(sum(mo.order_rec_amount),0) as incomeAll,DATE_FORMAT(mo.order_start_date, '%Y%m%d') days,mo.order_start_date as date
     from yunmu_order mo
     where mo.del_flag=0 and mo.hourse_code in(
       SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
