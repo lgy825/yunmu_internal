@@ -44,16 +44,16 @@ $(function(){
         //$("#hNumberArea").val("");
     });
 
-    $("#orderTable").on("click", ".deleteOrder", function (){
-        var sid = $(this).data("sid");
+    $("#orderTable").on("click", ".delete", function (){
+        var orderId = $(this).data("sid");
         layer.confirm('删除后将无法恢复，是否继续？', function () {
             $.ajax({
-                url: ctx + "order/deleteOrder",
+                url: ctx + "order/delete",
                 type: "GET",
                 cache: false,
                 // async: false,
                 dataType: 'json',
-                data: {oId: sid},
+                data: {id: orderId},
                 success: function (data) {
                     if (data && data.resultCode === '0') {
                         layer.msg('删除成功 !');

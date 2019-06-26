@@ -14,25 +14,25 @@
         <div class="hr">
             <hr>
         </div>
-        <input id="oId" type="hidden" value="${oId}" />
+        <input id="orderId" type="hidden" value="${orderId}" />
         <div class="movBox movBox1 clearfix p20 modify-percent">
             <div>
                 <div>
                     <span class="color-graya8">订单号</span>
-                    <p class="mt10">${orderExt.oId}</p>
+                    <p class="mt10">${orderExt.id}</p>
                 </div>
             </div>
             <div>
                 <div>
                     <span class="color-graya8">房间信息</span>
-                    <p class="mt10">${orderExt.hNumber}</p>
+                    <p class="mt10">${orderExt.hourseNumber}</p>
                 </div>
             </div>
             <div>
                 <div>
                     <span class="color-graya8">订单创建时间</span>
                     <p class="mt10">
-                    <fmt:formatDate value="${orderExt.oDate}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+                    <fmt:formatDate value="${orderExt.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
                 </div>
             </div>
             <div>
@@ -44,13 +44,13 @@
             <div class="w17">
                 <div>
                     <span class="color-graya8">实收金额(元)</span>
-                    <p class="mt10">${orderExt.oRecAmount}</p>
+                    <p class="mt10">${orderExt.orderRecAmount}</p>
                 </div>
             </div>
             <div>
                 <div>
                     <span class="color-graya8">开支</span>
-                    <p class="mt10 color-blue">${orderExt.oActAmount==''||orderExt.oActAmount==null ? "0" :orderExt.oActAmount}</p>
+                    <p class="mt10 color-blue">${orderExt.orderActAmount==''||orderExt.orderActAmount==null ? "0" :orderExt.orderActAmount}</p>
                 </div>
             </div>
             <div>
@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="bgc-ff mt20">
-        <h1 class="b_title">订单附加项信息</h1>
+        <h1 class="b_title">订单支出信息</h1>
         <div class="hr">
             <hr>
         </div>
@@ -70,7 +70,7 @@
             <div class="movBox movBox1 clearfix modify-percent">
                 <div>
                     <div>
-                        <span class="color-graya8">附加项名称</span>
+                        <span class="color-graya8">支出名称</span>
                     </div>
                 </div>
                 <div>
@@ -91,26 +91,26 @@
                     </div>
                 </div>
             </div>
-            <c:forEach items="${orderExt.orderItems}" var="item">
+            <c:forEach items="${orderExt.payExts}" var="item">
                 <div class="movBox movBox1 clearfix modify-percent mt10">
                     <div>
                         <div>
-                            <p>${item.dName}</p>
+                            <p>${item.payName}</p>
                         </div>
                     </div>
                     <div>
                         <div>
-                            <p><fmt:formatNumber value="${item.dAmount}" maxFractionDigits="2" minFractionDigits="2"/></p>
+                            <p><fmt:formatNumber value="${item.payAmount}" maxFractionDigits="2" minFractionDigits="2"/></p>
                         </div>
                     </div>
                     <div>
                         <div>
-                            <p>${item.dDesc==''||item.dDesc==null ? "--" :item.dDesc}</p>
+                            <p>${item.payDesc==''||item.payDesc==null ? "--" :item.payDesc}</p>
                         </div>
                     </div>
                     <div>
                         <div>
-                            <p><fmt:formatDate value="${item.dDate}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+                            <p><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
                         </div>
                     </div>
                 </div>

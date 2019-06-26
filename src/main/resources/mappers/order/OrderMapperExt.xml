@@ -179,5 +179,9 @@
     </if>
   </select>
 
+  <update id="deleteOrderDetail" parameterType="String">
+    update yunmu_order_detail set del_flag=1 where order_code=#{orderCode}
+  </update>
+
 
 </mapper>

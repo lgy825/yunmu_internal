@@ -1,5 +1,6 @@
 package com.yunmu.core.model.order;
 
+import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.util.ParamVo;
 
 import java.io.Serializable;
@@ -111,6 +112,17 @@ public class OrderExt implements Serializable {
     private String hourseNumber;
 
     List<ParamVo> paramVos;
+
+    List<Pay> payExts;
+
+    public List<Pay> getPayExts() {
+        return payExts;
+    }
+
+    public void setPayExts(List<Pay> payExts) {
+        this.payExts = payExts;
+    }
+
     private String hourseCodes;
 
     public String getHourseCodes() {

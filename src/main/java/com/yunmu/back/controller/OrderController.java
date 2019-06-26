@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -95,4 +96,23 @@ public class OrderController extends BaseController {
         }
         return createSuccessResult(true);
     }
+
+    //跳转订单详情页面
+    @RequestMapping("/tolook")
+    public String tolook(String id, Model model) {
+        if(StringUtils.isBlank(id)) {
+            return "order/orderlist";
+        }
+        OrderExt orderExt=orderSercvice.getOrderDetail(id);
+        model.addAttribute("orderExt",orderExt);
+        return "order/orderDetail";
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Result<Boolean> delete(String id) {
+
+        return createSuccessResult(orderSercvice.delete(id));
+    }
+
 }

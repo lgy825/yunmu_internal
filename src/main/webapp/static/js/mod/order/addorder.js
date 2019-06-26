@@ -45,7 +45,7 @@ $(function () {
         if (!orderActAmount) {
             layer.msg("请输入房费");
             return;
-        } else if (!ValidUtils.validMoney(orderActAmount, 1, 3)) {
+        } else if (!ValidUtils.validMoney(orderActAmount)) {
             layer.msg("房费不能包含特殊字符，保留一位有效数字");
             return;
         }

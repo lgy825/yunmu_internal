@@ -17,4 +17,6 @@ public interface OrderMapperExt {
     double getPayAmountByCondition(Map<String, String> params);
 
     List<AppResponseObj> getOrderPageBycondition(Map<String,String> params);
+
+    void deleteOrderDetail(String orderCode);
 }

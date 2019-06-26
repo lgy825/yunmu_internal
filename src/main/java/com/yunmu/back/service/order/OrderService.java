@@ -19,4 +19,8 @@ public interface OrderService {
     boolean saveOrder(OrderExt orderExt);
 
     boolean updateOrder(OrderExt orderExt);
+
+    OrderExt getOrderDetail(String id);
+
+    boolean delete(String orderId);
 }

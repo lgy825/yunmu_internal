@@ -11,8 +11,10 @@ import com.yunmu.core.dao.order.OrderMapperExt;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayWayMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
+import com.yunmu.core.model.hourse.HourseExample;
 import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
+import com.yunmu.core.model.order.OrderDetailExample;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.model.pay.PayExample;
@@ -20,7 +22,6 @@ import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.ParamVo;
-import net.sf.ehcache.search.expression.Or;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +152,58 @@ public class OrderServiceImpl implements OrderService {
     public boolean updateOrder(OrderExt orderExt) {
 
         return false;
+    }
+
+    @Override
+    public OrderExt getOrderDetail(String id) {
+        //先根据订单号获取订单信息
+        Order order=orderMapper.selectByPrimaryKey(id);
+        OrderExt orderExt=new OrderExt();
+        if(order!=null){
+            //根据订单id获取支出信息
+            OrderDetailExample orderDetailExample=new OrderDetailExample();
+            OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
+            criteria.andOrderCodeEqualTo(id);
+            criteria.andDelFlagEqualTo(0);
+            List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
+            List<String> payIds= new ArrayList<>();
+            for(OrderDetail orderDetail:orderDetails){
+                payIds.add(orderDetail.getPayCode());
+            }
+            PayExample payExample=new PayExample();
+            PayExample.Criteria criteria1=payExample.createCriteria();
+            criteria1.andDelFlagEqualTo(0);
+            criteria1.andPayIdIn(payIds);
+            List<Pay> payList=payMapper.selectByExample(payExample);
+            orderExt.setPayExts(payList);
+            BeanUtils.copyProperties(order,orderExt);
+            Map<Integer,String> payWays=getAllPayWayMap();
+            Map<String,String> orderSources=getAllOrderSourceMap();
+            if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
+                orderExt.setPayWay(payWays.get(Integer.parseInt(orderExt.getOrderWay())));
+            }
+            if(orderSources.containsKey(orderExt.getOrderSource())){
+                orderExt.setSourceWay(orderSources.get(orderExt.getOrderSource()));
+            }
+            //获取房间号
+            if(orderExt.getHourseCode()!=null){
+                orderExt.setHourseNumber( hourseMapper.selectByPrimaryKey(orderExt.getHourseCode()).getHourseNumber());
+            }
+        }
+        return orderExt;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(String orderId) {
+        Order order=new Order();
+        order.setDelFlag(1);
+        order.setId(orderId);
+        order.setCreateBy("lgy");
+        order.setCreateTime(new Date());
+        orderMapper.updateByPrimaryKeySelective(order);
+        orderMapperExt.deleteOrderDetail(orderId);
+        return true;
     }
 
     @Override

@@ -81,13 +81,13 @@
                 </td>
                 <td>
                     <div class="">
-                        <a href="${ctx}/order/tolook?id={{:oId}}">
+                        <a href="${ctx}/order/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="订单详情">
                         </a>
-                        <a href="${ctx}/order/toedit?id={{:oId}}">
+                        <a href="${ctx}/order/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
-                        <input type="button" class="deleteOrder gray_btn mr10" data-sid="{{:oId}}" value="删除">
+                        <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                     </div>
                 </td>
             </tr>
