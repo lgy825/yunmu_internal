@@ -65,7 +65,7 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">房子管理</div>
+        <div class="b_title">房间管理</div>
         <div class="hr">
             <hr>
         </div>
