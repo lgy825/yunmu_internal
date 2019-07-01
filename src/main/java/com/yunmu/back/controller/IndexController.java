@@ -33,7 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.List;
 
 import static com.yunmu.core.constant.SessionConstants.SESSION_KEY_ALL_MY_CINEMA;
@@ -137,7 +138,7 @@ public class IndexController extends BaseController {
         }
         // 获取shiro中信息
         Subject currentUser = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, passwd, username);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, passwd);
 
         Boolean loginSuccess = false;
         try {
@@ -181,7 +182,7 @@ public class IndexController extends BaseController {
             return createFailedResult("登录失败");
         }
 
-        return createSuccessResult("index/main.do");
+        return createSuccessResult("/main");
     }
 
     @RequestMapping("/main")
@@ -209,6 +210,28 @@ public class IndexController extends BaseController {
         return null;
     }
 
+
+
+    /**
+     * 登出后跳转到登陆页
+     *
+     * @param session
+     *            session信息
+     * @return
+     */
+    @RequestMapping(value = "/logout")
+    public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        Subject currentUser = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser)currentUser.getPrincipal();
+        if(sysUser != null) {
+            Cookie cookie = new Cookie("cookie_user_flychannle", null);
+            response.addCookie(cookie);
+            currentUser.logout();
+        }
+
+        return "login";
+    }
+
     /**
      * 修改密码
      * @param sysUser
@@ -218,9 +241,52 @@ public class IndexController extends BaseController {
     @ResponseBody
     public Result<Boolean> updatePassWord(SysUser sysUser){
         sysUser.setId(ShiroUtils.getUserId());
-//        Result<Boolean> updatePassWord =sysUserService.updatePassWord(sysUser);
-////        return updatePassWord;
-        return null;
+        return createSuccessResult(sysUserService.updatePassWord(sysUser));
     }
+
+    /**
+     * 下载文件
+     * @param id appid
+     * @param response
+     */
+    @RequestMapping(value="/download")
+    public void download( HttpServletResponse response,String fileName){
+        String filepath = "/usr/local/app/"+fileName;
+        File file = new File(filepath);
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        byte[] b= new byte[1024];
+        int len = 0;
+        try {
+            inputStream = new FileInputStream(file);
+            outputStream = response.getOutputStream();
+            response.setContentType("application/force-download");
+            String filename = file.getName();
+            response.addHeader("Content-Disposition","attachment; filename=" + URLEncoder.encode(filename, "UTF-8"));
+            response.setContentLength( (int) file.length( ) );
+
+            while((len = inputStream.read(b)) != -1){
+                outputStream.write(b, 0, len);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(inputStream != null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 }

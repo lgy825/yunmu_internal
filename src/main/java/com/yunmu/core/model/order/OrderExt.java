@@ -111,6 +111,26 @@ public class OrderExt implements Serializable {
 
     private String hourseNumber;
 
+    private Long payAmount;
+
+    public Long getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(Long payAmount) {
+        this.payAmount = payAmount;
+    }
+
+    private String  typeCode;
+
+    public String getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
+    }
+
     List<ParamVo> paramVos;
 
     List<Pay> payExts;

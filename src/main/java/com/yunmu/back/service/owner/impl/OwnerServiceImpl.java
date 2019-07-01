@@ -85,7 +85,7 @@ public class OwnerServiceImpl implements OwnerService {
         if(owner!=null){
             owner.setToken("123456");
             owner.setStatus(1);
-            owner.setCreateBy("lgy");
+            owner.setCreateBy(ShiroUtils.getUser().getUserName());
             owner.setCreateTime(new Date());
             if(owner.getOwnerPwd()!=null){
                 owner.setOwnerPwd(MD5Util.string2MD5(owner.getOwnerPwd()));

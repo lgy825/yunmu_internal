@@ -105,6 +105,12 @@
     <if test="payName != null and payName != ''">
       AND pay_name LIKE '%${payName}%'
     </if>
+    <if test="projectIds!=null and projectIds.size>0">
+      and project_id in
+      <foreach collection="projectIds" item="project" index="index" open="(" close=")" separator=",">
+        #{project}
+      </foreach>
+    </if>
     ORDER BY create_time DESC
   </select>
 </mapper>

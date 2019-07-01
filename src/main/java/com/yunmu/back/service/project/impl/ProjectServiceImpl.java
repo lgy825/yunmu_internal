@@ -77,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Boolean insert(Project project) {
         if(project!=null) {
-            project.setCreateBy("lgy");
+            project.setCreateBy(ShiroUtils.getUser().getUserName());
             project.setCreateTime(new Date());
             project.setDelFlag(0);
             project.setStatus(1);
@@ -95,7 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Boolean update(Project project) {
         try {
-            project.setUpdateBy("Lgy");
+            project.setUpdateBy(ShiroUtils.getUser().getUserName());
             project.setUpdateTime(new Date());
             projectMapper.updateByPrimaryKeySelective(project);
             return true;
@@ -142,5 +142,14 @@ public class ProjectServiceImpl implements ProjectService {
         criteria.andDelFlagEqualTo(0);
         List<Project> projects=projectMapper.selectByExample(projectExample);
         return projects;
+    }
+
+    @Override
+    public int getSysUserByCompanyCode(String companyCode) {
+        ProjectExample projectExample=new ProjectExample();
+        ProjectExample.Criteria criteria=projectExample.createCriteria();
+        criteria.andCompanyCodeEqualTo(companyCode);
+        criteria.andDelFlagEqualTo(0);
+        return projectMapper.selectByExample(projectExample).size();
     }
 }

@@ -34,7 +34,7 @@
                     <div>{{:companyDescription}}</div>
                 </td>
                 <td>
-                    <div>{{:count}}</div>
+                    <div>{{:projectCount}}</div>
                 </td>
                 <td>
                     <div>{{dateTime:createTime}}</div>
@@ -49,7 +49,7 @@
                         <a href="${ctx}/company/toEdit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
-
+                        <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                     </div>
                 </td>
             </tr>

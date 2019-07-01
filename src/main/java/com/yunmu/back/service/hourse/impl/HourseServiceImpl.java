@@ -73,7 +73,7 @@ public class HourseServiceImpl implements HourseService {
     @Override
     public boolean insert(Hourse hourse) {
         if(hourse!=null) {
-            hourse.setCreateBy("lgy");
+            hourse.setCreateBy(ShiroUtils.getUser().getUserName());
             hourse.setCreateTime(new Date());
             hourse.setDelFlag(0);
             try {
@@ -95,7 +95,7 @@ public class HourseServiceImpl implements HourseService {
     @Override
     public Boolean update(Hourse hourse) {
         try {
-            hourse.setUpdateBy("lgy");
+            hourse.setUpdateBy(ShiroUtils.getUser().getUserName());
             hourse.setUpdateTime(new Date());
             hourseMapper.updateByPrimaryKeySelective(hourse);
             return true;

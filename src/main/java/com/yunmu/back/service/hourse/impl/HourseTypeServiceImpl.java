@@ -64,7 +64,7 @@ public class HourseTypeServiceImpl implements HourseTypeService {
     @Override
     public boolean insert(HourseType hourseType) {
         if(hourseType!=null){
-            hourseType.setCreateBy("lgy");
+            hourseType.setCreateBy(ShiroUtils.getUser().getUserName());
             hourseType.setCreateTime(new Date());
             hourseType.setDelFlag("0");
             try {

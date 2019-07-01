@@ -11,6 +11,7 @@ import com.yunmu.core.dao.order.OrderMapperExt;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayWayMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
+import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExample;
 import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
@@ -22,6 +23,7 @@ import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.ParamVo;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,14 +118,15 @@ public class OrderServiceImpl implements OrderService {
             for(Pay pay:pays){
                 pauSum+=pay.getPayAmount();
             }
-            BigDecimal bigDecimal=new BigDecimal(pauSum);
-            Long actAmount=bigDecimal.longValue();
+            BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
+            Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
+            Date date=new Date();
             //保存订单
             for(int i=0;i<hourseCodes.length;i++){
                 Order order=new Order();
                 BeanUtils.copyProperties(orderExt, order);
-                order.setCreateBy("lgy");
-                order.setCreateTime(new Date());
+                order.setCreateBy(ShiroUtils.getUser().getUserName());
+                order.setCreateTime(date);
                 order.setDelFlag(0);
                 order.setHourseCode(hourseCodes[i]);
                 order.setId(IdUtils.orderCodeGeneration());
@@ -136,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
                     orderDetail.setId(IdUtils.getId(11));
                     orderDetail.setDelFlag(0);
                     orderDetail.setCreateBy("lgy");
-                    orderDetail.setCreateTime(new Date());
+                    orderDetail.setCreateTime(date);
                     orderDetail.setOrderCode(order.getId());
                     orderDetail.setPayCode(payId);
                     orderDetailMapper.insertSelective(orderDetail);
@@ -149,8 +152,55 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateOrder(OrderExt orderExt) {
+        if(orderExt!=null){
+            //获取房间号
+            Date date=new Date();
+            String codes=orderExt.getHourseCodes();
+            String[] hourseCodes=codes.split(",");
+            //获取支出
+            List<ParamVo> paramVos=orderExt.getParamVos();
+            List<String> payIds= new ArrayList<>();
+            for(ParamVo paramVo:paramVos){
+                payIds.add(paramVo.getPayId());
+            }
+            //根据支出ids获取所有的支出对象
+            PayExample payExample=new PayExample();
+            PayExample.Criteria criteria=payExample.createCriteria();
+            criteria.andPayIdIn(payIds);
+            List<Pay> pays=payMapper.selectByExample(payExample);
+            //计算支持总金额
+            Double pauSum=0.0;
+            for(Pay pay:pays){
+                pauSum+=pay.getPayAmount();
+            }
+            BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
+            Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
+            //保存订单
+            for(int i=0;i<hourseCodes.length;i++){
+                String orderId=orderExt.getId();
+                Order order=new Order();
+                BeanUtils.copyProperties(orderExt,order);
+                order.setOrderActAmount(actAmount);
+                orderMapper.updateByPrimaryKeySelective(order);
 
+                //删除订单关联的支出
+                orderMapperExt.deleteOrderDetail(orderId);
+                //缓存到订单详情表
+                for(String payId:payIds){
+                    OrderDetail orderDetail=new OrderDetail();
+                    orderDetail.setId(IdUtils.getId(11));
+                    orderDetail.setDelFlag(0);
+                    orderDetail.setCreateBy("lgy");
+                    orderDetail.setCreateTime(date);
+                    orderDetail.setOrderCode(order.getId());
+                    orderDetail.setPayCode(payId);
+                    orderDetailMapper.insertSelective(orderDetail);
+                }
+            }
+            return true;
+        }
         return false;
     }
 
@@ -177,6 +227,9 @@ public class OrderServiceImpl implements OrderService {
             List<Pay> payList=payMapper.selectByExample(payExample);
             orderExt.setPayExts(payList);
             BeanUtils.copyProperties(order,orderExt);
+            BigDecimal bigDecimal=new BigDecimal(order.getOrderRecAmount());
+            Long payAmount=bigDecimal.subtract(new BigDecimal(orderExt.getOrderRecAmount())).longValue();
+            orderExt.setPayAmount(payAmount);
             Map<Integer,String> payWays=getAllPayWayMap();
             Map<String,String> orderSources=getAllOrderSourceMap();
             if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
@@ -204,6 +257,40 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateByPrimaryKeySelective(order);
         orderMapperExt.deleteOrderDetail(orderId);
         return true;
+    }
+
+    @Override
+    public OrderExt get(String id) {
+        //根据id获取订单信息
+        Order order=orderMapper.selectByPrimaryKey(id);
+        OrderExt orderExt=new OrderExt();
+        BeanUtils.copyProperties(order,orderExt);
+        //根据订单获取支出列表
+        if(order!=null) {
+            //根据订单id获取支出信息
+            OrderDetailExample orderDetailExample = new OrderDetailExample();
+            OrderDetailExample.Criteria criteria = orderDetailExample.createCriteria();
+            criteria.andOrderCodeEqualTo(id);
+            criteria.andDelFlagEqualTo(0);
+            List<OrderDetail> orderDetails = orderDetailMapper.selectByExample(orderDetailExample);
+            List<String> payIds = new ArrayList<>();
+            for (OrderDetail orderDetail : orderDetails) {
+                payIds.add(orderDetail.getPayCode());
+            }
+            //获取房间类型
+            Hourse hourse=hourseMapper.selectByPrimaryKey(orderExt.getHourseCode());
+            orderExt.setTypeCode(hourse.getTypeCode());
+            PayExample payExample = new PayExample();
+            PayExample.Criteria criteria1 = payExample.createCriteria();
+            criteria1.andDelFlagEqualTo(0);
+            criteria1.andPayIdIn(payIds);
+            List<Pay> payList = payMapper.selectByExample(payExample);
+            orderExt.setPayExts(payList);
+            BeanUtils.copyProperties(order, orderExt);
+
+
+        }
+        return orderExt;
     }
 
     @Override

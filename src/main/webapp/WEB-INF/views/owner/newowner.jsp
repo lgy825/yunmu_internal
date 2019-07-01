@@ -41,7 +41,7 @@
                 <div class="mt12">
                     <div class="align-r">电话</div>
                     <input id="ownerTel" maxlength="11" type="text" class="inpW set-inpwid ml8" placeholder="请输入联系电话">
-                    <span class="color-lred ml8">必填项，请输入用户联系电话，可以为固话也可以为手机号</span>
+                    <span class="color-lred ml8">*必填项，请输入用户联系电话，建议是手机号(用于登录app)</span>
                 </div>
                 <div class="mt12">
                     <div class="align-r">地址</div>

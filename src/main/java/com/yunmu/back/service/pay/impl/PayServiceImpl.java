@@ -69,7 +69,7 @@ public class PayServiceImpl implements PayService{
     @Override
     public boolean insert(Pay pay) {
         if(pay!=null){
-            pay.setCreateBy("lgy");
+            pay.setCreateBy(ShiroUtils.getUser().getUserName());
             pay.setCreateTime(new Date());
             pay.setDelFlag(0);
             try {
@@ -86,7 +86,7 @@ public class PayServiceImpl implements PayService{
     @Override
     public Boolean update(Pay pay) {
         if(pay!=null){
-            pay.setUpdateBy("lgy");
+            pay.setUpdateBy(ShiroUtils.getUser().getUserName());
             pay.setUpdateTime(new Date());
             payMapper.updateByPrimaryKeySelective(pay);
             return true;

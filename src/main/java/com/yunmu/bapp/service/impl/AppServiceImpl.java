@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -88,18 +89,21 @@ public class AppServiceImpl implements AppService{
     public Map<String, Object> getHomeDataByCondition(Map<String, String> params) {
 
         //根据用户Id和时间获取收益
-        double incomeAll=orderMapperExt.getAmountByCondition(params);
+        double recAmountAll=orderMapperExt.getRecAmountByCondition(params);
         //获取房子出租的天数
         int count=orderMapperExt.getCountByCondition(params);
         //获取房子出租率
         Calendar now = Calendar.getInstance();
         int day=now.get(Calendar.DAY_OF_MONTH);
         String houseRate=Math.round((count*100)/day)+"";
+        //获取应收
+        double actAmountAll=orderMapperExt.getActAmountByCondition(params);
         //获取支出
-        double extraCosts=orderMapperExt.getPayAmountByCondition(params);
+        BigDecimal bigDecimal=new BigDecimal(recAmountAll);
+        double extraCosts=bigDecimal.subtract(new BigDecimal(actAmountAll)).doubleValue();
 
         Map<String,Object> resultMap=new HashMap<>();
-        resultMap.put("incomeAll",incomeAll);
+        resultMap.put("incomeAll",actAmountAll);
         resultMap.put("count",count);
         resultMap.put("houseRate",houseRate);
         resultMap.put("extraCosts",extraCosts);
@@ -109,7 +113,7 @@ public class AppServiceImpl implements AppService{
 
     @Override
     public double getIncomeByCondition(Map<String, String> params) {
-        double incomeAll=orderMapperExt.getAmountByCondition(params);
+        double incomeAll=orderMapperExt.getActAmountByCondition(params);
         return incomeAll;
     }
 
@@ -162,6 +166,10 @@ public class AppServiceImpl implements AppService{
         orderDetailUtil.setPayWay(orderExt.getPayWay());
         orderDetailUtil.setSourceWay(orderExt.getSourceWay());
         orderDetailUtil.sethNumber(orderExt.getHourseNumber());
+        BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
+        double payAmount=bigDecimal.subtract(new BigDecimal(orderExt.getOrderActAmount())).doubleValue();
+        orderDetailUtil.setOrderActAmount(payAmount);
+        orderDetailUtil.setPayAmount(orderExt.getOrderActAmount().doubleValue());
         List<OrderItem> orderItemList=new ArrayList<>();
         for(Pay pay:orderExt.getPayExts()){
             OrderItem orderItem=new OrderItem();

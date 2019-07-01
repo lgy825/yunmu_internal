@@ -10,10 +10,12 @@ import com.yunmu.core.dao.project.ProjectMapperExt;
 import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.company.Company;
 import com.yunmu.core.model.company.CompanyExt;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.attribute.standard.SheetCollate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +69,7 @@ public class CompanyServiceImpl implements CompanyService {
             if (companies.size() > 0) {
                 throw new DataException("公司名称已存在，请重新输入");
             }
-            company.setCreateBy("lgy");
+            company.setCreateBy(ShiroUtils.getUser().getUserName());
             company.setCreateTime(new Date());
             company.setDelFlag(0);
             try {
@@ -89,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService {
             if (companies.size() > 0) {
                 throw new DataException("公司名称已存在，请重新输入");
             }
-            company.setUpdateBy("Lgy");
+            company.setUpdateBy(ShiroUtils.getUser().getUserName());
             company.setUpdateTime(new Date());
             companyMapper.updateByPrimaryKeySelective(company);
             return true;
@@ -101,5 +103,14 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company getCompanyById(String id) {
         return companyMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public boolean deleteByPrimaryKey(String id) {
+        Company company=new Company();
+        company.setId(id);
+        company.setDelFlag(1);
+        companyMapper.updateByPrimaryKeySelective(company);
+        return true;
     }
 }

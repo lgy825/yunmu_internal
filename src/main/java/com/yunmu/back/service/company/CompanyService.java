@@ -16,4 +16,6 @@ public interface CompanyService {
 
     Company getCompanyById(String id);
 
+    boolean deleteByPrimaryKey(String id);
+
 }

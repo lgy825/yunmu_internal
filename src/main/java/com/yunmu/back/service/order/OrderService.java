@@ -23,4 +23,6 @@ public interface OrderService {
     OrderExt getOrderDetail(String id);
 
     boolean delete(String orderId);
+
+    OrderExt get(String id);
 }

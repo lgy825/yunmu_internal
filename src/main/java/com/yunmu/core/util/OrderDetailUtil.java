@@ -26,6 +26,26 @@ public class OrderDetailUtil implements Serializable {
 
     private String hNumber;
 
+    private Double orderActAmount;
+
+    private Double payAmount;
+
+    public Double getOrderActAmount() {
+        return orderActAmount;
+    }
+
+    public void setOrderActAmount(Double orderActAmount) {
+        this.orderActAmount = orderActAmount;
+    }
+
+    public Double getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(Double payAmount) {
+        this.payAmount = payAmount;
+    }
+
     public String gethNumber() {
         return hNumber;
     }

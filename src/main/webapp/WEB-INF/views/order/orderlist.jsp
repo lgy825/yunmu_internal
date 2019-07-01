@@ -9,6 +9,8 @@
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
     <script src="${ctx}/static/js/lib/mricode.pagination.js"></script>
     <script src="${ctx}/static/js/lib/jsrender-converts.js"></script>
+    <link rel="stylesheet" href="${ctx}/static/css/jquery.datetimepicker.css">
+    <script type="text/javascript" src="${ctx}/static/js/lib/jquery.datetimepicker.js"></script>
     <script id="trTmpl" type="text/x-jrender">
         <thead>
                 <tr>
@@ -114,7 +116,10 @@
             <form action="">
                 <div>
                     <input id="orderId" type="text" class="inpW ml20" placeholder="订单号">
-                    <%--<input id="hId" type="text" class="inpW ml20" placeholder="房间号">--%>
+                    <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
+                    <input type="text" class="inpW  inpWid2 timer" id="timeSpick" placeholder="开始时间"/>
+                    <span class="zhi">至</span>
+                    <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                 </div>

@@ -6,8 +6,11 @@ import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.pay.PayWay;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.IdUtils;
+import com.yunmu.core.util.RegxUtils;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 13544 on 2019/6/18.
@@ -45,13 +49,21 @@ public class OrderController extends BaseController {
                                                        Integer pageSize,
                                                        String beginTime,
                                                        String endTime,
-                                                       String orderId) {
+                                                       String orderId,String hourseNumber) {
         Map<String, Object> params = new HashMap<>();
-        params.put("beginTime", beginTime);
-        params.put("endTime",endTime);
         params.put("orderId", orderId);
+        params.put("hourseNumber",hourseNumber);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
+        if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
+            params.put("beginTime", beginTime);
+        }
+        if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
+            params.put("searchTimeEnd", endTime);
+        }
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        params.put("projectIds",projectIds);
         return createSuccessPageResult(orderSercvice.getPageByCondition(params));
     }
 
@@ -113,6 +125,13 @@ public class OrderController extends BaseController {
     public Result<Boolean> delete(String id) {
 
         return createSuccessResult(orderSercvice.delete(id));
+    }
+
+
+    @RequestMapping("/get")
+    @ResponseBody
+    public Result<OrderExt> get(String id){
+        return createSuccessResult(orderSercvice.get(id));
     }
 
 }

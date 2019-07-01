@@ -10,11 +10,12 @@ public interface OrderMapperExt {
 
     List<OrderExt> getOrderPage(Map<String, Object> params);
 
-    double getAmountByCondition(Map<String,String> params);
+    double getRecAmountByCondition(Map<String,String> params);
+
+    double getActAmountByCondition(Map<String,String> params);
 
     int getCountByCondition(Map<String,String> params);
 
-    double getPayAmountByCondition(Map<String, String> params);
 
     List<AppResponseObj> getOrderPageBycondition(Map<String,String> params);
 

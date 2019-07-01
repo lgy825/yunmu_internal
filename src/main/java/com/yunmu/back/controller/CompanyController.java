@@ -3,6 +3,8 @@ package com.yunmu.back.controller;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yunmu.back.service.company.CompanyService;
+import com.yunmu.back.service.project.ProjectService;
+import com.yunmu.back.service.sys.SysUserService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
@@ -37,6 +39,11 @@ public class CompanyController extends BaseController {
 
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private ProjectService projectService;
+
 
     @RequestMapping("/toCompanylist")
     public String toCompanyList(){
@@ -132,5 +139,16 @@ public class CompanyController extends BaseController {
         return createSuccessResult(companyService.getCompanyById(id));
     }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Result<Boolean> delete(String id) {
+        if(sysUserService.getSysUserByCompanyCode(id)>0){
+            return createFailedResult("该公司还有员工没有删除，不能删除此公司");
+        }
+        if(projectService.getSysUserByCompanyCode(id)>0){
+            return createFailedResult("该公司还有项目没有删除，不能删除此公司");
+        }
+        return createSuccessResult(companyService.deleteByPrimaryKey(id));
+    }
 
 }

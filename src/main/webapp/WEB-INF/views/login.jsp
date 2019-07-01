@@ -72,7 +72,6 @@
             </div>
             <div class="choose-login clearfix mt20">
                 <span class="checkBtn check fl" id="flag">记住密码</span>
-                <span class="checkBtn check fr" id="flychannle">24小时内免登录</span>
             </div>
             <div class="tc mt30">
                 <input id="login" type="button" class="blue_btn login-btn" value="登录" onclick="login()">
@@ -158,8 +157,7 @@
     }
 
     function checkCode() {
-        var myDate = new Date();
-        var time = myDate.getTime();
+
         $("#checkImg").attr("src",  '${ctx}/index/getCodeImg?type=math');
     }
 

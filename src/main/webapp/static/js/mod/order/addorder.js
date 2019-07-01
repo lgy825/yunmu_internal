@@ -1,11 +1,77 @@
 var hourseTypeMap={};
 var projectId="";
 $(function () {
+
+    //出事化日其插件
+    var timeSpick = $("#timeSpick").datetimepicker({
+        format: 'Y-m-d',
+        minDate: 0,
+        onChangeDateTime: function (curDate) {
+            var curDateTime = curDate.sformat("yyyy-MM-dd");
+            $("#timeEpick").datetimepicker({
+                minDate: curDateTime ? curDateTime : false
+            });
+        },
+        timepicker: false
+    });
+    var timeEpick = $("#timeEpick").datetimepicker({
+        format: 'Y-m-d',
+        minDate: 0,
+        onChangeDateTime: function (curDate) {
+            var curDateTime = curDate.sformat("yyyy-MM-dd");
+            $("#timeSpick").datetimepicker({
+                maxDate: curDateTime ? curDateTime : false
+            });
+        },
+        timepicker: false
+    });
+
     loadPay();
     loadOrderSource();
+    loadHourseAndType();
     loadPayWay();
     loadProject();
-    loadHourseAndType();
+
+    // 加载数据 -------------
+    if ($("#orderId").val()) {
+        var canedit = setInterval(function () {
+            $.ajax({
+                url: ctx + "order/get",
+                type: "GET",
+                cache: false,
+                async: false,
+                dataType: 'json',
+                data: {
+                    id: $("#orderId").val(),
+                },
+                success: function (data) {
+                    if (data && data.resultCode === '0') {
+                        clearInterval(canedit);
+                        su = data.resultData;
+                        $(_.filter(su.payExts)).each(function (idx, elem) {
+                            console.info(".paycheck[data-payid=" + elem.payId );
+                            $(".paycheck[data-payid='" + elem.payId + "']").click();
+                        });
+                        $("#orderActAmount").val(su.orderRecAmount);
+                        timeSpick.val(su.orderStartDate.split(" ")[0]);
+                        timeEpick.val(su.orderEndTime.split(" ")[0]);
+
+                    } else {
+                        if (data.resultDesc) {
+                            layer.msg(data.resultDesc);
+                        } else {
+                            layer.msg('查询失败 !');
+                        }
+                    }
+                },
+                error: function () {
+                    layer.msg('查询失败 !');
+                }
+            });
+        }, 50);
+
+    }
+
 
     $("#saveBtn").click(function () {
 
@@ -70,7 +136,7 @@ $(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                orderId:$.trim($("#orderId").val()),
+                id:$.trim($("#orderId").val()),
                 orderRecAmount:orderActAmount,
                 paramVos:relates,
                 projectId: $.trim($("#projectSel").val()),
@@ -105,29 +171,6 @@ $(function () {
     });
 
 
-    //出事化日其插件
-    var timeSpick = $("#timeSpick").datetimepicker({
-        format: 'Y-m-d',
-        minDate: 0,
-        onChangeDateTime: function (curDate) {
-            var curDateTime = curDate.sformat("yyyy-MM-dd");
-            $("#timeEpick").datetimepicker({
-                minDate: curDateTime ? curDateTime : false
-            });
-        },
-        timepicker: false
-    });
-    var timeEpick = $("#timeEpick").datetimepicker({
-        format: 'Y-m-d',
-        minDate: 0,
-        onChangeDateTime: function (curDate) {
-            var curDateTime = curDate.sformat("yyyy-MM-dd");
-            $("#timeSpick").datetimepicker({
-                maxDate: curDateTime ? curDateTime : false
-            });
-        },
-        timepicker: false
-    });
 
     function loadPayWay() {
         $.ajax({
@@ -145,41 +188,6 @@ $(function () {
                         $("#paySel").append("<option value='" + item.id + "'>" + item.pName + "</option>");
                     });
 
-                    // 加载数据 -------------
-                    if ($("#orderId").val()) {
-                        $.ajax({
-                            url: ctx + "order/get",
-                            type: "GET",
-                            cache: false,
-                            async: false,
-                            dataType: 'json',
-                            data: {
-                                id: $("#orderId").val(),
-                            },
-                            success: function (data) {
-                                if (data && data.resultCode === '0') {
-                                    su = data.resultData;
-                                    $("#projectSel").val(su.projectId);
-                                    $("#hourseSel").val(su.hourseCodes);
-                                    $("#paySel").val(su.orderWay);
-                                    $("#sourceSel").val(su.orderSource);
-                                    $("#orderActAmount").val(su.orderActAmount);
-                                    timeSpick.val(su.orderStartDate.split(" ")[0]);
-                                    timeEpick.val(su.orderEndTime.split(" ")[0]);
-                                } else {
-                                    if (data.resultDesc) {
-                                        layer.msg(data.resultDesc);
-                                    } else {
-                                        layer.msg('查询失败 !');
-                                    }
-                                }
-                            },
-                            error: function () {
-                                layer.msg('查询失败 !');
-                            }
-                        });
-                    }
-
                 } else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);
@@ -195,33 +203,35 @@ $(function () {
     }
 
     function loadOrderSource() {
-        $.ajax({
-            url: ctx + "order/getOrdeSourceAll",
-            type: "GET",
-            cache: false,
-            async: false,
-            dataType: 'json',
-            success: function (data) {
-                if (data && data.resultCode === '0') {
-                    //
-                    $("#sourceSel").select2({placeholder: '*选择订单来源*'});
-                    $("#sourceSel").append("<option value='-1'>*选择订单来源*</option>");
-                    $(data.resultData).each(function (idx, item) {
-                        $("#sourceSel").append("<option value='" + item.id + "'>" + item.name + "</option>");
-                    });
+            $.ajax({
+                url: ctx + "order/getOrdeSourceAll",
+                type: "GET",
+                cache: false,
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.resultCode === '0') {
+                        //
+                        $("#sourceSel").select2({placeholder: '*选择订单来源*'});
+                        $("#sourceSel").append("<option value='-1'>*选择订单来源*</option>");
+                        $(data.resultData).each(function (idx, item) {
+                            $("#sourceSel").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                        });
 
-                } else {
-                    if (data.resultDesc) {
-                        layer.msg(data.resultDesc);
                     } else {
-                        layer.msg('查询失败 !');
+                        if (data.resultDesc) {
+                            layer.msg(data.resultDesc);
+                        } else {
+                            layer.msg('查询失败 !');
+                        }
                     }
+                },
+                error: function () {
+                    layer.msg('查询失败 !');
                 }
-            },
-            error: function () {
-                layer.msg('查询失败 !');
-            }
-        });
+            });
+
+
     }
 
     function loadProject() {
@@ -243,6 +253,38 @@ $(function () {
                     $(data.resultData.list).each(function (idx, pro) {
                         $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
                     });
+
+                    if ($("#orderId").val()) {
+                            $.ajax({
+                                url: ctx + "order/get",
+                                type: "GET",
+                                cache: false,
+                                async: false,
+                                dataType: 'json',
+                                data: {
+                                    id: $("#orderId").val(),
+                                },
+                                success: function (data) {
+                                    if (data && data.resultCode === '0') {
+                                        su = data.resultData;
+                                        $("#projectSel").val(su.projectId);
+                                        $("#typeCodeSel").val(su.typeCode);
+                                        $("#hourseSel").val(su.hourseCode);
+                                        $("#paySel").val(su.orderWay);
+                                        $("#sourceSel").val(su.orderSource);
+                                    } else {
+                                        if (data.resultDesc) {
+                                            layer.msg(data.resultDesc);
+                                        } else {
+                                            layer.msg('查询失败 !');
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    layer.msg('查询失败 !');
+                                }
+                            });
+                    }
                 }else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);

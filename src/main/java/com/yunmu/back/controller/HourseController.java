@@ -10,6 +10,7 @@ import com.yunmu.core.constant.ResultConstants;
 import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExt;
 import com.yunmu.core.model.hourse.HourseType;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.util.HourseTypeAndHourseVo;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.ShiroUtils;
@@ -54,6 +55,9 @@ public class HourseController extends BaseController {
                                                         String hNumber,
                                                         String hNumberArea) {
         Map<String, Object> params = new HashMap<>();
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        params.put("projectIds",projectIds);
         params.put("hNumber", hNumber);
         params.put("hNumberArea", hNumberArea);
         params.put("pageIndex", pageIndex + 1);

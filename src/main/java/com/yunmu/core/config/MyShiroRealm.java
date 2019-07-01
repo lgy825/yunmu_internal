@@ -10,8 +10,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,9 @@ import java.util.Map;
 /**
  * Created by yangbin on 2017/11/21
  */
-@Component
-public class MyRealm extends AuthorizingRealm {
+public class MyShiroRealm extends AuthorizingRealm {
 
-	private static Logger logger = LoggerFactory.getLogger(MyRealm.class);
+	private static Logger logger = LoggerFactory.getLogger(MyShiroRealm.class);
 
 	private static final String OR_OPERATOR = " or ";
 	private static final String AND_OPERATOR = " and ";
@@ -45,6 +46,8 @@ public class MyRealm extends AuthorizingRealm {
 		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
 		String userName = usernamePasswordToken.getUsername();
 		String password = String.valueOf(usernamePasswordToken.getPassword());
+
+
 
 		// 查询登陆用户
 		Map<String, Object> userParam = Maps.newHashMap();
@@ -88,9 +91,11 @@ public class MyRealm extends AuthorizingRealm {
 				throw new IncorrectCredentialsException("密码错误");
 			}
 
+			String md5Pwd=new Md5Hash(password,userName).toHex();
 			return new SimpleAuthenticationInfo(
 					user, // 用户信息
-					password, // 密码
+					md5Pwd, // 密码
+					ByteSource.Util.bytes(userName),
 					getName() // realm name
 			);
 		}

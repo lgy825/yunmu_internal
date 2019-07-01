@@ -25,4 +25,6 @@ public interface ProjectService {
     boolean delete(String id);
 
     List<Project> getProjectListByCompanyCode(String companyCode);
+
+    int getSysUserByCompanyCode(String companyCode);
 }

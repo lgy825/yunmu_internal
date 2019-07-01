@@ -27,4 +27,8 @@ public interface SysUserService {
 
     boolean getUsersBeDisabled(String userId);
 
+    boolean updatePassWord(SysUser sysUser);
+
+    int getSysUserByCompanyCode(String companyCode);
+
 }

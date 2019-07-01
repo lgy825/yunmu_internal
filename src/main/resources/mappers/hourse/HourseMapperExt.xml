@@ -98,7 +98,7 @@
   </sql>
 
   <select id="getHouseCountByCondition" parameterType="String" resultType="Integer">
-    SELECT count(*) from yunmu_hourse where id=#{ownerCode}
+    SELECT count(*) from yunmu_hourse where owner_code=#{ownerCode}
   </select>
 
   <select id="getHoursePage" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -114,6 +114,12 @@
     </if>
     <if test="areaCode != null and areaCode != ''">
       AND area_code LIKE '%${areaCode}%'
+    </if>
+    <if test="projectIds!=null and projectIds.size>0">
+      and project_id in
+      <foreach collection="projectIds" item="project" index="index" open="(" close=")" separator=",">
+        #{project}
+      </foreach>
     </if>
     ORDER BY create_time DESC
   </select>

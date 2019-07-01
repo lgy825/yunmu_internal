@@ -44,7 +44,7 @@ public class kaptchaConfig {
             properties.setProperty("kaptcha.image.height", "26");
             properties.setProperty("kaptcha.textproducer.font.size", "26");
             properties.setProperty("kaptcha.session.key", "kaptchaCodeMath");
-            properties.setProperty("kaptcha.textproducer.impl", "com.muyun.core.util.KaptchaTextCreator");
+            properties.setProperty("kaptcha.textproducer.impl", "com.yunmu.core.util.KaptchaTextCreator");
             properties.setProperty("kaptcha.textproducer.char.spac", "5");
             properties.setProperty("kaptcha.textproducer.char.length", "6");
             properties.setProperty("kaptcha.textproducer.font.names", "Arial,Courier");

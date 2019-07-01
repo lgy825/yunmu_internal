@@ -6,7 +6,9 @@ import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.util.IdUtils;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 13544 on 2019/5/19.
@@ -47,6 +50,9 @@ public class OwnerController extends BaseController {
                                                        String ownerTel,
                                                        String ownerName) {
         Map<String, Object> params = new HashMap<>();
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        params.put("projectIds",projectIds);
         params.put("ownerTel", ownerTel);
         params.put("ownerName", ownerName);
         params.put("pageIndex", pageIndex + 1);

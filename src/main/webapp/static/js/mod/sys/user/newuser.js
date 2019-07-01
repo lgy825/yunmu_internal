@@ -163,7 +163,7 @@ $(function () {
                             async: false,
                             dataType: 'json',
                             data: {
-                                id: $("#uid").val(),
+                                id: $("#userId").val(),
                             },
                             success: function (data) {
                                 if (data && data.resultCode === '0') {
@@ -173,11 +173,11 @@ $(function () {
                                     $("#loginName").val(su.loginName);
                                     // $("#upassword").val(su.password);
                                     $("#password").attr("placeholder", "如需修改，请直接输入新密码");
-                                    $("#userEmail").val(su.email);
-                                    $("#userTel").val(su.userPhone);
+                                    $("#userEmail").val(su.userEmail);
+                                    $("#userTel").val(su.userTel);
                                     $(".cinemar").removeClass("on");
-                                    $(".cinemar[cinemaradio=" + su.cinemaChooseWay + "]").addClass("on");
-                                    if (su.cinemaChooseWay == 2) {
+                                    $(".cinemar[cinemaradio=" + su.chooseProjectId + "]").addClass("on");
+                                    if (su.chooseProjectId == 2) {
                                         $('#p_selCimemaPan').removeClass("none");
                                     }
                                     var waitCinema = setInterval(function () {

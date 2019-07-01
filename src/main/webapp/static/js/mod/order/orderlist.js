@@ -5,6 +5,29 @@ $(function(){
         loadPage();
     });
 
+    $("#timeSpick").datetimepicker({
+        format: 'Y-m-d',
+        // minDate: 0,
+        // onChangeDateTime: function (curDate) {
+        //     var curDateTime = curDate.sformat("yyyy-MM-dd");
+        //     $("#timeEpick").datetimepicker({
+        //         minDate: curDateTime ? curDateTime : false
+        //     });
+        // },
+        timepicker: false
+    });
+    $("#timeEpick").datetimepicker({
+        format: 'Y-m-d',
+        // minDate: 0,
+        // onChangeDateTime: function (curDate) {
+        //     var curDateTime = curDate.sformat("yyyy-MM-dd");
+        //     $("#timeSpick").datetimepicker({
+        //         maxDate: curDateTime ? curDateTime : false
+        //     });
+        // },
+        timepicker: false
+    });
+
 
     function loadPage() {
         if($("#pagetotal").pagination()) {
@@ -27,8 +50,10 @@ $(function(){
             remote: {
                 url: ctx + 'order/getpage',
                 params:{
-                    orderId: $.trim($("#orderId").val())
-
+                    orderId: $.trim($("#orderId").val()),
+                    beginTime:$("#timeSpick").val(),
+                    hourseNumber:$.trim($("#hourseNumber").val()),
+                    endTime:$("#timeEpick").val()
                 },
                 success: function (data) {
                     // data为ajax返回数据
@@ -41,7 +66,10 @@ $(function(){
 
     $("#resetBtn").click(function () {
         $("#orderId").val("");
-        //$("#hNumberArea").val("");
+        $("#hourseNumber").val("");
+        $("#timeSpick").val("");
+        $("#timeEpick").val("");
+        $("#searchBtn").click();
     });
 
     $("#orderTable").on("click", ".delete", function (){

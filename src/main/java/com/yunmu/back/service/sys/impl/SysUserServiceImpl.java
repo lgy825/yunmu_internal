@@ -12,11 +12,13 @@ import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.dao.sys.*;
 import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.company.Company;
+import com.yunmu.core.model.company.CompanyExample;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.project.ProjectExample;
 import com.yunmu.core.model.sys.*;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.MD5Util;
+import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,23 +88,32 @@ public class SysUserServiceImpl implements SysUserService {
         if(sysUserExts!=null){
             for(SysUserExt sysUserExt:sysUserExts){
                 String projectName="";
-                List<String> projectIds=sysUserProjectMapperExt.getProjectIdsByUserId(sysUserExt.getId());
-                if(projectIds.size()>0){
-                    for(int i=0;i<projectIds.size();i++){
-                        if(i<2){
-                            projectName+=projectMapper.selectByPrimaryKey(projectIds.get(i)).getProjectName();
-                            if(i<projectIds.size()-2){
-                                projectName+=",";
+                if(sysUserExt.getChooseProjectId()==1){
+                    projectName="公司全部项目";
+                }else{
+                    List<String> projectIds=sysUserProjectMapperExt.getProjectIdsByUserId(sysUserExt.getId());
+                    if(projectIds.size()>0){
+                        for(int i=0;i<projectIds.size();i++){
+                            if(i<2){
+                                projectName+=projectMapper.selectByPrimaryKey(projectIds.get(i)).getProjectName();
+                                if(i<projectIds.size()-2){
+                                    projectName+=",";
+                                }
+                            }else{
+                                projectName+="...";
+                                break;
                             }
-                        }else{
-                            projectName+="...";
-                            break;
                         }
-                    }
 
+                    }
                 }
                 sysUserExt.setProjectName(projectName);
-                sysUserExt.setCompanyName(companyMapperExt.getCompanyByCode(sysUserExt.getCompanyCode()).getCompanyName());
+                if(companyMapperExt.getCompanyByCode(sysUserExt.getCompanyCode())!=null){
+                    sysUserExt.setCompanyName(companyMapperExt.getCompanyByCode(sysUserExt.getCompanyCode()).getCompanyName());
+                }else{
+                    sysUserExt.setCompanyName("--");
+                }
+
             }
         }
         return new GenericPage<>(pageIndex, pageSize, sysUserExts, pageInfo.getTotal());
@@ -127,6 +138,7 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setDelFlag(0);
             sysUser.setStatus(0);
             sysUser.setUpdateTime(new Date());
+            sysUser.setCreateBy(ShiroUtils.getUser().getUserName());
 
             // TODO 判断是否影核账号
 
@@ -223,6 +235,7 @@ public class SysUserServiceImpl implements SysUserService {
             if(sysUserMapper.countByExample(sysUserExample) > compareCount) {
                 throw new DataException("用户名已存在");
             }
+            sysUser.setUpdateBy(ShiroUtils.getUser().getUserName());
 
             sysUserMapper.updateByPrimaryKeySelective(sysUser);
 
@@ -380,12 +393,31 @@ public class SysUserServiceImpl implements SysUserService {
             return true;
         }
         // 判断公司状态
-        Company company = companyMapper.selectByPrimaryKey(sysUser.getCompanyCode());
-        if(company == null || company.getDelFlag()==0) {
+        CompanyExample companyExample=new CompanyExample();
+        CompanyExample.Criteria criterion=companyExample.createCriteria();
+        criterion.andCompanyCodeEqualTo(sysUser.getCompanyCode());
+        criterion.andDelFlagEqualTo(0);
+        List<Company> company=companyMapper.selectByExample(companyExample);
+        if(company == null || company.size()==0) {
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public boolean updatePassWord(SysUser sysUser) {
+        sysUserMapper.updateByPrimaryKeySelective(sysUser);
+        return true;
+    }
+
+    @Override
+    public int getSysUserByCompanyCode(String companyCode) {
+        SysUserExample sysUserExample=new SysUserExample();
+        SysUserExample.Criteria criteria=sysUserExample.createCriteria();
+        criteria.andCompanyCodeEqualTo(companyCode);
+        criteria.andDelFlagEqualTo(0);
+        return sysUserMapper.selectByExample(sysUserExample).size();
     }
 
 
