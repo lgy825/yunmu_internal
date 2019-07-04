@@ -1,6 +1,7 @@
 package com.yunmu.back.service.order;
 
 import com.yunmu.core.constant.GenericPage;
+import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.source.OrderSource;
@@ -25,4 +26,6 @@ public interface OrderService {
     boolean delete(String orderId);
 
     OrderExt get(String id);
+
+    List<OrderExt> getOrdersByDate(Map<String,String> params);
 }

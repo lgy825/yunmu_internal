@@ -17,10 +17,10 @@
                     <th style='width: 9%;'><div>电话</div></th>
                     <th style='width: 9%;'><div>邮箱</div></th>
                     <th style='width: 10%;'><div>添加时间</div></th>
-                    <th style='width: 10%;'><div>托管房屋数</div></th>
-                    <th style='width: 15%;'><div>地址</div></th>
+                    <th style='width: 7%;'><div>托管房屋数</div></th>
+                    <th style='width: 10%;'><div>地址</div></th>
                     <th style='width: 8%;'><div>状态</div></th>
-                    <th style='width: 22%;'><div>操作</div></th>
+                    <th style='width: 30%;'><div>操作</div></th>
                 </tr>
         </thead>
         <tbody>
@@ -69,6 +69,9 @@
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">
                         {{/if}}
+                        <a href="${ctx}/owner/toExport?id={{:id}}">
+                            <input type="button" class="editbtn gray_btn mr10" value="导出本月收支账单">
+                        </a>
                     </div>
                 </td>
             </tr>

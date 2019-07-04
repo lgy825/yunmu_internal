@@ -13,10 +13,7 @@ import com.yunmu.core.dao.pay.PayWayMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
 import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExample;
-import com.yunmu.core.model.order.Order;
-import com.yunmu.core.model.order.OrderDetail;
-import com.yunmu.core.model.order.OrderDetailExample;
-import com.yunmu.core.model.order.OrderExt;
+import com.yunmu.core.model.order.*;
 import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.model.pay.PayExample;
 import com.yunmu.core.model.pay.PayWay;
@@ -291,6 +288,27 @@ public class OrderServiceImpl implements OrderService {
 
         }
         return orderExt;
+    }
+
+    @Override
+    public List<OrderExt> getOrdersByDate(Map<String, String> params) {
+        List<OrderExt> orderList=orderMapperExt.getOrderExport(params);
+        if(orderList!=null){
+            for(OrderExt orderExt:orderList){
+                if(orderExt.getHourseCode()!=null){
+                    orderExt.setHourseNumber( hourseMapper.selectByPrimaryKey(orderExt.getHourseCode()).getHourseNumber());
+                }
+                Map<Integer,String> payWays=getAllPayWayMap();
+                Map<String,String> orderSources=getAllOrderSourceMap();
+                if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
+                    orderExt.setPayWay(payWays.get(Integer.parseInt(orderExt.getOrderWay())));
+                }
+                if(orderSources.containsKey(orderExt.getOrderSource())){
+                    orderExt.setSourceWay(orderSources.get(orderExt.getOrderSource()));
+                }
+            }
+        }
+        return orderList;
     }
 
     @Override

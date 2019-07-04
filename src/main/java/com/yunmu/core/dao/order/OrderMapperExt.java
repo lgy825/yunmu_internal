@@ -1,5 +1,6 @@
 package com.yunmu.core.dao.order;
 
+import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.util.AppResponseObj;
 
@@ -20,4 +21,6 @@ public interface OrderMapperExt {
     List<AppResponseObj> getOrderPageBycondition(Map<String,String> params);
 
     void deleteOrderDetail(String orderCode);
+
+    List<OrderExt> getOrderExport(Map<String,String> params);
 }

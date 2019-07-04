@@ -196,6 +196,25 @@
     update yunmu_order_detail set del_flag=1 where order_code=#{orderCode}
   </update>
 
+  <select id="getOrderExport" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    FROM  yunmu_order yo
+    where yo.del_flag=0 and yo.hourse_code in(
+        SELECT id from yunmu_hourse where del_flag=0 and owner_code=#{ownerCode}
+    )
+    <if test="beginTime!=null">
+      AND  yo.order_start_date >= #{beginTime}
+    </if>
+    <if test="endTime!=null">
+      AND yo.order_start_date <![CDATA[<=]]> #{endTime}
+    </if>
+  </select>
+
 
 
 </mapper>
