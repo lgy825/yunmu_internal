@@ -384,7 +384,8 @@ $(function () {
                                 '<tr>' +
                                 '<td><div><span class="paycheck checkBtn check w14" data-payid="'+item.payId+'"></span></div></td>' +
                                 '<td><div>' + (_.isUndefined(item.payName) ? '' : item.payName) + '</div></td>' +
-                                '<td><div>' + (item.payAmount ? item.payAmount : 0) + '</div></td>' +
+                                '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.payAmount ? item.payAmount : 0) + '</span>'
+                                + '<i class="rename"></i><input  type="text" class="params rename-inp none"></span></div></td>' +
                                 '<td><div title="'+item.payDesc+'">'+item.payDesc+'</div></td>' +
                                 ' </tr>'
                             );
@@ -404,6 +405,11 @@ $(function () {
 
         })
     }
+
+    $('.oInfo_table').on('click', '.rename', function () {
+        $(this).prev().hide();
+        $(this).next().show().addClass('border-el');
+    });
 
 
 
