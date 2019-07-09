@@ -251,7 +251,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value="/download")
     public void download( HttpServletResponse response,String fileName){
-        String filepath = "/usr/local/app/"+fileName;
+        String filepath = "/user/local/app/android/"+fileName;//+fileName;
         File file = new File(filepath);
         InputStream inputStream = null;
         OutputStream outputStream = null;

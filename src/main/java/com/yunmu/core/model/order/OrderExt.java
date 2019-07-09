@@ -113,6 +113,16 @@ public class OrderExt implements Serializable {
 
     private Long payAmount;
 
+    public Integer getIsChoose() {
+        return isChoose;
+    }
+
+    public void setIsChoose(Integer isChoose) {
+        this.isChoose = isChoose;
+    }
+
+    private Integer isChoose;
+
     public Long getPayAmount() {
         return payAmount;
     }

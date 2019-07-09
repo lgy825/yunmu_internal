@@ -168,8 +168,8 @@ public class AppServiceImpl implements AppService{
         orderDetailUtil.sethNumber(orderExt.getHourseNumber());
         BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
         double payAmount=bigDecimal.subtract(new BigDecimal(orderExt.getOrderActAmount())).doubleValue();
-        orderDetailUtil.setOrderActAmount(payAmount);
-        orderDetailUtil.setPayAmount(orderExt.getOrderActAmount().doubleValue());
+        orderDetailUtil.setOrderActAmount(orderExt.getOrderActAmount().doubleValue());
+        orderDetailUtil.setPayAmount(payAmount);
         List<OrderItem> orderItemList=new ArrayList<>();
         for(Pay pay:orderExt.getPayExts()){
             OrderItem orderItem=new OrderItem();

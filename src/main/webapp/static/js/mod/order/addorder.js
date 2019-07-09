@@ -2,6 +2,7 @@ var hourseTypeMap={};
 var projectId="";
 $(function () {
 
+
     //出事化日其插件
     var timeSpick = $("#timeSpick").datetimepicker({
         format: 'Y-m-d',
@@ -75,17 +76,27 @@ $(function () {
 
     $("#saveBtn").click(function () {
 
-        var $vous = $("#payTbody").find(".paycheck.cur");
-        if($vous.length < 1) {
-            layer.msg("请选择支出");
-            return;
-        }
-        var relates = [];
-        $($vous).each(function (idx, elem) {
-            relates.push({
-                payId: $(elem).data("payid")
+        var cinemaChooseWay = $(".cinemar.on").attr("cinemaradio");
+        var isChoose;
+        if (cinemaChooseWay == 1) {
+            isChoose=1;
+        }else{
+            isChoose=2;
+            var $vous = $("#payTbody").find(".paycheck.cur");
+            if($vous.length < 1) {
+                layer.msg("请选择支出");
+                return;
+            }
+            var relates = [];
+            var amounts=[];
+            $($vous).each(function (idx, elem) {
+                relates.push({
+                    payId: $(elem).data("payid"),
+                    amount:$vous.parent().parent().parent().find(".params").val()
+                });
+
             });
-        });
+        }
 
         if ($("#projectSel").val() == -1) {
             layer.msg("请选择房子所属的项目");
@@ -145,7 +156,8 @@ $(function () {
                 hourseCodes: $.isArray($("#hourseSel").val())  ? $("#hourseSel").val().join(",") : ($("#hourseSel").val() == -1 ? "" : $("#hourseSel").val()),
                 orderStartDate:startTime+ " 00:00:00",
                 orderEndTime:endTime+ " 23:59:59",
-                orderActAmount:orderActAmount
+                orderActAmount:orderActAmount,
+                isChoose:isChoose
             }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
@@ -169,8 +181,6 @@ $(function () {
 
 
     });
-
-
 
     function loadPayWay() {
         $.ajax({
@@ -385,7 +395,7 @@ $(function () {
                                 '<td><div><span class="paycheck checkBtn check w14" data-payid="'+item.payId+'"></span></div></td>' +
                                 '<td><div>' + (_.isUndefined(item.payName) ? '' : item.payName) + '</div></td>' +
                                 '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.payAmount ? item.payAmount : 0) + '</span>'
-                                + '<i class="rename"></i><input  type="text" class="params rename-inp none"></span></div></td>' +
+                                + '<i class="rename"></i><input  type="text"  value="'+item.payAmount+'" class="params rename-inp none"></span></div></td>' +
                                 '<td><div title="'+item.payDesc+'">'+item.payDesc+'</div></td>' +
                                 ' </tr>'
                             );
@@ -412,7 +422,31 @@ $(function () {
     });
 
 
+    $('.cinema_box').on('click', '.radio', function () {
+        var _this = $(this),
+            $data_i = _this.attr('data-i'),
+            $p_selCimema = $('#p_selCimemaPan');
 
+        if ($data_i == 1) {
+            $p_selCimema.removeClass('none');
+        } else {
+            // 全部
+            $p_selCimema.addClass('none');
+            //clearSearch();
+        }
+        $(".cinemar").removeClass("on");
+        $(this).addClass("on");
+        clearSearch();
+    });
+
+    function clearSearch() {
+        $("#paySearch").val("");
+    }
+
+
+    // $('.oInfo_table').on('click', 'tr', function () {
+    //     $(this).find(".params").addClass("on");
+    // });
 
 
 });
