@@ -99,21 +99,24 @@ public class OrderServiceImpl implements OrderService {
             //获取房间号
             String codes=orderExt.getHourseCodes();
             String[] hourseCodes=codes.split(",");
-            //获取支出
-            List<ParamVo> paramVos=orderExt.getParamVos();
-            List<String> payIds= new ArrayList<>();
-            for(ParamVo paramVo:paramVos){
-                payIds.add(paramVo.getPayId());
-            }
-            //根据支出ids获取所有的支出对象
-            PayExample payExample=new PayExample();
-            PayExample.Criteria criteria=payExample.createCriteria();
-            criteria.andPayIdIn(payIds);
-            List<Pay> pays=payMapper.selectByExample(payExample);
-            //计算支持总金额
             Double pauSum=0.0;
-            for(Pay pay:pays){
-                pauSum+=pay.getPayAmount();
+            List<String> payIds= new ArrayList<>();
+            //如果选择的是暂不选择支出
+            if(orderExt.getIsChoose()==2){
+                //获取支出
+                List<ParamVo> paramVos=orderExt.getParamVos();
+                for(ParamVo paramVo:paramVos){
+                    payIds.add(paramVo.getPayId());
+                }
+                //根据支出ids获取所有的支出对象
+                PayExample payExample=new PayExample();
+                PayExample.Criteria criteria=payExample.createCriteria();
+                criteria.andPayIdIn(payIds);
+                List<Pay> pays=payMapper.selectByExample(payExample);
+                //计算支持总金额
+                for(Pay pay:pays){
+                    pauSum+=pay.getPayAmount();
+                }
             }
             BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
             Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
@@ -130,18 +133,19 @@ public class OrderServiceImpl implements OrderService {
                 order.setOrderStatus(0);
                 order.setOrderActAmount(actAmount);
                 orderMapper.insertSelective(order);
-                //缓存到订单详情表
-                for(String payId:payIds){
-                    OrderDetail orderDetail=new OrderDetail();
-                    orderDetail.setId(IdUtils.getId(11));
-                    orderDetail.setDelFlag(0);
-                    orderDetail.setCreateBy("lgy");
-                    orderDetail.setCreateTime(date);
-                    orderDetail.setOrderCode(order.getId());
-                    orderDetail.setPayCode(payId);
-                    orderDetailMapper.insertSelective(orderDetail);
+                if(payIds.size()>0){
+                    //缓存到订单详情表
+                    for(String payId:payIds){
+                        OrderDetail orderDetail=new OrderDetail();
+                        orderDetail.setId(IdUtils.getId(11));
+                        orderDetail.setDelFlag(0);
+                        orderDetail.setCreateBy(ShiroUtils.getUserId());
+                        orderDetail.setCreateTime(date);
+                        orderDetail.setOrderCode(order.getId());
+                        orderDetail.setPayCode(payId);
+                        orderDetailMapper.insertSelective(orderDetail);
+                    }
                 }
-
             }
             return true;
         }
@@ -208,21 +212,23 @@ public class OrderServiceImpl implements OrderService {
         OrderExt orderExt=new OrderExt();
         if(order!=null){
             //根据订单id获取支出信息
-            OrderDetailExample orderDetailExample=new OrderDetailExample();
-            OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
-            criteria.andOrderCodeEqualTo(id);
-            criteria.andDelFlagEqualTo(0);
-            List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
-            List<String> payIds= new ArrayList<>();
-            for(OrderDetail orderDetail:orderDetails){
-                payIds.add(orderDetail.getPayCode());
+            if(order.getIsChoose()==2){
+                OrderDetailExample orderDetailExample=new OrderDetailExample();
+                OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
+                criteria.andOrderCodeEqualTo(id);
+                criteria.andDelFlagEqualTo(0);
+                List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
+                List<String> payIds= new ArrayList<>();
+                for(OrderDetail orderDetail:orderDetails){
+                    payIds.add(orderDetail.getPayCode());
+                }
+                PayExample payExample=new PayExample();
+                PayExample.Criteria criteria1=payExample.createCriteria();
+                criteria1.andDelFlagEqualTo(0);
+                criteria1.andPayIdIn(payIds);
+                List<Pay> payList=payMapper.selectByExample(payExample);
+                orderExt.setPayExts(payList);
             }
-            PayExample payExample=new PayExample();
-            PayExample.Criteria criteria1=payExample.createCriteria();
-            criteria1.andDelFlagEqualTo(0);
-            criteria1.andPayIdIn(payIds);
-            List<Pay> payList=payMapper.selectByExample(payExample);
-            orderExt.setPayExts(payList);
             BeanUtils.copyProperties(order,orderExt);
             BigDecimal bigDecimal=new BigDecimal(order.getOrderRecAmount());
             Long payAmount=bigDecimal.subtract(new BigDecimal(orderExt.getOrderRecAmount())).longValue();

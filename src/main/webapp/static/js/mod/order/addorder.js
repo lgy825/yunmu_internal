@@ -88,7 +88,6 @@ $(function () {
                 return;
             }
             var relates = [];
-            var amounts=[];
             $($vous).each(function (idx, elem) {
                 relates.push({
                     payId: $(elem).data("payid"),

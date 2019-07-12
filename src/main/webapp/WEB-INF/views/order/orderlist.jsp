@@ -19,8 +19,8 @@
                     <th style='width: 8%;'><div>开始时间</div></th>
                     <th style='width: 8%;'><div>结束时间</div></th>
                     <th style='width: 9%;'><div>订单来源</div></th>
-                    <th style='width: 10%;'><div>实收金额(元)</div></th>
-                    <th style='width: 8%;'><div>成本(元)</div></th>
+                    <th style='width: 10%;'><div>订单金额(元)</div></th>
+                    <th style='width: 8%;'><div>实收金额(元)</div></th>
                     <th style='width: 8%;'><div>订单状态</div></th>
                     <th style='width: 8%;'><div>支付方式</div></th>
                     <th style='width: 22%;'><div>操作</div></th>
