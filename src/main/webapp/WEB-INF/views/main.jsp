@@ -96,6 +96,12 @@
                             <li class="child-menu">
                                 <a href="${ctx}/sysuser/toUserlist" target="homepage">员工管理</a>
                             </li>
+                            <li class="child-menu">
+                                <a href="${ctx}/sysmenu/toMenulist" target="homepage">菜单配置</a>
+                            </li>
+                            <li class="child-menu">
+                                <a href="${ctx}/sysrole/toRolelist" target="homepage">角色管理</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -101,4 +101,13 @@ $(function(){
         });
     });
 
+    $("#exportBtn").click(function () {
+        $("#orderId").val();
+        $("#hourseNumber").val();
+        $("#timeSpick").val();
+        $("#timeEpick").val();
+
+
+    });
+
 });

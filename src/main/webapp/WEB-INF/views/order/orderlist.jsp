@@ -122,6 +122,7 @@
                     <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
+                    <input id="exportBtn" type="button" class="blue_btn ml20" value="导出订单">
                 </div>
             </form>
         </div>

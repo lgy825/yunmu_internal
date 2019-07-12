@@ -43,4 +43,34 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<SysRoleExt> sysUSerList = sysRoleMapperExt.getRolePage(param);
         return new GenericPage<>(pageIndex, pageSize, sysUSerList, pageInfo.getTotal());
     }
+
+    @Override
+    public boolean saveRoleExt(SysRoleExt sysRoleExt) {
+        return false;
+    }
+
+    @Override
+    public boolean updateRoleExt(SysRoleExt sysRoleExt) {
+        return false;
+    }
+
+    @Override
+    public SysRoleExt getRoleExt(String roleId) {
+        return null;
+    }
+
+    @Override
+    public boolean nameExist(SysRoleExt sysRoleExt) {
+        return false;
+    }
+
+    @Override
+    public boolean disableRole(String roleId, String userId) {
+        return false;
+    }
+
+    @Override
+    public boolean unDisableRole(String roleId, String userId) {
+        return false;
+    }
 }

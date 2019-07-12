@@ -183,5 +183,5 @@
 </body>
 
 <!-- scripts -->
-<script type="text/javascript" src="${ctx}/js/mod/sys/menu/menulist.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/sys/menu/menulist.js"></script>
 </html>
