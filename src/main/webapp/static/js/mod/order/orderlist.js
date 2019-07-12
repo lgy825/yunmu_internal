@@ -66,6 +66,7 @@ $(function(){
 
     $("#resetBtn").click(function () {
         $("#orderId").val("");
+
         $("#hourseNumber").val("");
         $("#timeSpick").val("");
         $("#timeEpick").val("");
@@ -99,6 +100,28 @@ $(function(){
                 }
             });
         });
+    });
+
+    $("#exportBtn").click(function () {
+        var orderId= $("#orderId").val();
+        var hourseNumber=$("#hourseNumber").val();
+        var beginTime=$("#timeSpick").val();
+        var endTime =$("#timeEpick").val();
+        if ($.trim(hourseNumber)=='' || $.trim(hourseNumber)==null) {
+            layer.msg("请至少输入房间号再导出");
+            return;
+        }
+        if (beginTime.length < 1 || endTime.length < 1) {
+            layer.confirm('您没有选择导出起止时间，是否继续？', function () {
+                location.href = ctx + "order/exportOrder?hourseNumber="+hourseNumber+"&beginTime="+beginTime+"&endTime="+endTime;
+            });
+        } else {
+            if (Date.parse(beginTime) > Date.parse(endTime)) {
+                layer.msg("结束日期不能早于开始日期");
+                return;
+            }
+            location.href = ctx + "order/exportOrder?hourseNumber="+hourseNumber+"&beginTime="+beginTime+"&endTime="+endTime;
+        }
     });
 
 });

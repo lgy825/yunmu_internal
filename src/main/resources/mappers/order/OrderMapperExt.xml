@@ -110,13 +110,13 @@
       AND yo.id LIKE '%${orderId}%'
     </if>
     <if test="beginTime!=null">
-      AND  yo.order_start_date >= #{beginTime}
+      AND  yo.create_time >= #{beginTime}
     </if>
     <if test="hourseNumber != null and hourseNumber != ''">
       AND yh.hourse_number LIKE '%${hourseNumber}%'
     </if>
     <if test="endTime!=null">
-      AND yo.order_end_time <![CDATA[<=]]> #{endTime}
+      AND yo.create_time <![CDATA[<=]]> #{endTime}
     </if>
     <if test="projectIds!=null and projectIds.size>0">
       and yo.project_id in
@@ -136,10 +136,10 @@
       </if>
     )
     <if test="beginTime!=null">
-      AND  orderer.order_start_date >= #{beginTime}
+      AND  orderer.create_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND orderer.order_end_time <![CDATA[<=]]> #{endTime}
+      AND orderer.create_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
@@ -152,10 +152,10 @@
     </if>
     )
     <if test="beginTime!=null">
-      AND  orderer.order_start_date >= #{beginTime}
+      AND  orderer.create_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND orderer.order_end_time <![CDATA[<=]]> #{endTime}
+      AND orderer.create_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
@@ -167,10 +167,10 @@
       </if>
     )
     <if test="beginTime!=null">
-      AND  orderer.order_start_date >= #{beginTime}
+      AND  orderer.create_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND orderer.order_end_time <![CDATA[<=]]> #{endTime}
+      AND orderer.create_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
@@ -185,10 +185,10 @@
       </if>
     )
     <if test="beginTime!=null">
-      AND  mo.order_start_date >= #{beginTime}
+      AND  mo.create_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND mo.order_end_time <![CDATA[<=]]> #{endTime}
+      AND mo.create_time <![CDATA[<=]]> #{endTime}
     </if>
         GROUP BY days ORDER BY days DESC;
   </select>
@@ -206,16 +206,41 @@
     <include refid="Base_Column_List" />
     FROM  yunmu_order yo
     where yo.del_flag=0 and yo.hourse_code in(
-        SELECT id from yunmu_hourse where del_flag=0 and owner_code=#{ownerCode}
+        SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
     )
     <if test="beginTime!=null">
-      AND  yo.order_start_date >= #{beginTime}
+      AND  yo.create_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND yo.order_start_date <![CDATA[<=]]> #{endTime}
+      AND yo.create_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
+  <select id="getAllRecByParam" parameterType="java.util.Map" resultType="Double">
+    SELECT SUM(yo.order_rec_amount)
+    FROM  yunmu_order yo
+    where yo.del_flag=0 and yo.hourse_code in(
+    SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
+    )
+    <if test="beginTime!=null">
+      AND  yo.create_time >= #{beginTime}
+    </if>
+    <if test="endTime!=null">
+      AND yo.create_time <![CDATA[<=]]> #{endTime}
+    </if>
+  </select>
 
-
+  <select id="getAllActByParam" parameterType="java.util.Map" resultType="Double">
+    SELECT SUM(yo.order_act_amount)
+    FROM  yunmu_order yo
+    where yo.del_flag=0 and yo.hourse_code in(
+    SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
+    )
+    <if test="beginTime!=null">
+      AND  yo.create_time >= #{beginTime}
+    </if>
+    <if test="endTime!=null">
+      AND yo.create_time <![CDATA[<=]]> #{endTime}
+    </if>
+  </select>
 </mapper>

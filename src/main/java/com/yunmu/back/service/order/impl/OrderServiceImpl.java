@@ -318,6 +318,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public double getAllRecByParam(Map<String, String> params) {
+
+        return orderMapperExt.getAllRecByParam(params);
+    }
+
+    @Override
+    public double getAllActByParam(Map<String, String> params) {
+        return orderMapperExt.getAllActByParam(params);
+    }
+
+    @Override
     public List<PayWay> getPayWay() {
         List<PayWay> payWays=payWayMapper.getPayWayAll();
         return payWays;
