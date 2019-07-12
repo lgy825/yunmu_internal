@@ -28,4 +28,8 @@ public interface OrderService {
     OrderExt get(String id);
 
     List<OrderExt> getOrdersByDate(Map<String,String> params);
+
+    double getAllRecByParam(Map<String,String> params);
+
+    double getAllActByParam(Map<String,String> params);
 }

@@ -23,4 +23,8 @@ public interface OrderMapperExt {
     void deleteOrderDetail(String orderCode);
 
     List<OrderExt> getOrderExport(Map<String,String> params);
+
+    double getAllRecByParam(Map<String,String> params);
+
+    double getAllActByParam(Map<String,String> params);
 }
