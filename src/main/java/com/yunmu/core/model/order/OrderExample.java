@@ -1034,6 +1034,66 @@ public class OrderExample {
             addCriterion("project_id not between", value1, value2, "projectId");
             return (Criteria) this;
         }
+
+        public Criteria andIsChooseIsNull() {
+            addCriterion("is_choose is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseIsNotNull() {
+            addCriterion("is_choose is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseEqualTo(Integer value) {
+            addCriterion("is_choose =", value, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseNotEqualTo(Integer value) {
+            addCriterion("is_choose <>", value, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseGreaterThan(Integer value) {
+            addCriterion("is_choose >", value, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_choose >=", value, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseLessThan(Integer value) {
+            addCriterion("is_choose <", value, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseLessThanOrEqualTo(Integer value) {
+            addCriterion("is_choose <=", value, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseIn(List<Integer> values) {
+            addCriterion("is_choose in", values, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseNotIn(List<Integer> values) {
+            addCriterion("is_choose not in", values, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseBetween(Integer value1, Integer value2) {
+            addCriterion("is_choose between", value1, value2, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_choose not between", value1, value2, "isChoose");
+            return (Criteria) this;
+        }
     }
 
     /**
