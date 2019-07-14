@@ -19,7 +19,7 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
-    <result column="shiro_flag" jdbcType="INTEGER" property="shiroFlag" />
+    <result column="shiro_flag" jdbcType="VARCHAR" property="shiroFlag" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -156,7 +156,7 @@
       #{menuName,jdbcType=VARCHAR}, #{menuHref,jdbcType=VARCHAR}, #{menuTarget,jdbcType=VARCHAR}, 
       #{menuSort,jdbcType=INTEGER}, #{isShow,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{delFlag,jdbcType=INTEGER}, #{shiroFlag,jdbcType=INTEGER})
+      #{delFlag,jdbcType=INTEGER}, #{shiroFlag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yunmu.core.model.sys.SysMenu">
     <!--
@@ -249,7 +249,7 @@
         #{delFlag,jdbcType=INTEGER},
       </if>
       <if test="shiroFlag != null">
-        #{shiroFlag,jdbcType=INTEGER},
+        #{shiroFlag,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -310,7 +310,7 @@
         del_flag = #{record.delFlag,jdbcType=INTEGER},
       </if>
       <if test="record.shiroFlag != null">
-        shiro_flag = #{record.shiroFlag,jdbcType=INTEGER},
+        shiro_flag = #{record.shiroFlag,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -336,7 +336,7 @@
       update_by = #{record.updateBy,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       del_flag = #{record.delFlag,jdbcType=INTEGER},
-      shiro_flag = #{record.shiroFlag,jdbcType=INTEGER}
+      shiro_flag = #{record.shiroFlag,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -385,7 +385,7 @@
         del_flag = #{delFlag,jdbcType=INTEGER},
       </if>
       <if test="shiroFlag != null">
-        shiro_flag = #{shiroFlag,jdbcType=INTEGER},
+        shiro_flag = #{shiroFlag,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -408,7 +408,7 @@
       update_by = #{updateBy,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       del_flag = #{delFlag,jdbcType=INTEGER},
-      shiro_flag = #{shiroFlag,jdbcType=INTEGER}
+      shiro_flag = #{shiroFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

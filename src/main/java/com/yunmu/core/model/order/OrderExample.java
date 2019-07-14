@@ -585,6 +585,66 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andOrderProAmountIsNull() {
+            addCriterion("order_pro_amount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountIsNotNull() {
+            addCriterion("order_pro_amount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountEqualTo(Long value) {
+            addCriterion("order_pro_amount =", value, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountNotEqualTo(Long value) {
+            addCriterion("order_pro_amount <>", value, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountGreaterThan(Long value) {
+            addCriterion("order_pro_amount >", value, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountGreaterThanOrEqualTo(Long value) {
+            addCriterion("order_pro_amount >=", value, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountLessThan(Long value) {
+            addCriterion("order_pro_amount <", value, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountLessThanOrEqualTo(Long value) {
+            addCriterion("order_pro_amount <=", value, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountIn(List<Long> values) {
+            addCriterion("order_pro_amount in", values, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountNotIn(List<Long> values) {
+            addCriterion("order_pro_amount not in", values, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountBetween(Long value1, Long value2) {
+            addCriterion("order_pro_amount between", value1, value2, "orderProAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderProAmountNotBetween(Long value1, Long value2) {
+            addCriterion("order_pro_amount not between", value1, value2, "orderProAmount");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderActAmountIsNull() {
             addCriterion("order_act_amount is null");
             return (Criteria) this;
@@ -1092,6 +1152,126 @@ public class OrderExample {
 
         public Criteria andIsChooseNotBetween(Integer value1, Integer value2) {
             addCriterion("is_choose not between", value1, value2, "isChoose");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductIsNull() {
+            addCriterion("is_choose_product is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductIsNotNull() {
+            addCriterion("is_choose_product is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductEqualTo(Integer value) {
+            addCriterion("is_choose_product =", value, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductNotEqualTo(Integer value) {
+            addCriterion("is_choose_product <>", value, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductGreaterThan(Integer value) {
+            addCriterion("is_choose_product >", value, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_choose_product >=", value, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductLessThan(Integer value) {
+            addCriterion("is_choose_product <", value, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductLessThanOrEqualTo(Integer value) {
+            addCriterion("is_choose_product <=", value, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductIn(List<Integer> values) {
+            addCriterion("is_choose_product in", values, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductNotIn(List<Integer> values) {
+            addCriterion("is_choose_product not in", values, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductBetween(Integer value1, Integer value2) {
+            addCriterion("is_choose_product between", value1, value2, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsChooseProductNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_choose_product not between", value1, value2, "isChooseProduct");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelIsNull() {
+            addCriterion("order_channel is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelIsNotNull() {
+            addCriterion("order_channel is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelEqualTo(Integer value) {
+            addCriterion("order_channel =", value, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelNotEqualTo(Integer value) {
+            addCriterion("order_channel <>", value, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelGreaterThan(Integer value) {
+            addCriterion("order_channel >", value, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_channel >=", value, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelLessThan(Integer value) {
+            addCriterion("order_channel <", value, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelLessThanOrEqualTo(Integer value) {
+            addCriterion("order_channel <=", value, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelIn(List<Integer> values) {
+            addCriterion("order_channel in", values, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelNotIn(List<Integer> values) {
+            addCriterion("order_channel not in", values, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelBetween(Integer value1, Integer value2) {
+            addCriterion("order_channel between", value1, value2, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderChannelNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_channel not between", value1, value2, "orderChannel");
             return (Criteria) this;
         }
     }

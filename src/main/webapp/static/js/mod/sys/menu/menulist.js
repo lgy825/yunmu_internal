@@ -7,7 +7,7 @@ $(function () {
 
     function loadData() {
         $.ajax({
-            url: ctx + "sysmenu/getmenulist.do",
+            url: ctx + "sysmenu/getmenulist",
             type: "GET",
             cache: false,
             async: false,
@@ -179,7 +179,7 @@ $(function () {
         var shiroFlag = $("#shiroFlag").val();
 
         $.ajax({
-            url: ctx + "sysmenu/savemenu.do",
+            url: ctx + "sysmenu/savemenu",
             type: "POST",
             cache: false,
             // async: false,
@@ -303,11 +303,11 @@ $(function () {
         var url;
         var msg = "";
         if(del) {
-            url = ctx + "sysmenu/del.do";
+            url = ctx + "sysmenu/del";
             msg = "是否删除" + mtmp.menuName + "，删除该菜单会自动删除其下级菜单或按钮，点击确认继续。";
         } else {
             if (mtmp.isShow === 1) {
-                url = ctx + "sysmenu/disablemenu.do";
+                url = ctx + "sysmenu/disablemenu";
                 msg = "是否隐藏" + mtmp.menuName + "，隐藏该菜单会自动隐藏其下级菜单或按钮，点击确认继续。";
             } else {
                 // 判断父级是否是隐藏的
@@ -318,7 +318,7 @@ $(function () {
                     }
                 }
 
-                url = ctx + "sysmenu/undisablemenu.do";
+                url = ctx + "sysmenu/undisablemenu";
                 msg = "是否显示" + mtmp.menuName + "，点击确认继续。";
             }
         }

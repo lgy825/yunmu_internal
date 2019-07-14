@@ -3,6 +3,8 @@ package com.yunmu.back.service.sys;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.model.project.Project;
+import com.yunmu.core.model.sys.SysMenu;
+import com.yunmu.core.model.sys.SysRole;
 import com.yunmu.core.model.sys.SysUser;
 import com.yunmu.core.model.sys.SysUserExt;
 
@@ -30,5 +32,9 @@ public interface SysUserService {
     boolean updatePassWord(SysUser sysUser);
 
     int getSysUserByCompanyCode(String companyCode);
+
+    List<SysRole> getRolesByUserId(String userId);
+
+    List<SysMenu> getMenusByUserId(String userId);
 
 }

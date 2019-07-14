@@ -28,6 +28,7 @@ $(function () {
     });
 
     loadPay();
+    loadProduct();
     loadOrderSource();
     loadHourseAndType();
     loadPayWay();
@@ -87,11 +88,33 @@ $(function () {
                 layer.msg("请选择支出");
                 return;
             }
-            var relates = [];
+            var pays = [];
             $($vous).each(function (idx, elem) {
-                relates.push({
+                pays.push({
                     payId: $(elem).data("payid"),
-                    amount:$vous.parent().parent().parent().find(".params").val()
+                    amount:$vous.parent().parent().parent().find("."+ $(elem).data("payid")).val()
+                });
+
+            });
+        }
+
+        //商品选项
+        var productChooseWay = $(".productr.on").attr("productradio");
+        var isChooseProduct;
+        if (productChooseWay == 1) {
+            isChooseProduct=1;
+        }else{
+            isChooseProduct=2;
+            var $vouss = $("#productTbody").find(".productcheck.cur");
+            if($vouss.length < 1) {
+                layer.msg("请选择商品");
+                return;
+            }
+            var productObjs = [];
+            $($vouss).each(function (idx, elem) {
+                productObjs.push({
+                    productId: $(elem).data("productid"),
+                    amount:$vouss.parent().parent().parent().find("."+ $(elem).data("productid")).val()
                 });
 
             });
@@ -148,7 +171,7 @@ $(function () {
             data: JSON.stringify({
                 id:$.trim($("#orderId").val()),
                 orderRecAmount:orderActAmount,
-                paramVos:relates,
+                paramVos:pays,
                 projectId: $.trim($("#projectSel").val()),
                 orderWay: $.trim($("#paySel").val()),
                 orderSource: $.trim($("#sourceSel").val()),
@@ -156,7 +179,9 @@ $(function () {
                 orderStartDate:startTime+ " 00:00:00",
                 orderEndTime:endTime+ " 23:59:59",
                 orderActAmount:orderActAmount,
-                isChoose:isChoose
+                isChoose:isChoose,
+                isChooseProduct:isChooseProduct,
+                productObjs:productObjs
             }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
@@ -291,6 +316,7 @@ $(function () {
                                 },
                                 error: function () {
                                     layer.msg('查询失败 !');
+
                                 }
                             });
                     }
@@ -394,7 +420,7 @@ $(function () {
                                 '<td><div><span class="paycheck checkBtn check w14" data-payid="'+item.payId+'"></span></div></td>' +
                                 '<td><div>' + (_.isUndefined(item.payName) ? '' : item.payName) + '</div></td>' +
                                 '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.payAmount ? item.payAmount : 0) + '</span>'
-                                + '<i class="rename"></i><input  type="text"  value="'+item.payAmount+'" class="params rename-inp none"></span></div></td>' +
+                                + '<i class="rename"></i><input  type="text"  value="'+item.payAmount+'" class="rename-inp none '+item.payId+'"></span></div></td>' +
                                 '<td><div title="'+item.payDesc+'">'+item.payDesc+'</div></td>' +
                                 ' </tr>'
                             );
@@ -415,7 +441,7 @@ $(function () {
         })
     }
 
-    $('.oInfo_table').on('click', '.rename', function () {
+    $('.oInfo_tables').on('click', '.rename', function () {
         $(this).prev().hide();
         $(this).next().show().addClass('border-el');
     });
@@ -440,6 +466,89 @@ $(function () {
 
     function clearSearch() {
         $("#paySearch").val("");
+    }
+
+
+    //商品列表展示
+    $("#productTbody").on('click', '.check', function () {
+        var _this = $(this);
+        var ccode = _this.attr("ccode");
+        _this.toggleClass('cur');
+
+    });
+    $("#productSearch").on('keyup',function () {
+        loadProduct();
+    });
+
+    function loadProduct() {
+        var productSearch=$.trim($("#productSearch").val());
+        $.ajax({
+            url:ctx+"product/getpage",
+            type:"GET",
+            cache: false,
+            dataType: 'json',
+            contentType: "application/json",
+            data:{
+                pageIndex: 1,
+                pageSize: 99999,
+                productName:productSearch
+            },
+            success: function (result) {
+                if (result && result.resultCode === '0') {
+                    $("#productTbody").empty();
+                    if(result.resultData && result.resultData.list) {
+                        $(result.resultData.list).each(function (index, item) {
+                            $("#productTbody").append(
+                                '<tr>' +
+                                '<td><div><span class="productcheck checkBtn check w14" data-productid="'+item.id+'"></span></div></td>' +
+                                '<td><div>' + (_.isUndefined(item.productName) ? '' : item.productName) + '</div></td>' +
+                                '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.productAmount ? item.productAmount : 0) + '</span>'
+                                + '<i class="rename"></i><input  type="text"  value="'+item.productAmount+'" class="rename-inp none '+item.id+'"></span></div></td>' +
+                                '<td><div title="'+item.productDesc+'">'+item.productDesc+'</div></td>' +
+                                ' </tr>'
+                            );
+                        });
+                    }
+                } else {
+                    if (result.resultDesc) {
+                        layer.msg(result.resultDesc);
+                    } else {
+                        layer.msg('没有查询支出信息!');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询支出失败!');
+            }
+
+        })
+    }
+
+    $('.oInfo_tables').on('click', '.rename', function () {
+        $(this).prev().hide();
+        $(this).next().show().addClass('border-el');
+    });
+
+
+    $('.product_box').on('click', '.radio', function () {
+        var _this = $(this),
+            $data_i = _this.attr('data-i'),
+            $p_selCimema = $('#p_selProductPan');
+
+        if ($data_i == 1) {
+            $p_selCimema.removeClass('none');
+        } else {
+            // 全部
+            $p_selCimema.addClass('none');
+            //clearSearch();
+        }
+        $(".productr").removeClass("on");
+        $(this).addClass("on");
+        clearProductSearch();
+    });
+
+    function clearProductSearch() {
+        $("#productSearch").val("");
     }
 
 

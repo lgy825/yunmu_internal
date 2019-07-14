@@ -59,7 +59,7 @@
                     <input id="orderActAmount" maxlength="5" type="text" class="inpW set-inpwid ml8" placeholder="请输入房费">
                     <span class="color-lred ml8 mt6">* 不超过5个字，不能出现其他特殊字符</span>
                 </div>
-                <!-- 可管理影院 -->
+                <!-- 选择支出 -->
                 <div class="mt12">
                     <div class="cinema_box">
                         <div class="b_label lab_wid1 relative">选择支出</div>
@@ -87,7 +87,34 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- 选择支出 -->
+                <div class="mt12">
+                    <div class="product_box">
+                        <div class="b_label lab_wid1 relative">选择商品</div>
+                        <span productradio="1" class="productr checkBtn radio mr20 on" data-i="0">暂不选择</span>
+                        <span productradio="2" class="productr checkBtn radio" data-i="1">指定商品</span>
+                    </div>
+                    <div id="p_selProductPan" class="pl88 mt10 p_selProduct none">
+                        <div class="mt10">
+                            <input id="productSearch" type="text" class="inpW inpWid1 mr8" placeholder="请输入商品名称"/>
+                            <span class="color-lred">* 输入商品名称搜索 </span>
+                            <div class="bore1 p_movBox p_movBox2">
+                                <table class="oInfo_tables">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 12%"><div>选择</div></th>
+                                        <th style="width: 20%"><div>商品名称</div></th>
+                                        <th style="width: 23%"><div>商品金额</div></th>
+                                        <th style="width: 40%"><div>商品描述</div></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="productTbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="mt20">
                     <div class="align-r mr8">订单时间</div>
                     <input type="text" class="inpW inpWid2 timer" id="timeSpick" placeholder="开始日期">

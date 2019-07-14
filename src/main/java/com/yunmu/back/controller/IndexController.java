@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -67,11 +68,11 @@ public class IndexController extends BaseController {
         return "login";
     }
 
-    @RequestMapping("/workbench")
-    public String toWorkBench() {
-        log.info("开始访问登录页面");
-        return "/index/workbench";
-    }
+//    @RequestMapping("/workbench")
+//    public String toWorkBench() {
+//        log.info("开始访问登录页面");
+//        return "/index/workbench";
+//    }
 
     @RequestMapping(value = "/index/getCodeImg", method = RequestMethod.GET)
     public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response)
@@ -175,7 +176,7 @@ public class IndexController extends BaseController {
             }
             if(cinemaListResult.size()==0) {
                 // TODO 请求失败
-                return createFailedResult("查询用户授权影院失败");
+                return createFailedResult("查询用户授权项目失败");
             }
             session.setAttribute(SESSION_KEY_ALL_MY_CINEMA, cinemaListResult);
         } else {
@@ -286,6 +287,12 @@ public class IndexController extends BaseController {
                 }
             }
         }
+    }
+
+    @RequestMapping("/workbench")
+    public ModelAndView toWorkbench() {
+        ModelAndView view=new ModelAndView("/index/workbench");
+        return view;
     }
 
 

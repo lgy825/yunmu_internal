@@ -35,6 +35,17 @@
         <div class="inner-container">
             <div class="aside-list">
                 <ul class="">
+                    <!-- 工作台主页 -->
+                    <li class="aside-title">
+                        <div class="title-wrap">
+                            <div class="title-fixed">
+                                <a class="clearfix" href="${ctx}/workbench" target="homepage">
+                                    <i class="home-blue fl"></i>
+                                    <span class="fl color-blue">工作台</span>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
                     <li class="aside-title">
                             <a class="clearfix" href="javascript:;">
                                 <i class="vip-white fl"></i>
@@ -76,10 +87,43 @@
                         </a>
                         <ul class="child-list color-white none">
                             <li class="child-menu">
-                                <a href="${ctx}/order/toOrderlist" target="homepage">订单管理</a>
+                                <a href="${ctx}/order/toOrderlist" target="homepage">混合订单</a>
                             </li>
                             <li class="child-menu">
+                                <a href="${ctx}/order/toOrderlist" target="homepage">房间订单</a>
+                            </li>
+                            <li class="child-menu">
+                                <a href="${ctx}/order/toOrderlist" target="homepage">商品订单</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="aside-title">
+                        <a class="clearfix" href="javascript:;">
+                            <i class="order-white fl"></i>
+                            <span class="fl">商品管理</span>
+                            <i class="add-icon add-white fr"></i>
+                        </a>
+                        <ul class="child-list color-white none">
+                            <li class="child-menu">
+                                <a href="${ctx}/product/toProductlist" target="homepage">商品管理</a>
+                            </li>
+                            <li class="child-menu">
+                                <a href="${ctx}/product/toProducttypelist" target="homepage">商品类型管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="aside-title">
+                        <a class="clearfix" href="javascript:;">
+                            <i class="order-white fl"></i>
+                            <span class="fl">支出管理</span>
+                            <i class="add-icon add-white fr"></i>
+                        </a>
+                        <ul class="child-list color-white none">
+                            <li class="child-menu">
                                 <a href="${ctx}/pay/toPaylist" target="homepage">支出管理</a>
+                            </li>
+                            <li class="child-menu">
+                                <a href="${ctx}/product/toProducttypelist" target="homepage">支出类型管理</a>
                             </li>
                         </ul>
                     </li>
@@ -104,13 +148,14 @@
                             </li>
                         </ul>
                     </li>
+
                 </ul>
             </div>
         </div>
     </div>
     <!-- 嵌套页面 -->
     <div class="iframe-wrap">
-        <iframe src="${ctx}/order/toOrderlist" name="homepage" id="iframe_wrap" frameborder="0" scrolling="auto"></iframe>
+        <iframe src="${ctx}/workbench" name="homepage" id="iframe_wrap" frameborder="0" scrolling="auto"></iframe>
     </div>
 </div>
 

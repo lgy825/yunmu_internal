@@ -64,18 +64,17 @@
                         </div>
                     </div>
                 </div>
-<%--                <!-- 用户角色 -->--%>
-<%--                <div class="mt12 clearfix">--%>
-<%--                    <div class="align-r fl mt6">用户角色</div>--%>
-<%--                    <div id="p_selRolePan" class="p_selCimema fl ml8">--%>
-<%--                        <input id="rolenamesearch" type="text" class="inpW inpWid1 mr8" placeholder="请输入角色名称">--%>
-<%--                        <span class="color-lred">* 请至少选择一种角色，角色选择决定用户可管理的项目菜单权限</span>--%>
-<%--                        <div id="roleDiv" class="bore1 p_movBox none">--%>
+                <!-- 用户角色 -->
+                <div class="mt12 clearfix">
+                    <div class="align-r fl mt6">用户角色</div>
+                    <div id="p_selRolePan" class="p_selCimema fl ml8">
+                        <input id="rolenamesearch" type="text" class="inpW inpWid1 mr8" placeholder="请输入角色名称">
+                        <span class="color-lred">* 请至少选择一种角色，角色选择决定用户可管理的项目菜单权限</span>
+                        <div id="roleDiv" class="bore1 p_movBox none">
 
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
+                        </div>
+                    </div>
+                </div>
                 <div class="pl88 mt30">
                     <input id="saveBtn" type="button" class="blue_btn blue_btn30" value="创建完成">
                     <a href="${ctx}/sysuser/toUserlist">

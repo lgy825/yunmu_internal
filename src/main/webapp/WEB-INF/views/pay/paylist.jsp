@@ -247,12 +247,12 @@
         $('.modality-layer').hide();
         $(".appName").removeAttr("disabled");
     }
-    function editType(id,projectId,payName,payType,payDesc,payAmount) {
+    function editType(payId,projectId,payName,payType,payDesc,payAmount) {
         $('.modality-layer').show();
         $("#payNames").val(payName);
         $(".payAmount").val(payAmount);
         $("#payDesc").val(payDesc);
-        $(".ids").val(id);
+        $(".ids").val(payId);
         $("#projectSel").attr('code', projectId);
         $("#typeSel").attr('code', payType);
         $(".cinema").hide();

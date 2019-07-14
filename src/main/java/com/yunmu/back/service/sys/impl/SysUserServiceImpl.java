@@ -177,27 +177,27 @@ public class SysUserServiceImpl implements SysUserService {
                 sysUserMapperExt.insertBatchUserCinema(sysUserCinemaList);
             }
 
-//            List<SysUserRole> sysUserRoleList = null;
-//            if(org.apache.commons.lang3.StringUtils.isNotBlank(sysUserExt.getRoles())) {
-//                sysUserRoleList = new ArrayList<>();
-//                if(sysUserExt.getRoles().contains(",")) {
-//                    String[] roles = sysUserExt.getRoles().split(",");
-//                    for(String ccode: roles) {
-//                        SysUserRole sysUserRoleKey = new SysUserRole();
-//                        sysUserRoleKey.setUserId(userId);
-//                        sysUserRoleKey.setRoleId(ccode);
-//                        sysUserRoleList.add(sysUserRoleKey);
-//                    }
-//                } else {
-//                    SysUserRole sysUserRoleKey = new SysUserRole();
-//                    sysUserRoleKey.setUserId(userId);
-//                    sysUserRoleKey.setRoleId(sysUserExt.getRoles());
-//                    sysUserRoleList.add(sysUserRoleKey);
-//                }
-//            } else {
-//                throw new DataException("请选择角色后提交");
-//            }
-            //sysUserMapperExt.insertBatchUserRole(sysUserRoleList);
+            List<SysUserRole> sysUserRoleList = null;
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(sysUserExt.getRoles())) {
+                sysUserRoleList = new ArrayList<>();
+                if(sysUserExt.getRoles().contains(",")) {
+                    String[] roles = sysUserExt.getRoles().split(",");
+                    for(String ccode: roles) {
+                        SysUserRole sysUserRoleKey = new SysUserRole();
+                        sysUserRoleKey.setUserId(userId);
+                        sysUserRoleKey.setRoleId(ccode);
+                        sysUserRoleList.add(sysUserRoleKey);
+                    }
+                } else {
+                    SysUserRole sysUserRoleKey = new SysUserRole();
+                    sysUserRoleKey.setUserId(userId);
+                    sysUserRoleKey.setRoleId(sysUserExt.getRoles());
+                    sysUserRoleList.add(sysUserRoleKey);
+                }
+            } else {
+                throw new DataException("请选择角色后提交");
+            }
+            sysUserMapperExt.insertBatchUserRole(sysUserRoleList);
         }
         return true;
     }
@@ -418,6 +418,16 @@ public class SysUserServiceImpl implements SysUserService {
         criteria.andCompanyCodeEqualTo(companyCode);
         criteria.andDelFlagEqualTo(0);
         return sysUserMapper.selectByExample(sysUserExample).size();
+    }
+
+    @Override
+    public List<SysRole> getRolesByUserId(String userId) {
+        return sysUserMapperExt.getRolesByUserId(userId);
+    }
+
+    @Override
+    public List<SysMenu> getMenusByUserId(String userId) {
+        return sysUserMapperExt.getMenusByUserId(userId);
     }
 
 

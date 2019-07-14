@@ -3,12 +3,16 @@ package com.yunmu.core.util;
 import com.google.common.collect.Maps;
 
 import com.yunmu.back.service.sys.SysUserService;
+import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.ResultConstants;
+import com.yunmu.core.model.sys.SysMenu;
+import com.yunmu.core.model.sys.SysRole;
 import com.yunmu.core.model.sys.SysUser;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
@@ -20,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by yangbin on 2017/11/21
@@ -95,10 +100,6 @@ public class MyRealm extends AuthorizingRealm {
 		}
 	}
 
-	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-		return null;
-	}
 
 	/**
 	 * 支持or and not 关键词  不支持and or混用
@@ -135,4 +136,28 @@ public class MyRealm extends AuthorizingRealm {
 			return super.isPermitted(principals, permission);
 		}
 	}
+
+	/**
+	 * 授权
+	 */
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		String sysUserId = ((SysUser)principals.getPrimaryPrincipal()).getId();
+
+		List<SysRole> rolesResult = sysUserService.getRolesByUserId(sysUserId);
+		if(ResultConstants.RESULT_CODE_SUCCESS.equals(rolesResult.size()+"")) {
+			throw new RuntimeException(ResultConstants.RESULT_CDESC_FAILED);
+		}
+		authorizationInfo.setRoles(rolesResult.stream().map(SysRole::getRoleName).collect(Collectors.toSet()));
+
+		List<SysMenu> menuResult = sysUserService.getMenusByUserId(sysUserId);
+		if(ResultConstants.RESULT_CODE_SUCCESS.equals(menuResult.size()+"")) {
+			throw new RuntimeException(ResultConstants.RESULT_CDESC_FAILED);
+		}
+		authorizationInfo.setStringPermissions(menuResult.stream().map(SysMenu::getShiroFlag).filter(StringUtils::isNotBlank).collect(Collectors.toSet()));
+
+		return authorizationInfo;
+	}
+
 }

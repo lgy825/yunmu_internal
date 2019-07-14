@@ -1371,6 +1371,14 @@
 .oInfo_table p {
     line-height: 20px;
 }
+.oInfo_tables div {
+    padding: 14px;
+    text-align: left;
+}
+
+.oInfo_tables p {
+    line-height: 20px;
+}
 
 .movBox1.bot {
     border-top: 1px dotted #e4e4e4;

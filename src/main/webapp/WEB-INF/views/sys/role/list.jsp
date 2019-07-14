@@ -6,15 +6,15 @@
     <meta charset="UTF-8">
     <title>角色管理</title>
     <%@include file="/static/commons/common.jspf" %>
-    <link href="${ctx}/css/mricode.pagination.css" rel="stylesheet" />
-    <script src="${ctx}/js/lib/jsrender.min.js"></script>
-    <script src="${ctx}/js/lib/mricode.pagination.js"></script>
-    <script src="${ctx}/js/lib/jsrender-converts.js"></script>
+    <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
+    <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
+    <script src="${ctx}/static/js/lib/mricode.pagination.js"></script>
+    <script src="${ctx}/static/js/lib/jsrender-converts.js"></script>
     <script id="trTmpl" type="text/x-jrender">
         <thead>
             <tr>
                 <th style='width: 20%;'><div>角色名称</div></th>
-                <th style='width: 25%;'><div>所属项目</div></th>
+                <th style='width: 25%;'><div>所属公司</div></th>
                 <th style='width: 15%;'><div>描述</div></th>
                 <th style='width: 15%;'><div>添加时间</div></th>
                 <th style='width: 25%;'><div>操作</div></th>
@@ -29,13 +29,13 @@
                 <td><div>{{dateTime:createTime}}</div></td>
                 <td>
                     <div class="">
-                        <a href="${ctx}/sysrole/tolook.do?id={{:id}}">
+                        <a href="${ctx}/sysrole/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="查看">
                         </a>
-                        <a href="${ctx}/sysrole/toedit.do?id={{:id}}">
+                        <a href="${ctx}/sysrole/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
-                        {{if disabledFlag == 1}}
+                        {{if status == 1}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">

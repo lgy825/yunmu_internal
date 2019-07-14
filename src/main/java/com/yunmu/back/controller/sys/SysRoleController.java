@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/sysrole")
+@RequestMapping("sysrole")
 public class SysRoleController extends BaseController {
 
     @Autowired

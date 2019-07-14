@@ -72,18 +72,18 @@ $(function () {
             });
             cinemas = chooseC.join(",");
         }
-        // var roles = "";
-        //
-        // if ($(".rolespan.cur").length < 1) {
-        //     layer.msg("请至少选择一种角色，角色选择决定用户可管理的项目菜单权限");
-        //     return;
-        // }
+        var roles = "";
 
-        // var chooseR = [];
-        // $(".rolespan.cur").each(function () {
-        //     chooseR.push($(this).attr("ccode"));
-        // });
-        // roles = chooseR.join(",");
+        if ($(".rolespan.cur").length < 1) {
+            layer.msg("请至少选择一种角色，角色选择决定用户可管理的项目菜单权限");
+            return;
+        }
+
+        var chooseR = [];
+        $(".rolespan.cur").each(function () {
+            chooseR.push($(this).attr("ccode"));
+        });
+        roles = chooseR.join(",");
 
         $.ajax({
             url: ctx + "sysuser/save",
@@ -95,7 +95,7 @@ $(function () {
                 companyCode: companyCode,
                 chooseProjectId: cinemaChooseWay,
                 cinemas: cinemas,
-                //roles: roles,
+                roles: roles,
                 loginName: loginName,
                 password: password,
                 userName: userName,
@@ -148,10 +148,10 @@ $(function () {
                             $("#cinemaDiv").find(".pricinema").remove();
                         } else {
                             getCinemaList([], $("#companySel").val());
-                            //getRoleList([], $("#companySel").val());
+                            getRoleList([], $("#companySel").val());
                         }
                         clearSearch();
-                        //clearRoleSearch();
+                        clearRoleSearch();
                     });
 
                     // 加载数据 -------------
@@ -187,11 +187,11 @@ $(function () {
                                                     $(".pricinema[ccode=" + elem + "]").addClass("cur");
                                                 });
                                             }
-                                            // if (su.roles) {
-                                            //     $(su.roles.split(",")).each(function (idx, elem) {
-                                            //         $(".rolespan[ccode=" + elem + "]").addClass("cur");
-                                            //     });
-                                            // }
+                                            if (su.roles) {
+                                                $(su.roles.split(",")).each(function (idx, elem) {
+                                                    $(".rolespan[ccode=" + elem + "]").addClass("cur");
+                                                });
+                                            }
                                             clearInterval(waitCinema);
                                         }
                                     }, 500);
@@ -222,22 +222,6 @@ $(function () {
             }
         });
     }
-
-    $("#pricinemanamesearch").on('keyup', function () {
-        var searchStr = $.trim($(this).val());
-
-        if (searchStr) {
-
-            // 渲染匹配的影院(选中已选择的影院)
-            var searchResult = _.filter(cinemaArr, function (elem) {
-                return elem.cinemaShortName.indexOf(searchStr) != -1;
-            });
-            showCinemaList(searchResult);
-
-        } else {
-            showCinemaList(cinemaArr, chooseArr);
-        }
-    });
 
     function getCinemaList(chooseCinema, companyCode) {
         $.ajax({
@@ -425,78 +409,95 @@ $(function () {
     });
 
 
-    // $("#rolenamesearch").on('keyup', function () {
-    //     var searchStr = $.trim($(this).val());
-    //
-    //     if (searchStr) {
-    //
-    //         // 渲染匹配的影院(选中已选择的影院)
-    //         var searchResult = _.filter(roleArr, function (elem) {
-    //             return elem.roleName.indexOf(searchStr) != -1;
-    //         });
-    //
-    //         showRoleList(searchResult);
-    //
-    //     } else {
-    //         showRoleList(roleArr, chooseRoleArr);
-    //     }
-    // });
-    //
-    // function getRoleList(chooseRole, companyCode) {
-    //     $.ajax({
-    //         url: ctx + "sysrole/getpage",
-    //         type: "GET",
-    //         cache: false,
-    //         // async: false,
-    //         dataType: 'json',
-    //         data: {companyCode: companyCode, pageIndex:0, pageSize: 99999},
-    //         success: function (data) {
-    //             if (data && data.resultCode === '0') {
-    //                 roleArr = data.resultData.list;
-    //                 if(roleArr.length < 1) {
-    //                     layer.msg("所选公司无可用角色");
-    //                     $("#companySel").val("-1").trigger("change");
-    //                     clearRoleSearch();
-    //                 }
-    //                 showRoleList(roleArr, chooseRole);
-    //                 $("#roleDiv").show();
-    //             }
-    //         }
-    //     });
-    // }
-    //
-    // function showRoleList(roleArr, chooseRoleId) {
-    //     $("#roleDiv").empty();
-    //     $(roleArr).each(function (idx, elem) {
-    //         var cur = '';
-    //         if (chooseRoleId != null &&
-    //             chooseRoleId != undefined &&
-    //             $.inArray(elem.id, chooseRoleId) != -1) {
-    //             cur = 'cur';
-    //             if (chooseRoleArr) {
-    //                 chooseRoleArr.push(elem.id)
-    //             }
-    //         }
-    //         $("#roleDiv").append(
-    //             '<p><span class="rolespan checkBtn check ' + cur + '" ccode="'
-    //             + elem.id
-    //             + '">' + elem.roleName + '</span></p>'
-    //         );
-    //     });
-    //     //复选框
-    //     $("#roleDiv").find('.check').off("click").on('click', function () {
-    //         var _this = $(this);
-    //         _this.toggleClass('cur');
-    //         if (_this.hasClass('cur') && $.inArray(_this.attr('ccode'), chooseRoleArr) == -1) {
-    //             chooseRoleArr.push($(this).attr('ccode'))
-    //         } else {
-    //             _.pull(chooseRoleArr, $(this).attr('ccode'));
-    //         }
-    //     });
-    // }
-    //
-    //
-    // function clearRoleSearch() {
-    //     $("#rolenamesearch").val("");
-    // }
+    $("#pricinemanamesearch").on('keyup', function () {
+        var searchStr = $.trim($(this).val());
+
+        if (searchStr) {
+
+            // 渲染匹配的影院(选中已选择的影院)
+            var searchResult = _.filter(cinemaArr, function (elem) {
+                return elem.projectName.indexOf(searchStr) != -1;
+            });
+
+            showCinemaList(searchResult);
+
+        } else {
+            showCinemaList(cinemaArr, chooseArr);
+        }
+    });
+
+    $("#rolenamesearch").on('keyup', function () {
+        var searchStr = $.trim($(this).val());
+
+        if (searchStr) {
+
+            // 渲染匹配的影院(选中已选择的影院)
+            var searchResult = _.filter(roleArr, function (elem) {
+                return elem.roleName.indexOf(searchStr) != -1;
+            });
+
+            showRoleList(searchResult);
+
+        } else {
+            showRoleList(roleArr, chooseRoleArr);
+        }
+    });
+
+    function getRoleList(chooseRole, companyCode) {
+        $.ajax({
+            url: ctx + "sysrole/getpage",
+            type: "GET",
+            cache: false,
+            // async: false,
+            dataType: 'json',
+            data: {companyCode: companyCode, pageIndex:0, pageSize: 99999},
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    roleArr = data.resultData.list;
+                    if(roleArr.length < 1) {
+                        layer.msg("所选公司无可用角色");
+                        $("#companySel").val("-1").trigger("change");
+                        clearRoleSearch();
+                    }
+                    showRoleList(roleArr, chooseRole);
+                    $("#roleDiv").show();
+                }
+            }
+        });
+    }
+
+    function showRoleList(roleArr, chooseRoleId) {
+        $("#roleDiv").empty();
+        $(roleArr).each(function (idx, elem) {
+            var cur = '';
+            if (chooseRoleId != null &&
+                chooseRoleId != undefined &&
+                $.inArray(elem.id, chooseRoleId) != -1) {
+                cur = 'cur';
+                if (chooseRoleArr) {
+                    chooseRoleArr.push(elem.id)
+                }
+            }
+            $("#roleDiv").append(
+                '<p><span class="rolespan checkBtn check ' + cur + '" ccode="'
+                + elem.id
+                + '">' + elem.roleName + '</span></p>'
+            );
+        });
+        //复选框
+        $("#roleDiv").find('.check').off("click").on('click', function () {
+            var _this = $(this);
+            _this.toggleClass('cur');
+            if (_this.hasClass('cur') && $.inArray(_this.attr('ccode'), chooseRoleArr) == -1) {
+                chooseRoleArr.push($(this).attr('ccode'))
+            } else {
+                _.pull(chooseRoleArr, $(this).attr('ccode'));
+            }
+        });
+    }
+
+
+    function clearRoleSearch() {
+        $("#rolenamesearch").val("");
+    }
 });

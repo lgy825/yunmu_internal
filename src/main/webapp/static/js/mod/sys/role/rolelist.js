@@ -59,7 +59,7 @@ $(function(){
                        if (data && data.resultCode === '0') {
                            // // 城市列表
                            $("#companySel").select2({placeholder: '请选择所属公司'});
-                           $("#companySel").append("<option value='-1'>所属公司</option>");
+                           $("#companySel").append("<option value='-1'>选择公司</option>");
                            $(data.resultData.list).each(function (idx, comp) {
                                $("#companySel").append("<option value='" + comp.companyCode + "'>" + comp.companyName + "</option>");
                            });

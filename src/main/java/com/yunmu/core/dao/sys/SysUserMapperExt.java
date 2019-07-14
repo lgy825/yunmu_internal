@@ -13,4 +13,8 @@ public interface SysUserMapperExt {
     void insertBatchUserCinema(List<SysUserProject> param);
 
     void insertBatchUserRole(List<SysUserRole> param);
+
+    List<SysMenu> getMenusByUserId(String userId);
+
+    List<SysRole> getRolesByUserId(String userId);
 }

@@ -1055,52 +1055,62 @@ public class SysMenuExample {
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagEqualTo(Integer value) {
+        public Criteria andShiroFlagEqualTo(String value) {
             addCriterion("shiro_flag =", value, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagNotEqualTo(Integer value) {
+        public Criteria andShiroFlagNotEqualTo(String value) {
             addCriterion("shiro_flag <>", value, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagGreaterThan(Integer value) {
+        public Criteria andShiroFlagGreaterThan(String value) {
             addCriterion("shiro_flag >", value, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagGreaterThanOrEqualTo(Integer value) {
+        public Criteria andShiroFlagGreaterThanOrEqualTo(String value) {
             addCriterion("shiro_flag >=", value, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagLessThan(Integer value) {
+        public Criteria andShiroFlagLessThan(String value) {
             addCriterion("shiro_flag <", value, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagLessThanOrEqualTo(Integer value) {
+        public Criteria andShiroFlagLessThanOrEqualTo(String value) {
             addCriterion("shiro_flag <=", value, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagIn(List<Integer> values) {
+        public Criteria andShiroFlagLike(String value) {
+            addCriterion("shiro_flag like", value, "shiroFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andShiroFlagNotLike(String value) {
+            addCriterion("shiro_flag not like", value, "shiroFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andShiroFlagIn(List<String> values) {
             addCriterion("shiro_flag in", values, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagNotIn(List<Integer> values) {
+        public Criteria andShiroFlagNotIn(List<String> values) {
             addCriterion("shiro_flag not in", values, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagBetween(Integer value1, Integer value2) {
+        public Criteria andShiroFlagBetween(String value1, String value2) {
             addCriterion("shiro_flag between", value1, value2, "shiroFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShiroFlagNotBetween(Integer value1, Integer value2) {
+        public Criteria andShiroFlagNotBetween(String value1, String value2) {
             addCriterion("shiro_flag not between", value1, value2, "shiroFlag");
             return (Criteria) this;
         }

@@ -8,6 +8,7 @@ import com.yunmu.core.dao.hourse.HourseMapper;
 import com.yunmu.core.dao.order.OrderDetailMapper;
 import com.yunmu.core.dao.order.OrderMapper;
 import com.yunmu.core.dao.order.OrderMapperExt;
+import com.yunmu.core.dao.order.OrderProductMapper;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayWayMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
@@ -17,9 +18,11 @@ import com.yunmu.core.model.order.*;
 import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.model.pay.PayExample;
 import com.yunmu.core.model.pay.PayWay;
+import com.yunmu.core.model.product.Product;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.ParamVo;
+import com.yunmu.core.util.ProductObj;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -46,6 +49,8 @@ public class OrderServiceImpl implements OrderService {
     private PayMapper payMapper;
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    protected OrderProductMapper orderProductMapper;
 
     @Override
     public GenericPage<OrderExt> getPageByCondition(Map<String, Object> params) {
@@ -100,27 +105,32 @@ public class OrderServiceImpl implements OrderService {
             String codes=orderExt.getHourseCodes();
             String[] hourseCodes=codes.split(",");
             Double pauSum=0.0;
-            List<String> payIds= new ArrayList<>();
+            Date date=new Date();
+            //List<String> payIds= new ArrayList<>();
             //如果选择的是暂不选择支出
             if(orderExt.getIsChoose()==2){
                 //获取支出
                 List<ParamVo> paramVos=orderExt.getParamVos();
                 for(ParamVo paramVo:paramVos){
-                    payIds.add(paramVo.getPayId());
+                    //payIds.add(paramVo.getPayId());
+                    pauSum+=paramVo.getAmount();
+
                 }
-                //根据支出ids获取所有的支出对象
-                PayExample payExample=new PayExample();
-                PayExample.Criteria criteria=payExample.createCriteria();
-                criteria.andPayIdIn(payIds);
-                List<Pay> pays=payMapper.selectByExample(payExample);
-                //计算支持总金额
-                for(Pay pay:pays){
-                    pauSum+=pay.getPayAmount();
+            }
+            //判断订单是否选中了商品
+            List<String> productIds= new ArrayList<>();
+            if(orderExt.getIsChooseProduct()==2){
+                List<ProductObj> productObjs=orderExt.getProductObjs();
+                double proAmount=0.0;
+                for(ProductObj productObj:productObjs){
+                    proAmount+=productObj.getAmount();
+                    productIds.add(productObj.getProductId());
                 }
+                orderExt.setOrderProAmount(new BigDecimal(proAmount).longValue());
             }
             BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
             Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
-            Date date=new Date();
+
             //保存订单
             for(int i=0;i<hourseCodes.length;i++){
                 Order order=new Order();
@@ -133,18 +143,32 @@ public class OrderServiceImpl implements OrderService {
                 order.setOrderStatus(0);
                 order.setOrderActAmount(actAmount);
                 orderMapper.insertSelective(order);
-                if(payIds.size()>0){
-                    //缓存到订单详情表
-                    for(String payId:payIds){
-                        OrderDetail orderDetail=new OrderDetail();
+                if(orderExt.getIsChoose()==2){
+                    List<ParamVo> paramVos=orderExt.getParamVos();
+                    for(ParamVo paramVo:paramVos) {
+                        OrderDetail orderDetail = new OrderDetail();
                         orderDetail.setId(IdUtils.getId(11));
                         orderDetail.setDelFlag(0);
                         orderDetail.setCreateBy(ShiroUtils.getUserId());
                         orderDetail.setCreateTime(date);
                         orderDetail.setOrderCode(order.getId());
-                        orderDetail.setPayCode(payId);
+                        orderDetail.setPayCode(paramVo.getPayId());
                         orderDetailMapper.insertSelective(orderDetail);
                     }
+                }
+                if(orderExt.getIsChooseProduct()==2){
+                    List<ProductObj> productObjs=orderExt.getProductObjs();
+                    for(ProductObj productObj:productObjs){
+                        OrderProduct orderProduct=new OrderProduct();
+                        orderProduct.setId(IdUtils.getId(11));
+                        orderProduct.setCreateTime(date);
+                        orderProduct.setOrderCode(order.getId());
+                        orderProduct.setAmount(new BigDecimal(productObj.getAmount()).longValue());
+                        orderProduct.setProductCode(productObj.getProductId());
+                        orderProduct.setCreateBy(ShiroUtils.getUserId());
+                        orderProductMapper.insertSelective(orderProduct);
+                    }
+
                 }
             }
             return true;
@@ -212,7 +236,7 @@ public class OrderServiceImpl implements OrderService {
         OrderExt orderExt=new OrderExt();
         if(order!=null){
             //根据订单id获取支出信息
-            if(order.getIsChoose()==2){
+            if(order.getIsChoose()!=null && order.getIsChoose()==2){
                 OrderDetailExample orderDetailExample=new OrderDetailExample();
                 OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
                 criteria.andOrderCodeEqualTo(id);

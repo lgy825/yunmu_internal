@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class ParamVo implements Serializable  {
     String payId;
-    String amount;
+    Double amount;
 
-    public String getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
