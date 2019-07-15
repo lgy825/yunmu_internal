@@ -1,6 +1,7 @@
 package com.yunmu.core.model.order;
 
 import com.yunmu.core.model.pay.Pay;
+import com.yunmu.core.model.product.Product;
 import com.yunmu.core.util.ParamVo;
 import com.yunmu.core.util.ProductObj;
 
@@ -149,6 +150,25 @@ public class OrderExt implements Serializable {
 
     private Long payAmount;
 
+    List<OrderProduct> orderProducts;
+    List<OrderDetail> orderDetails;
+
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
     public Integer getIsChoose() {
         return isChoose;
     }
@@ -190,6 +210,16 @@ public class OrderExt implements Serializable {
     }
 
     List<Pay> payExts;
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    List<Product> products;
 
     public List<Pay> getPayExts() {
         return payExts;

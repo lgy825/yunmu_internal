@@ -11,6 +11,7 @@ import com.yunmu.core.dao.order.OrderMapperExt;
 import com.yunmu.core.dao.order.OrderProductMapper;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayWayMapper;
+import com.yunmu.core.dao.product.ProductMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
 import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExample;
@@ -19,6 +20,7 @@ import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.model.pay.PayExample;
 import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.product.Product;
+import com.yunmu.core.model.product.ProductExample;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.ParamVo;
@@ -50,7 +52,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDetailMapper orderDetailMapper;
     @Autowired
-    protected OrderProductMapper orderProductMapper;
+    private OrderProductMapper orderProductMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
     @Override
     public GenericPage<OrderExt> getPageByCondition(Map<String, Object> params) {
@@ -184,44 +188,80 @@ public class OrderServiceImpl implements OrderService {
             Date date=new Date();
             String codes=orderExt.getHourseCodes();
             String[] hourseCodes=codes.split(",");
-            //获取支出
-            List<ParamVo> paramVos=orderExt.getParamVos();
-            List<String> payIds= new ArrayList<>();
-            for(ParamVo paramVo:paramVos){
-                payIds.add(paramVo.getPayId());
-            }
-            //根据支出ids获取所有的支出对象
-            PayExample payExample=new PayExample();
-            PayExample.Criteria criteria=payExample.createCriteria();
-            criteria.andPayIdIn(payIds);
-            List<Pay> pays=payMapper.selectByExample(payExample);
             //计算支持总金额
             Double pauSum=0.0;
-            for(Pay pay:pays){
-                pauSum+=pay.getPayAmount();
+            //判断之前支出详情有没存储该订单的数据，有则删除
+            OrderDetailExample orderDetailExample=new OrderDetailExample();
+            OrderDetailExample.Criteria criteria2=orderDetailExample.createCriteria();
+            criteria2.andOrderCodeEqualTo(orderExt.getId());
+            List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
+            if(orderDetails.size()>0){
+                orderDetailMapper.deleteByExample(orderDetailExample);
+            }
+            //判断之前有没商品选项的存储的数据，有则删除
+            OrderProductExample orderProductExample=new OrderProductExample();
+            OrderProductExample.Criteria criteria1=orderProductExample.createCriteria();
+            criteria1.andOrderCodeEqualTo(orderExt.getId());
+            List<OrderProduct> orderProducts=orderProductMapper.selectByExample(orderProductExample);
+            if(orderProducts.size()>0){
+                orderProductMapper.deleteByExample(orderProductExample);
+            }
+
+            //获取支出
+            //判断是否选择支出
+            if(orderExt.getIsChoose()!=null && orderExt.getIsChoose()==2){
+                //获取支出
+                List<ParamVo> paramVos=orderExt.getParamVos();
+                for(ParamVo paramVo:paramVos){
+                    //payIds.add(paramVo.getPayId());
+                    pauSum+=paramVo.getAmount();
+                }
+            }
+            //判断订单是否选中了商品
+            List<String> productIds= new ArrayList<>();
+            if(orderExt.getIsChooseProduct()==2){
+                List<ProductObj> productObjs=orderExt.getProductObjs();
+                double proAmount=0.0;
+                for(ProductObj productObj:productObjs){
+                    proAmount+=productObj.getAmount();
+                    productIds.add(productObj.getProductId());
+                }
+                orderExt.setOrderProAmount(new BigDecimal(proAmount).longValue());
             }
             BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
             Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
             //保存订单
-            for(int i=0;i<hourseCodes.length;i++){
-                String orderId=orderExt.getId();
-                Order order=new Order();
-                BeanUtils.copyProperties(orderExt,order);
+            for(int i=0;i<hourseCodes.length;i++) {
+                Order order = new Order();
+                BeanUtils.copyProperties(orderExt, order);
+                order.setHourseCode(hourseCodes[i]);
                 order.setOrderActAmount(actAmount);
                 orderMapper.updateByPrimaryKeySelective(order);
-
-                //删除订单关联的支出
-                orderMapperExt.deleteOrderDetail(orderId);
-                //缓存到订单详情表
-                for(String payId:payIds){
-                    OrderDetail orderDetail=new OrderDetail();
-                    orderDetail.setId(IdUtils.getId(11));
-                    orderDetail.setDelFlag(0);
-                    orderDetail.setCreateBy("lgy");
-                    orderDetail.setCreateTime(date);
-                    orderDetail.setOrderCode(order.getId());
-                    orderDetail.setPayCode(payId);
-                    orderDetailMapper.insertSelective(orderDetail);
+                if (orderExt.getIsChoose() == 2) {
+                    List<ParamVo> paramVos = orderExt.getParamVos();
+                    for (ParamVo paramVo : paramVos) {
+                        OrderDetail orderDetail = new OrderDetail();
+                        orderDetail.setId(IdUtils.getId(11));
+                        orderDetail.setDelFlag(0);
+                        orderDetail.setCreateBy(ShiroUtils.getUserId());
+                        orderDetail.setCreateTime(date);
+                        orderDetail.setOrderCode(order.getId());
+                        orderDetail.setPayCode(paramVo.getPayId());
+                        orderDetailMapper.insertSelective(orderDetail);
+                    }
+                }
+                if (orderExt.getIsChooseProduct() == 2) {
+                    List<ProductObj> productObjs = orderExt.getProductObjs();
+                    for (ProductObj productObj : productObjs) {
+                        OrderProduct orderProduct = new OrderProduct();
+                        orderProduct.setId(IdUtils.getId(11));
+                        orderProduct.setCreateTime(date);
+                        orderProduct.setOrderCode(order.getId());
+                        orderProduct.setAmount(new BigDecimal(productObj.getAmount()).longValue());
+                        orderProduct.setProductCode(productObj.getProductId());
+                        orderProduct.setCreateBy(ShiroUtils.getUserId());
+                        orderProductMapper.insertSelective(orderProduct);
+                    }
                 }
             }
             return true;
@@ -294,28 +334,29 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(order,orderExt);
         //根据订单获取支出列表
         if(order!=null) {
-            //根据订单id获取支出信息
-            OrderDetailExample orderDetailExample = new OrderDetailExample();
-            OrderDetailExample.Criteria criteria = orderDetailExample.createCriteria();
-            criteria.andOrderCodeEqualTo(id);
-            criteria.andDelFlagEqualTo(0);
-            List<OrderDetail> orderDetails = orderDetailMapper.selectByExample(orderDetailExample);
-            List<String> payIds = new ArrayList<>();
-            for (OrderDetail orderDetail : orderDetails) {
-                payIds.add(orderDetail.getPayCode());
-            }
             //获取房间类型
             Hourse hourse=hourseMapper.selectByPrimaryKey(orderExt.getHourseCode());
             orderExt.setTypeCode(hourse.getTypeCode());
-            PayExample payExample = new PayExample();
-            PayExample.Criteria criteria1 = payExample.createCriteria();
-            criteria1.andDelFlagEqualTo(0);
-            criteria1.andPayIdIn(payIds);
-            List<Pay> payList = payMapper.selectByExample(payExample);
-            orderExt.setPayExts(payList);
+            //根据订单id获取支出信息
+            //查看订单是否选择了支出
+            if(order.getIsChoose()!=null && order.getIsChoose()==2){
+                OrderDetailExample orderDetailExample = new OrderDetailExample();
+                OrderDetailExample.Criteria criteria = orderDetailExample.createCriteria();
+                criteria.andOrderCodeEqualTo(id);
+                criteria.andDelFlagEqualTo(0);
+                List<OrderDetail> orderDetails = orderDetailMapper.selectByExample(orderDetailExample);
+                orderExt.setOrderDetails(orderDetails);
+            }
+            //判断订单是否选择了商品
+            if(order.getIsChooseProduct()!=null && order.getIsChooseProduct()==2){
+                OrderProductExample orderProductExample=new OrderProductExample();
+                OrderProductExample.Criteria criteria=orderProductExample.createCriteria();
+                criteria.andOrderCodeEqualTo(order.getId());
+                List<OrderProduct> orderProducts=orderProductMapper.selectByExample(orderProductExample);
+                orderExt.setOrderProducts(orderProducts);
+
+            }
             BeanUtils.copyProperties(order, orderExt);
-
-
         }
         return orderExt;
     }

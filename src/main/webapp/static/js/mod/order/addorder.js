@@ -34,45 +34,7 @@ $(function () {
     loadPayWay();
     loadProject();
 
-    // 加载数据 -------------
-    if ($("#orderId").val()) {
-        var canedit = setInterval(function () {
-            $.ajax({
-                url: ctx + "order/get",
-                type: "GET",
-                cache: false,
-                async: false,
-                dataType: 'json',
-                data: {
-                    id: $("#orderId").val(),
-                },
-                success: function (data) {
-                    if (data && data.resultCode === '0') {
-                        clearInterval(canedit);
-                        su = data.resultData;
-                        $(_.filter(su.payExts)).each(function (idx, elem) {
-                            console.info(".paycheck[data-payid=" + elem.payId );
-                            $(".paycheck[data-payid='" + elem.payId + "']").click();
-                        });
-                        $("#orderActAmount").val(su.orderRecAmount);
-                        timeSpick.val(su.orderStartDate.split(" ")[0]);
-                        timeEpick.val(su.orderEndTime.split(" ")[0]);
 
-                    } else {
-                        if (data.resultDesc) {
-                            layer.msg(data.resultDesc);
-                        } else {
-                            layer.msg('查询失败 !');
-                        }
-                    }
-                },
-                error: function () {
-                    layer.msg('查询失败 !');
-                }
-            });
-        }, 50);
-
-    }
 
 
     $("#saveBtn").click(function () {
@@ -288,37 +250,67 @@ $(function () {
                         $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
                     });
 
+                    // 加载数据 -------------
                     if ($("#orderId").val()) {
-                            $.ajax({
-                                url: ctx + "order/get",
-                                type: "GET",
-                                cache: false,
-                                async: false,
-                                dataType: 'json',
-                                data: {
-                                    id: $("#orderId").val(),
-                                },
-                                success: function (data) {
-                                    if (data && data.resultCode === '0') {
-                                        su = data.resultData;
-                                        $("#projectSel").val(su.projectId);
-                                        $("#typeCodeSel").val(su.typeCode);
-                                        $("#hourseSel").val(su.hourseCode);
-                                        $("#paySel").val(su.orderWay);
-                                        $("#sourceSel").val(su.orderSource);
-                                    } else {
-                                        if (data.resultDesc) {
-                                            layer.msg(data.resultDesc);
-                                        } else {
-                                            layer.msg('查询失败 !');
-                                        }
-                                    }
-                                },
-                                error: function () {
-                                    layer.msg('查询失败 !');
 
+                        $.ajax({
+                            url: ctx + "order/get",
+                            type: "GET",
+                            cache: false,
+                            async: false,
+                            dataType: 'json',
+                            data: {
+                                id: $("#orderId").val(),
+                            },
+                            success: function (data) {
+                                if (data && data.resultCode === '0') {
+                                    su = data.resultData;
+                                    $(".cinemar").removeClass("on");
+                                    $(".cinemar[cinemaradio=" + su.isChoose + "]").addClass("on");
+                                    if (su.isChoose == 2) {
+                                        $('#p_selCimemaPan').removeClass("none");
+                                    }
+
+                                    $(".productr").removeClass("on");
+                                    $(".productr[productradio=" + su.isChooseProduct + "]").addClass("on");
+                                    if (su.isChooseProduct == 2) {
+                                        $('#p_selProductPan').removeClass("none");
+                                    }
+
+                                    var canedit = setInterval(function () {
+                                        $(_.filter(su.orderDetails)).each(function (idx, elem) {
+                                            console.info(".paycheck[data-payid=" + elem.payCode);
+                                            $(".paycheck[data-payid='" + elem.payCode + "']").click();
+                                            $(".paycheck[data-payid='" + elem.payCode + "']").parent().parent().parent().find("."+elem.payCode ).val(elem.amount);
+                                        });
+                                        $(_.filter(su.orderProducts)).each(function (idx, elem) {
+                                            //console.info(".paycheck[data-payid=" + elem.payId );
+                                            $(".productcheck[data-productid='" + elem.productCode + "']").click();
+                                            $(".productcheck[data-productid='" + elem.productCode + "']").parent().parent().parent().find("."+elem.productCode ).val(elem.amount);
+                                        });
+                                        clearInterval(canedit);
+                                    }, 50);
+                                    $("#orderActAmount").val(su.orderRecAmount);
+                                    $("#projectSel").val(su.projectId);
+                                    $("#typeCodeSel").val(su.typeCode);
+                                    $("#hourseSel").val(su.hourseCode);
+                                    $("#paySel").val(su.orderWay);
+                                    $("#sourceSel").val(su.orderSource);
+                                    timeSpick.val(su.orderStartDate.split(" ")[0]);
+                                    timeEpick.val(su.orderEndTime.split(" ")[0]);
+
+                                } else {
+                                    if (data.resultDesc) {
+                                        layer.msg(data.resultDesc);
+                                    } else {
+                                        layer.msg('查询失败 !');
+                                    }
                                 }
-                            });
+                            },
+                            error: function () {
+                                layer.msg('查询失败 !');
+                            }
+                        });
                     }
                 }else {
                     if (data.resultDesc) {
@@ -356,7 +348,7 @@ $(function () {
                     });
 
                     $("#typeCodeSel").change(function () {
-                        $("#hourseSel").select2({placeholder: '请选择房间,可多选', multiple: true});
+                        $("#hourseSel").select2({placeholder: '请选择房间'});
                         $("#hourseSel").empty();
                         if($("#typeCodeSel").val() == -1) {
                             $(_.values(hourseTypeMap)).each(function (idx, hourses) {
