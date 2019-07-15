@@ -243,6 +243,7 @@ public class OrderServiceImpl implements OrderService {
                         OrderDetail orderDetail = new OrderDetail();
                         orderDetail.setId(IdUtils.getId(11));
                         orderDetail.setDelFlag(0);
+                        orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).longValue());
                         orderDetail.setCreateBy(ShiroUtils.getUserId());
                         orderDetail.setCreateTime(date);
                         orderDetail.setOrderCode(order.getId());
@@ -282,16 +283,25 @@ public class OrderServiceImpl implements OrderService {
                 criteria.andOrderCodeEqualTo(id);
                 criteria.andDelFlagEqualTo(0);
                 List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
-                List<String> payIds= new ArrayList<>();
                 for(OrderDetail orderDetail:orderDetails){
-                    payIds.add(orderDetail.getPayCode());
+                    Pay pay=payMapper.selectByPrimaryKey(orderDetail.getPayCode());
+                    orderDetail.setPayName(pay.getPayName());
+                    orderDetail.setPayDesc(pay.getPayDesc());
                 }
-                PayExample payExample=new PayExample();
-                PayExample.Criteria criteria1=payExample.createCriteria();
-                criteria1.andDelFlagEqualTo(0);
-                criteria1.andPayIdIn(payIds);
-                List<Pay> payList=payMapper.selectByExample(payExample);
-                orderExt.setPayExts(payList);
+                orderExt.setOrderDetails(orderDetails);
+            }
+            //根据订单id获取商品信息
+            if(order.getIsChooseProduct()!=null && order.getIsChooseProduct()==2){
+                OrderProductExample orderProductExample=new OrderProductExample();
+                OrderProductExample.Criteria criteria=orderProductExample.createCriteria();
+                criteria.andOrderCodeEqualTo(order.getId());
+                List<OrderProduct> orderProducts=orderProductMapper.selectByExample(orderProductExample);
+                for(OrderProduct orderProduct:orderProducts){
+                    Product product=productMapper.selectByPrimaryKey(orderProduct.getProductCode());
+                    orderProduct.setProductName(product.getProductName());
+                    orderProduct.setProductDesc(product.getProductDesc());
+                }
+                orderExt.setOrderProducts(orderProducts);
             }
             BeanUtils.copyProperties(order,orderExt);
             BigDecimal bigDecimal=new BigDecimal(order.getOrderRecAmount());

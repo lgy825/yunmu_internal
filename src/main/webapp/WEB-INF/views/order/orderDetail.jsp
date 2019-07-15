@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="renderer" content="webkit">
     <title>订单详情</title>
-    <%@ include file="/static/commons/common.jspf"%>
+    <%@ include file="/static/commons/common.jspf" %>
 </head>
 <body>
 <div class="p20">
@@ -14,7 +14,7 @@
         <div class="hr">
             <hr>
         </div>
-        <input id="orderId" type="hidden" value="${orderId}" />
+        <input id="orderId" type="hidden" value="${orderId}"/>
         <div class="movBox movBox1 clearfix p20 modify-percent">
             <div>
                 <div>
@@ -32,7 +32,7 @@
                 <div>
                     <span class="color-graya8">订单创建时间</span>
                     <p class="mt10">
-                    <fmt:formatDate value="${orderExt.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+                        <fmt:formatDate value="${orderExt.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
                 </div>
             </div>
             <div>
@@ -43,14 +43,20 @@
             </div>
             <div class="w17">
                 <div>
-                    <span class="color-graya8">实收金额(元)</span>
+                    <span class="color-graya8">订单金额(元)</span>
                     <p class="mt10">${orderExt.orderRecAmount}</p>
                 </div>
             </div>
             <div>
                 <div>
-                    <span class="color-graya8">开支</span>
+                    <span class="color-graya8">开支金额</span>
                     <p class="mt10 color-blue">${orderExt.orderActAmount==''||orderExt.orderActAmount==null ? "0" :orderExt.orderActAmount}</p>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <span class="color-graya8">商品金额</span>
+                    <p class="mt10 color-blue">${orderExt.orderProAmount==''||orderExt.orderProAmount==null ? "0" :orderExt.orderProAmount}</p>
                 </div>
             </div>
             <div>
@@ -62,7 +68,7 @@
         </div>
     </div>
     <div class="bgc-ff mt20">
-        <h1 class="b_title">订单支出信息</h1>
+        <h1 class="b_title">订单支出详情</h1>
         <div class="hr">
             <hr>
         </div>
@@ -91,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <c:forEach items="${orderExt.payExts}" var="item">
+            <c:forEach items="${orderExt.orderDetails}" var="item">
                 <div class="movBox movBox1 clearfix modify-percent mt10">
                     <div>
                         <div>
@@ -100,7 +106,8 @@
                     </div>
                     <div>
                         <div>
-                            <p><fmt:formatNumber value="${item.payAmount}" maxFractionDigits="2" minFractionDigits="2"/></p>
+                            <p><fmt:formatNumber value="${item.amount}" maxFractionDigits="2"
+                                                 minFractionDigits="2"/></p>
                         </div>
                     </div>
                     <div>
@@ -117,7 +124,64 @@
             </c:forEach>
         </div>
     </div>
+    <div class="bgc-ff mt20">
+        <h1 class="b_title">订单商品详情</h1>
+        <div class="hr">
+            <hr>
+        </div>
+        <div class="p20">
+            <div class="movBox movBox1 clearfix modify-percent">
+                <div>
+                    <div>
+                        <span class="color-graya8">商品名称</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">金额(元)</span>
+
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">描述</span>
+
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">创建时间</span>
+                    </div>
+                </div>
+            </div>
+            <c:forEach items="${orderExt.orderProducts}" var="item">
+                <div class="movBox movBox1 clearfix modify-percent mt10">
+                    <div>
+                        <div>
+                            <p>${item.productName}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p><fmt:formatNumber value="${item.amount}" maxFractionDigits="2"
+                                                 minFractionDigits="2"/></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p>${item.productDesc==''||item.productDesc==null ? "--" :item.productDesc}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
     </div>
+
     <div>
         <div>
             <div class="tc mt30">
@@ -127,7 +191,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    $("#rtBtn").on("click",function(event){
+    $("#rtBtn").on("click", function (event) {
         window.history.back();
     });
 </script>
