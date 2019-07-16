@@ -7,7 +7,9 @@ import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
+import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.pay.Pay;
+import com.yunmu.core.model.pay.PayExample;
 import com.yunmu.core.model.pay.PayExt;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
@@ -69,6 +71,13 @@ public class PayServiceImpl implements PayService{
     @Override
     public boolean insert(Pay pay) {
         if(pay!=null){
+            PayExample payExample=new PayExample();
+            PayExample.Criteria criteria=payExample.createCriteria();
+            criteria.andPayNameEqualTo(pay.getPayName());
+            criteria.andProjectIdEqualTo(pay.getProjectId());
+            if(payMapper.countByExample(payExample)>0){
+                throw new DataException("支出名称已存在");
+            }
             pay.setCreateBy(ShiroUtils.getUser().getUserName());
             pay.setCreateTime(new Date());
             pay.setDelFlag(0);
@@ -86,6 +95,13 @@ public class PayServiceImpl implements PayService{
     @Override
     public Boolean update(Pay pay) {
         if(pay!=null){
+            PayExample payExample=new PayExample();
+            PayExample.Criteria criteria=payExample.createCriteria();
+            criteria.andPayNameEqualTo(pay.getPayName());
+            criteria.andProjectIdEqualTo(pay.getProjectId());
+            if(payMapper.countByExample(payExample)>0){
+                throw new DataException("支出名称已存在");
+            }
             pay.setUpdateBy(ShiroUtils.getUser().getUserName());
             pay.setUpdateTime(new Date());
             payMapper.updateByPrimaryKeySelective(pay);

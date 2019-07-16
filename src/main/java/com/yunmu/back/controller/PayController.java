@@ -57,6 +57,7 @@ public class PayController extends BaseController{
     @ResponseBody
     public Result<Boolean> save(Pay pay) {
         if(StringUtils.isBlank(pay.getPayId())) {
+            //判断该项目的支出名称是否已经存在，有则返回失败，无则创建
             pay.setPayId(IdUtils.getId(11));
             try {
                 payService.insert(pay);

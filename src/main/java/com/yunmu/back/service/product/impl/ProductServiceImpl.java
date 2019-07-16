@@ -7,8 +7,10 @@ import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.product.ProductMapper;
 import com.yunmu.core.dao.product.ProductMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
+import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.pay.PayExt;
 import com.yunmu.core.model.product.Product;
+import com.yunmu.core.model.product.ProductExample;
 import com.yunmu.core.model.product.ProductExt;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
@@ -60,6 +62,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean insert(Product product) {
         if(product!=null){
+            ProductExample productExample=new ProductExample();
+            ProductExample.Criteria criteria=productExample.createCriteria();
+            criteria.andProjectIdEqualTo(product.getProjectId());
+            criteria.andProductNameEqualTo(product.getProductName());
+            criteria.andDelFlagEqualTo(0);
+            if(productMapper.countByExample(productExample)>0){
+                throw new DataException("商品名称已存在");
+            }
             product.setCreateBy(ShiroUtils.getUser().getUserName());
             product.setCreateTime(new Date());
             product.setDelFlag(0);
@@ -77,6 +87,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean update(Product product) {
         if(product!=null){
+            ProductExample productExample=new ProductExample();
+            ProductExample.Criteria criteria=productExample.createCriteria();
+            criteria.andProjectIdEqualTo(product.getProjectId());
+            criteria.andProductNameEqualTo(product.getProductName());
+            criteria.andDelFlagEqualTo(0);
+            criteria.andIdNotEqualTo(product.getId());
+            if(productMapper.countByExample(productExample)>0){
+                throw new DataException("商品名称已存在");
+            }
             product.setUpdateBy(ShiroUtils.getUser().getUserName());
             product.setUpdateTime(new Date());
             productMapper.updateByPrimaryKeySelective(product);
