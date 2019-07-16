@@ -8,8 +8,11 @@ import com.yunmu.core.dao.company.CompanyMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.dao.project.ProjectMapperExt;
 import com.yunmu.core.dao.project.ProjectTypeMapper;
+import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.company.Company;
 import com.yunmu.core.model.company.CompanyExt;
+import com.yunmu.core.model.product.Product;
+import com.yunmu.core.model.product.ProductExample;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.project.ProjectExample;
 import com.yunmu.core.model.project.ProjectExt;
@@ -77,6 +80,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Boolean insert(Project project) {
         if(project!=null) {
+            ProjectExample projectExample=new ProjectExample();
+            ProjectExample.Criteria criteria=projectExample.createCriteria();
+            criteria.andDelFlagEqualTo(0);
+            criteria.andProjectNameEqualTo(project.getProjectName());
+            if(projectMapper.countByExample(projectExample)>0){
+                throw new DataException("项目名称已存在");
+            }
             project.setCreateBy(ShiroUtils.getUser().getUserName());
             project.setCreateTime(new Date());
             project.setDelFlag(0);
@@ -95,6 +105,18 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Boolean update(Project project) {
         try {
+            Project project1=projectMapper.selectByPrimaryKey(project.getId());
+            int compareCount = 0;
+            if(project1.getProjectName().equalsIgnoreCase(project.getProjectName())){
+                compareCount=1;
+            }
+            ProjectExample projectExample=new ProjectExample();
+            ProjectExample.Criteria criteria=projectExample.createCriteria();
+            criteria.andDelFlagEqualTo(0);
+            criteria.andProjectNameEqualTo(project.getProjectName());
+            if(projectMapper.countByExample(projectExample)>compareCount){
+                throw new DataException("项目名称已存在");
+            }
             project.setUpdateBy(ShiroUtils.getUser().getUserName());
             project.setUpdateTime(new Date());
             projectMapper.updateByPrimaryKeySelective(project);

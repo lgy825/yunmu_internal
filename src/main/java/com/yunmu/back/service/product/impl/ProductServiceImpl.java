@@ -87,13 +87,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean update(Product product) {
         if(product!=null){
+            Product product1=productMapper.selectByPrimaryKey(product.getId());
+            int compareCount = 0;
+            if(product1.getProductName().equalsIgnoreCase(product.getProductName())){
+                compareCount=1;
+            }
             ProductExample productExample=new ProductExample();
             ProductExample.Criteria criteria=productExample.createCriteria();
             criteria.andProjectIdEqualTo(product.getProjectId());
             criteria.andProductNameEqualTo(product.getProductName());
             criteria.andDelFlagEqualTo(0);
-            criteria.andIdNotEqualTo(product.getId());
-            if(productMapper.countByExample(productExample)>0){
+            if(productMapper.countByExample(productExample)>compareCount){
                 throw new DataException("商品名称已存在");
             }
             product.setUpdateBy(ShiroUtils.getUser().getUserName());

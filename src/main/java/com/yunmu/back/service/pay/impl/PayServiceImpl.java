@@ -95,11 +95,16 @@ public class PayServiceImpl implements PayService{
     @Override
     public Boolean update(Pay pay) {
         if(pay!=null){
+            Pay pay1=payMapper.selectByPrimaryKey(pay.getPayId());
+            int compareCount = 0;
+            if(pay.getPayName().equals(pay1.getPayName())) {
+                compareCount = 1;
+            }
             PayExample payExample=new PayExample();
             PayExample.Criteria criteria=payExample.createCriteria();
             criteria.andPayNameEqualTo(pay.getPayName());
             criteria.andProjectIdEqualTo(pay.getProjectId());
-            if(payMapper.countByExample(payExample)>0){
+            if(payMapper.countByExample(payExample)>compareCount){
                 throw new DataException("支出名称已存在");
             }
             pay.setUpdateBy(ShiroUtils.getUser().getUserName());

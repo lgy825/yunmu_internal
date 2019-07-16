@@ -7,6 +7,7 @@ import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.hourse.HourseTypeMapper;
 import com.yunmu.core.dao.hourse.HourseTypeMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
+import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.hourse.HourseType;
 import com.yunmu.core.model.hourse.HourseTypeExample;
 import com.yunmu.core.model.hourse.HourseTypeExt;
@@ -64,6 +65,14 @@ public class HourseTypeServiceImpl implements HourseTypeService {
     @Override
     public boolean insert(HourseType hourseType) {
         if(hourseType!=null){
+            HourseTypeExample hourseTypeExample=new HourseTypeExample();
+            HourseTypeExample.Criteria criteria=hourseTypeExample.createCriteria();
+            criteria.andTypeNameEqualTo(hourseType.getTypeName());
+            criteria.andDelFlagEqualTo("0");
+            criteria.andProjectIdEqualTo(hourseType.getProjectId());
+            if(hourseTypeMapper.countByExample(hourseTypeExample)>0){
+                throw new DataException("类型名称已存在");
+            }
             hourseType.setCreateBy(ShiroUtils.getUser().getUserName());
             hourseType.setCreateTime(new Date());
             hourseType.setDelFlag("0");
@@ -81,7 +90,20 @@ public class HourseTypeServiceImpl implements HourseTypeService {
     @Override
     public Boolean update(HourseType hourseType) {
         if(hourseType!=null){
-            hourseType.setUpdateBy("lgy");
+            HourseType hourseType1=hourseTypeMapper.selectByPrimaryKey(hourseType.getId());
+            int compareCount = 0;
+            if(hourseType1.getTypeName().equalsIgnoreCase(hourseType.getTypeName())){
+                compareCount=1;
+            }
+            HourseTypeExample hourseTypeExample=new HourseTypeExample();
+            HourseTypeExample.Criteria criteria=hourseTypeExample.createCriteria();
+            criteria.andTypeNameEqualTo(hourseType.getTypeName());
+            criteria.andDelFlagEqualTo("0");
+            criteria.andProjectIdEqualTo(hourseType.getProjectId());
+            if(hourseTypeMapper.countByExample(hourseTypeExample)>compareCount){
+                throw new DataException("类型名称已存在");
+            }
+            hourseType.setUpdateBy(ShiroUtils.getUserId());
             hourseType.setUpdateTime(new Date());
             hourseTypeMapper.updateByPrimaryKeySelective(hourseType);
             return true;
