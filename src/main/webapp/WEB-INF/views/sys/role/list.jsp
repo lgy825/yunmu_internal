@@ -29,17 +29,23 @@
                 <td><div>{{dateTime:createTime}}</div></td>
                 <td>
                     <div class="">
+                        <shiro:hasPermission name="sysmgr:role:look">
                         <a href="${ctx}/sysrole/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="查看">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="sysmgr:role:edit">
                         <a href="${ctx}/sysrole/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="sysmgr:role:startstop">
                         {{if status == 1}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">
                         {{/if}}
+                        </shiro:hasPermission>
                     </div>
                 </td>
             </tr>
@@ -55,9 +61,11 @@
             <hr>
         </div>
         <div class="pdtrl20">
+            <shiro:hasPermission name="sysmgr:role:add">
             <a href="${ctx}/sysrole/toadd">
                 <input type="button" class="blue_btn" value="新建角色">
             </a>
+            </shiro:hasPermission>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">
             </a>

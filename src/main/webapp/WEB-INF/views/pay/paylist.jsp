@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,8 +49,12 @@
                 </td>
                 <td>
                     <div class="">
+                        <shiro:hasPermission name="paymana:pay:edit">
                         <input type="button" onclick="editType('{{:payId}}','{{:projectId}}','{{:typeName}}','{{:payType}}','{{:payDesc}}','{{:payAmount}}')" class="edit gray_btn mr10" value="编辑">
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="paymana:pay:del">
                         <input type="button"  onclick="deletePay('{{:payId}}')" class="gray_btn" value="删除">
+                        </shiro:hasPermission>
                     </div>
                 </td>
             </tr>
@@ -78,7 +83,9 @@
             </form>
         </div>
         <div class="ml20 mb10">
+            <shiro:hasPermission name="paymana:pay:add">
             <input type="button" class="blue_btn add-btn" value="新增支出">
+            </shiro:hasPermission>
         </div>
         <div class="sell-add">
             <div class="scroll-table">

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,14 +56,18 @@
                 </td>
                 <td>
                     <div class="">
+                        <shiro:hasPermission name="sysmgr:usr:edit">
                         <a href="${ctx}/sysuser/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="sysmgr:usr:startstop">
                         {{if disabledFlg == 1}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">
                         {{/if}}
+                        </shiro:hasPermission>
                     </div>
                 </td>
             </tr>
@@ -78,9 +83,11 @@
             <hr>
         </div>
         <div class="pdtrl20">
+            <shiro:hasPermission name="sysmgr:usr:add">
             <a href="${ctx}/sysuser/toadd">
                 <input type="button" class="blue_btn" value="新建员工">
             </a>
+            </shiro:hasPermission>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">
             </a>

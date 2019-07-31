@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,13 +84,19 @@
                 </td>
                 <td>
                     <div class="">
+                        <shiro:hasPermission name="ordermana:order:detail">
                         <a href="${ctx}/order/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="订单详情">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="ordermana:order:edit">
                         <a href="${ctx}/order/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="ordermana:order:del">
                         <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
+                        </shiro:hasPermission>
                     </div>
                 </td>
             </tr>
@@ -105,9 +112,11 @@
             <hr>
         </div>
         <div class="pdtrl20">
+            <shiro:hasPermission name="ordermana:order:add">
             <a href="${ctx}/order/toaddOrder">
                 <input type="button" class="blue_btn" value="新建订单">
             </a>
+            </shiro:hasPermission>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">
             </a>
@@ -122,7 +131,9 @@
                     <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
+                    <shiro:hasPermission name="ordermana:order:export">
                     <input id="exportBtn" type="button" class="blue_btn ml20" value="导出订单">
+                    </shiro:hasPermission>
                 </div>
             </form>
         </div>

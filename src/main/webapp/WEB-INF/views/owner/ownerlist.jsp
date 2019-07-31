@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,20 +59,28 @@
                 </td>
                 <td>
                     <div class="">
+                        <shiro:hasPermission name="ownermana:owner:look">
                         <a href="${ctx}/owner/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="查看">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="ownermana:owner:edit">
                         <a href="${ctx}/owner/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="ownermana:owner:disable">
                         {{if status == 0}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
                         <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">
                         {{/if}}
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="ownermana:owner:export">
                         <a href="${ctx}/owner/toExport?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="导出本月收支账单">
                         </a>
+                        </shiro:hasPermission>
                     </div>
                 </td>
             </tr>
@@ -87,9 +96,11 @@
             <hr>
         </div>
         <div class="pdtrl20">
+            <shiro:hasPermission name="ownermana:owner:add">
             <a href="${ctx}/owner/toaddOwner">
                 <input type="button" class="blue_btn" value="新建用户">
             </a>
+            </shiro:hasPermission>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">
             </a>

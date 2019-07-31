@@ -37,4 +37,6 @@ public interface SysUserService {
 
     List<SysMenu> getMenusByUserId(String userId);
 
+    //Boolean beFirstLogin(String userId);
+
 }

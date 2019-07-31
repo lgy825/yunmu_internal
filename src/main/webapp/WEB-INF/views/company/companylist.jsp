@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,11 +46,14 @@
 
                 <td>
                     <div class="">
-
+                        <shiro:hasPermission name="compnymana:company:edit">
                         <a href="${ctx}/company/toEdit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="compnymana:company:del">
                         <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
+                        </shiro:hasPermission>
                     </div>
                 </td>
             </tr>
@@ -65,9 +69,11 @@
             <hr>
         </div>
         <div class="pdtrl20">
+            <shiro:hasPermission name="compnymana:company:add">
             <a href="${ctx}/company/toAddCompany">
                 <input type="button" class="blue_btn" value="新建公司">
             </a>
+            </shiro:hasPermission>
             <a href="" class="none">
                 <input type="button" class="gray_btn ml20" value="功能介绍">
             </a>

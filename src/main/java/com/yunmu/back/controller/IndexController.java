@@ -9,6 +9,7 @@ import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PermisionConstants;
 import com.yunmu.core.constant.ResultConstants;
 import com.yunmu.core.model.project.Project;
+import com.yunmu.core.model.sys.SysMenu;
 import com.yunmu.core.model.sys.SysUser;
 import com.yunmu.core.util.ShiroUtils;
 import com.yunmu.core.util.ValidCodeUtil;
@@ -37,6 +38,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.yunmu.core.constant.SessionConstants.SESSION_KEY_ALL_MY_CINEMA;
 import static com.yunmu.core.constant.SessionConstants.SESSION_KEY_DEFAULT_CINEMA;
@@ -188,6 +191,19 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/main")
     public String toindex(Model model) {
+        List<SysMenu> mResult = sysUserService.getMenusByUserId(ShiroUtils.getUserId());
+
+        model.addAttribute("menus", mResult);
+        Map<String, List<SysMenu>> menuChildMap =
+                mResult
+                        .stream()
+                        .filter(
+                                el -> PermisionConstants.RESOURCE_TYPE_MENU == el.getMenuType() &&
+                                        StringUtils.isNotBlank(el.getParentId())
+                        )
+                        .collect(Collectors.groupingBy(SysMenu::getParentId));
+        model.addAttribute("menuChildMap", menuChildMap);
+
         return "main";
     }
 

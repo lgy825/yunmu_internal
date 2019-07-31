@@ -35,6 +35,45 @@
         <div class="inner-container">
             <div class="aside-list">
                 <ul class="">
+<%--                    <c:forEach items="${menus}" var="menu">--%>
+<%--                        <c:if test="${menu.menuType eq 1 and empty menu.parentId and not empty menu.menuHref}">--%>
+<%--                            <li class="aside-title <c:if test="${menu.isShow eq 2}">none</c:if>">--%>
+<%--                                <div class="title-wrap">--%>
+<%--                                    <div class="title-fixed">--%>
+<%--                                        <a class="clearfix" href="${ctx}${menu.menuHref}" target="${menu.menuTarget}">--%>
+<%--                                            <i class="${menu.iconClass} fl"></i>--%>
+<%--                                            <span class="fl color-blue">${menu.menuName}</span>--%>
+<%--                                        </a>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </li>--%>
+<%--                        </c:if>--%>
+<%--                        <c:if test="${menu.menuType eq 1 and empty menu.parentId and empty menu.menuHref}">--%>
+<%--                            <li class="aside-title <c:if test="${menu.isShow eq 2}">none</c:if>">--%>
+<%--                                <a class="clearfix" href="javascript:;" target="${menu.menuTarget}">--%>
+<%--                                    <i class="${menu.iconClass} fl"></i>--%>
+<%--                                    <span class="fl">${menu.menuName}</span>--%>
+<%--                                    <c:if test="${not empty menuChildMap[menu.id]}">--%>
+<%--                                        <i class="add-icon add-white fr"></i>--%>
+<%--                                    </c:if>--%>
+<%--                                </a>--%>
+<%--                                <c:if test="${not empty menuChildMap[menu.id]}">--%>
+<%--                                    <ul class="child-list color-white none">--%>
+<%--                                        <c:forEach items="${menus}" var="menuChild">--%>
+<%--                                            <c:if test="${menuChild.menuType eq 1 and menuChild.parentId eq menu.id}">--%>
+<%--                                                <c:if test="${empty menuChild.menuHref}">--%>
+<%--                                                    <li class="child-menu"><a href="javascript:layer.alert('功能开发中，请耐心等待!');" target="${menuChild.menuTarget}">${menuChild.menuName}</a></li>--%>
+<%--                                                </c:if>--%>
+<%--                                                <c:if test="${not empty menuChild.menuHref}">--%>
+<%--                                                    <li class="child-menu"><a href="${ctx}${menuChild.menuHref}" target="${menuChild.menuTarget}">${menuChild.menuName}</a></li>--%>
+<%--                                                </c:if>--%>
+<%--                                            </c:if>--%>
+<%--                                        </c:forEach>--%>
+<%--                                    </ul>--%>
+<%--                                </c:if>--%>
+<%--                            </li>--%>
+<%--                        </c:if>--%>
+<%--                    </c:forEach>--%>
                     <!-- 工作台主页 -->
                     <li class="aside-title">
                         <div class="title-wrap">
