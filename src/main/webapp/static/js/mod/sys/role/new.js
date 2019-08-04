@@ -43,7 +43,7 @@ $(function () {
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     layer.msg("保存成功", {shade:[0.3]});
-                    location.href = ctx + "sysrole/tolist.do";
+                    location.href = ctx + "sysrole/tolist";
                 } else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);

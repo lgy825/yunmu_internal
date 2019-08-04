@@ -192,7 +192,6 @@
                                }
                            });
 
-                           getSS();
                            if(!$("#statusSel").val()) {
                                $("#statusSel").val("-1");
                            }

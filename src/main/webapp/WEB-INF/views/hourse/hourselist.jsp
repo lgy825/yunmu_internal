@@ -49,17 +49,17 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="hoursemana:hourse:look">
+                        <shiro:hasPermission name="ownermana:hourse:look">
                         <a href="${ctx}/hourse/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="查看">
                         </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="hoursemana:hourse:edit">
+                        <shiro:hasPermission name="ownermana:hourse:edit">
                         <a href="${ctx}/hourse/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="hoursemana:hourse:del">
+                        <shiro:hasPermission name="ownermana:hourse:del">
                         <input type="button" class="deleteHourse gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                     </div>
@@ -77,7 +77,7 @@
             <hr>
         </div>
         <div class="pdtrl20">
-            <shiro:hasPermission name="hoursemana:hourse:add">
+            <shiro:hasPermission name="ownermana:hourse:add">
             <a href="${ctx}/hourse/toaddHourse">
                 <input type="button" class="blue_btn" value="房子信息录入">
             </a>

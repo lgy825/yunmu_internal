@@ -151,7 +151,7 @@
             INNER JOIN yunmu_sys_user_role sur ON sro.id = sur.role_id
         WHERE
             sm.del_flag = 0 and
-            sro.status = 0 and
+            sro.status = 1 and
             sur.user_id = #{id}
         ORDER BY sm.menu_sort ASC
     </select>
@@ -163,7 +163,7 @@
             yunmu_sys_role sr
             INNER JOIN yunmu_sys_user_role sur ON sr.id = sur.role_id
         WHERE
-            sr.status = 0 and
+            sr.status = 1 and
             sr.del_flag = 0 and
             sur.user_id = #{id}
     </select>

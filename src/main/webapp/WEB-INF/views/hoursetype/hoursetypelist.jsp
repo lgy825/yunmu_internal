@@ -41,10 +41,10 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="hoursemana:type:edit">
+                        <shiro:hasPermission name="ownermana:type:edit">
                         <input type="button" onclick="editType('{{:id}}','{{:projectId}}','{{:typeName}}','{{:typeDesc}}')" class="edit gray_btn mr10" value="编辑">
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="hoursemana:type:del">
+                        <shiro:hasPermission name="ownermana:type:del">
                         <input type="button"  onclick="deleteType('{{:id}}')" class="gray_btn" value="删除">
                         </shiro:hasPermission>
                     </div>
@@ -75,7 +75,7 @@
             </form>
         </div>
         <div class="ml20 mb10">
-            <shiro:hasPermission name="hoursemana:type:add">
+            <shiro:hasPermission name="ownermana:type:add">
             <input type="button" class="blue_btn add-btn" value="新增房间类型">
             </shiro:hasPermission>
         </div>
