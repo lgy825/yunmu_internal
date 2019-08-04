@@ -1114,6 +1114,76 @@ public class SysMenuExample {
             addCriterion("shiro_flag not between", value1, value2, "shiroFlag");
             return (Criteria) this;
         }
+
+        public Criteria andIconClassIsNull() {
+            addCriterion("icon_class is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassIsNotNull() {
+            addCriterion("icon_class is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassEqualTo(String value) {
+            addCriterion("icon_class =", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassNotEqualTo(String value) {
+            addCriterion("icon_class <>", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassGreaterThan(String value) {
+            addCriterion("icon_class >", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassGreaterThanOrEqualTo(String value) {
+            addCriterion("icon_class >=", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassLessThan(String value) {
+            addCriterion("icon_class <", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassLessThanOrEqualTo(String value) {
+            addCriterion("icon_class <=", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassLike(String value) {
+            addCriterion("icon_class like", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassNotLike(String value) {
+            addCriterion("icon_class not like", value, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassIn(List<String> values) {
+            addCriterion("icon_class in", values, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassNotIn(List<String> values) {
+            addCriterion("icon_class not in", values, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassBetween(String value1, String value2) {
+            addCriterion("icon_class between", value1, value2, "iconClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconClassNotBetween(String value1, String value2) {
+            addCriterion("icon_class not between", value1, value2, "iconClass");
+            return (Criteria) this;
+        }
     }
 
     /**
