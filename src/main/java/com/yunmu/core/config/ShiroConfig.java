@@ -27,6 +27,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/app/**", "anon");
 		filterChainDefinitionMap.put("/download", "anon");
+		filterChainDefinitionMap.put("/downloadFile/**", "anon");
 		filterChainDefinitionMap.put("/login", "anon");
 		filterChainDefinitionMap.put("/index/getCodeImg", "anon");
 		filterChainDefinitionMap.put("/index/download", "anon");
