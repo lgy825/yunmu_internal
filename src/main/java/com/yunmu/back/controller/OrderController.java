@@ -59,6 +59,11 @@ public class OrderController extends BaseController {
         return "order/orderlist";
     }
 
+    @RequestMapping("/toDelOrderlist")
+    public String toDelOrderlist() {
+        return "order/orderdellist";
+    }
+
 
     @RequestMapping("/getpage")
     @ResponseBody
@@ -79,9 +84,36 @@ public class OrderController extends BaseController {
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
             params.put("searchTimeEnd", endTime);
         }
+        params.put("delFlag",0);
         List<Project> projects= ShiroUtils.getAllMyCinemaList();
         List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
         params.put("projectIds",projectIds);
+        return createSuccessPageResult(orderSercvice.getPageByCondition(params));
+    }
+
+    @RequestMapping("/getdelpage")
+    @ResponseBody
+    public PageResult<OrderExt> getPageByCondition(HttpServletRequest request,
+                                                       Integer pageIndex,
+                                                       Integer pageSize,
+                                                       String beginTime,
+                                                       String endTime,
+                                                       String orderId,String hourseNumber) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("orderId", orderId);
+        params.put("hourseNumber",hourseNumber);
+        params.put("pageIndex", pageIndex + 1);
+        params.put("pageSize", pageSize);
+        if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
+            params.put("beginTime", beginTime);
+        }
+        if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
+            params.put("searchTimeEnd", endTime);
+        }
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        params.put("projectIds",projectIds);
+        params.put("delFlag",1);
         return createSuccessPageResult(orderSercvice.getPageByCondition(params));
     }
 

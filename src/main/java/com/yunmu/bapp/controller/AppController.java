@@ -60,6 +60,7 @@ public class AppController extends BaseController{
         if (appRequestParam.getOwnerPwd() == null) {
             return createFailedResult("请输入您要修改的密码");
         }
+        owner.setId(appRequestParam.getOwnerId());
         owner.setOwnerName(appRequestParam.getOwnerName());
         owner.setOwnerPwd(appRequestParam.getOwnerPwd());
         owner.setOwnerTel(appRequestParam.getOwnerPhone());

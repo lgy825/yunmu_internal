@@ -16,5 +16,7 @@ public interface OwnerMapperExt {
 
     List<OwnerExt> isExistOwner(Owner owner);
 
+    void  updateTokon(String tokenId);
+
 
 }

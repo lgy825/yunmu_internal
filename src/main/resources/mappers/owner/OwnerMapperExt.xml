@@ -140,10 +140,14 @@
     </if>
   </select>
 
-  <select id="isExistOwner" resultMap="BaseResultMap" parameterType="Owner">
+  <select id="isExistOwner" resultMap="BaseResultMap" parameterType="com.yunmu.core.model.owner.Owner">
     SELECT
     <include refid="Base_Column_List" />
     FROM yunmu_owner
     WHERE owner_name = #{ownerName} OR owner_tel = #{ownerTel}
   </select>
+
+  <update id="updateTokon" parameterType="String">
+    UPDATE yunmu_owner set token = #{tokenId}
+  </update>
 </mapper>

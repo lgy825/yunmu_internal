@@ -108,7 +108,7 @@
     <include refid="Base_Column_List" />
     from yunmu_order yo
     LEFT JOIN yunmu_hourse yh
-    on yo.hourse_code=yh.id where yo.del_flag=0
+    on yo.hourse_code=yh.id where 0=0
     <if test="oId != null and oId != ''">
       AND yo.id LIKE '%${orderId}%'
     </if>
@@ -120,6 +120,9 @@
     </if>
     <if test="endTime!=null">
       AND yo.create_time <![CDATA[<=]]> #{endTime}
+    </if>
+    <if test="delFlag!=null">
+      AND yo.del_flag =#{delFlag}
     </if>
     <if test="projectIds!=null and projectIds.size>0">
       and yo.project_id in
