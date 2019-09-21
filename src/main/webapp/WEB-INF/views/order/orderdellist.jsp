@@ -23,7 +23,7 @@
                     <th style='width: 10%;'><div>订单金额(元)</div></th>
                     <th style='width: 8%;'><div>支出金额(元)</div></th>
                     <th style='width: 8%;'><div>订单状态</div></th>
-                    <th style='width: 8%;'><div>支付方式</div></th>
+                    <th style='width: 8%;'><div>删除操作人</div></th>
                     <th style='width: 22%;'><div>操作</div></th>
                 </tr>
         </thead>
@@ -79,7 +79,7 @@
                 </td>
                 <td>
                     <div>
-                        {{:payWay}}
+                        {{:operaterBy}}
                     </div>
                 </td>
                 <td>
@@ -90,7 +90,7 @@
                         </a>
                         </shiro:hasPermission>
                         <shiro:hasPermission name="ordermana:delorder:revoke">
-                        <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="撤销删除">
+                        <input type="button" class="revoke gray_btn mr10" data-sid="{{:id}}" value="撤销删除">
                         </shiro:hasPermission>
                     </div>
                 </td>

@@ -73,11 +73,11 @@ $(function(){
         $("#searchBtn").click();
     });
 
-    $("#orderTable").on("click", ".delete", function (){
+    $("#orderTable").on("click", ".revoke", function (){
         var orderId = $(this).data("sid");
-        layer.confirm('订单回复确认，是否继续？', function () {
+        layer.confirm('撤销确认，是否继续？', function () {
             $.ajax({
-                url: ctx + "order/delete",
+                url: ctx + "order/revoke",
                 type: "GET",
                 cache: false,
                 // async: false,

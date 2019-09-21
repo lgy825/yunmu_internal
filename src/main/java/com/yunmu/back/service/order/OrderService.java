@@ -25,6 +25,8 @@ public interface OrderService {
 
     boolean delete(String orderId);
 
+    boolean revoke(String orderId);
+
     OrderExt get(String id);
 
     List<OrderExt> getOrdersByDate(Map<String,String> params);
@@ -32,4 +34,6 @@ public interface OrderService {
     double getAllRecByParam(Map<String,String> params);
 
     double getAllActByParam(Map<String,String> params);
+
+
 }

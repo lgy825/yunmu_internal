@@ -109,6 +109,16 @@ public class OrderExt implements Serializable {
     private Long orderProAmount;
     private Integer isChooseProduct;
 
+    private String operaterBy;
+
+    public String getOperaterBy() {
+        return operaterBy;
+    }
+
+    public void setOperaterBy(String operaterBy) {
+        this.operaterBy = operaterBy;
+    }
+
     public Long getOrderProAmount() {
         return orderProAmount;
     }

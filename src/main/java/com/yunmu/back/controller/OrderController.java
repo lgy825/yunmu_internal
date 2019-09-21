@@ -177,6 +177,13 @@ public class OrderController extends BaseController {
         return createSuccessResult(orderSercvice.delete(id));
     }
 
+    @RequestMapping("/revoke")
+    @ResponseBody
+    public Result<Boolean> revoke(String id) {
+
+        return createSuccessResult(orderSercvice.revoke(id));
+    }
+
 
     @RequestMapping("/get")
     @ResponseBody

@@ -9,10 +9,12 @@ import com.yunmu.core.dao.order.OrderDetailMapper;
 import com.yunmu.core.dao.order.OrderMapper;
 import com.yunmu.core.dao.order.OrderMapperExt;
 import com.yunmu.core.dao.order.OrderProductMapper;
+import com.yunmu.core.dao.owner.OwnerMapper;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayWayMapper;
 import com.yunmu.core.dao.product.ProductMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
+import com.yunmu.core.dao.sys.SysUserMapper;
 import com.yunmu.core.model.hourse.Hourse;
 import com.yunmu.core.model.hourse.HourseExample;
 import com.yunmu.core.model.order.*;
@@ -55,6 +57,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderProductMapper orderProductMapper;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private SysUserMapper  sysUserMapper;
 
     @Override
     public GenericPage<OrderExt> getPageByCondition(Map<String, Object> params) {
@@ -89,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
             if(orderSources.containsKey(orderExt.getOrderSource())){
                 orderExt.setSourceWay(orderSources.get(orderExt.getOrderSource()));
             }
+            orderExt.setOperaterBy(sysUserMapper.selectByPrimaryKey(orderExt.getCreateBy()).getUserName());
 
         }
         return new GenericPage<>(pageIndex, pageSize, orderExts, pageInfo.getTotal());
@@ -329,7 +334,19 @@ public class OrderServiceImpl implements OrderService {
         Order order=new Order();
         order.setDelFlag(1);
         order.setId(orderId);
-        order.setCreateBy("lgy");
+        order.setCreateBy(ShiroUtils.getUserId());
+        order.setCreateTime(new Date());
+        orderMapper.updateByPrimaryKeySelective(order);
+        orderMapperExt.deleteOrderDetail(orderId);
+        return true;
+    }
+
+    @Override
+    public boolean revoke(String orderId) {
+        Order order=new Order();
+        order.setDelFlag(0);
+        order.setId(orderId);
+        order.setCreateBy(ShiroUtils.getUserId());
         order.setCreateTime(new Date());
         orderMapper.updateByPrimaryKeySelective(order);
         orderMapperExt.deleteOrderDetail(orderId);
