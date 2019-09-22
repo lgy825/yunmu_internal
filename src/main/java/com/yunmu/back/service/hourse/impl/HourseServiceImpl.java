@@ -111,7 +111,7 @@ public class HourseServiceImpl implements HourseService {
             Hourse hourse=new Hourse();
             hourse.setId(id);
             hourse.setDelFlag(1);
-            hourse.setUpdateBy("lgy");
+            hourse.setUpdateBy(ShiroUtils.getUserId());
             hourse.setUpdateTime(new Date());
             hourseMapper.updateByPrimaryKeySelective(hourse);
             return true;

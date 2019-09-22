@@ -150,7 +150,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project=new Project();
         project.setDelFlag(1);
         project.setId(id);
-        project.setUpdateBy("lgy");
+        project.setUpdateBy(ShiroUtils.getUserId());
         project.setUpdateTime(new Date());
         projectMapper.updateByPrimaryKeySelective(project);
         return true;
