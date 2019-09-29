@@ -122,10 +122,10 @@
                 <div class="align-r relative">
                     金额
                     <i class="whats define-layer "></i>
-                    <p class="modify-what">商品折扣支持小数点后一位</p>
+                    <p class="modify-what">商品折扣支持小数点后两位</p>
                 </div>
                 <input type="text" class="productAmount inpW inp-wid ml8" placeholder="">
-                <span class="color-lred ml8">* 精确到1位小数</span>
+                <span class="color-lred ml8">* 精确到2位小数</span>
             </div>
 <%--            <div class="cinema mt12">--%>
 <%--                <div class="align-r relative">--%>

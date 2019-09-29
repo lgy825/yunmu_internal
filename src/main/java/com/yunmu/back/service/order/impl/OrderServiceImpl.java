@@ -135,16 +135,16 @@ public class OrderServiceImpl implements OrderService {
                     proAmount+=productObj.getAmount();
                     productIds.add(productObj.getProductId());
                 }
-                orderExt.setOrderProAmount(new BigDecimal(proAmount).longValue());
+                orderExt.setOrderProAmount(new BigDecimal(proAmount).divide(new BigDecimal(100)));
             }
-            BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
-            Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
+            //BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
+            BigDecimal actAmount=orderExt.getOrderRecAmount().subtract(new BigDecimal(pauSum).divide(new BigDecimal(100)));
 
             //保存订单
             for(int i=0;i<hourseCodes.length;i++){
                 Order order=new Order();
                 BeanUtils.copyProperties(orderExt, order);
-                order.setCreateBy(ShiroUtils.getUser().getUserName());
+                order.setCreateBy(ShiroUtils.getUser().getId());
                 order.setCreateTime(date);
                 order.setDelFlag(0);
                 order.setHourseCode(hourseCodes[i]);
@@ -161,6 +161,7 @@ public class OrderServiceImpl implements OrderService {
                         orderDetail.setCreateBy(ShiroUtils.getUserId());
                         orderDetail.setCreateTime(date);
                         orderDetail.setOrderCode(order.getId());
+                        orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).divide(new BigDecimal(100)));
                         orderDetail.setPayCode(paramVo.getPayId());
                         orderDetailMapper.insertSelective(orderDetail);
                     }
@@ -172,7 +173,7 @@ public class OrderServiceImpl implements OrderService {
                         orderProduct.setId(IdUtils.getId(11));
                         orderProduct.setCreateTime(date);
                         orderProduct.setOrderCode(order.getId());
-                        orderProduct.setAmount(new BigDecimal(productObj.getAmount()).longValue());
+                        orderProduct.setAmount(new BigDecimal(productObj.getAmount()).divide(new BigDecimal(100)));
                         orderProduct.setProductCode(productObj.getProductId());
                         orderProduct.setCreateBy(ShiroUtils.getUserId());
                         orderProductMapper.insertSelective(orderProduct);
@@ -231,16 +232,17 @@ public class OrderServiceImpl implements OrderService {
                     proAmount+=productObj.getAmount();
                     productIds.add(productObj.getProductId());
                 }
-                orderExt.setOrderProAmount(new BigDecimal(proAmount).longValue());
+                orderExt.setOrderProAmount(new BigDecimal(proAmount).divide(new BigDecimal(100)));
             }
-            BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
-            Long actAmount=bigDecimal.subtract(new BigDecimal(pauSum)).longValue();
+            //BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
+            BigDecimal actAmount=orderExt.getOrderRecAmount().subtract(new BigDecimal(pauSum).divide(new BigDecimal(100)));
             //保存订单
             for(int i=0;i<hourseCodes.length;i++) {
                 Order order = new Order();
                 BeanUtils.copyProperties(orderExt, order);
                 order.setHourseCode(hourseCodes[i]);
                 order.setOrderActAmount(actAmount);
+                order.setCreateBy(ShiroUtils.getUser().getId());
                 orderMapper.updateByPrimaryKeySelective(order);
                 if (orderExt.getIsChoose() == 2) {
                     List<ParamVo> paramVos = orderExt.getParamVos();
@@ -248,7 +250,7 @@ public class OrderServiceImpl implements OrderService {
                         OrderDetail orderDetail = new OrderDetail();
                         orderDetail.setId(IdUtils.getId(11));
                         orderDetail.setDelFlag(0);
-                        orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).longValue());
+                        orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).divide(new BigDecimal(100)));
                         orderDetail.setCreateBy(ShiroUtils.getUserId());
                         orderDetail.setCreateTime(date);
                         orderDetail.setOrderCode(order.getId());
@@ -263,7 +265,7 @@ public class OrderServiceImpl implements OrderService {
                         orderProduct.setId(IdUtils.getId(11));
                         orderProduct.setCreateTime(date);
                         orderProduct.setOrderCode(order.getId());
-                        orderProduct.setAmount(new BigDecimal(productObj.getAmount()).longValue());
+                        orderProduct.setAmount(new BigDecimal(productObj.getAmount()).divide(new BigDecimal(100)));
                         orderProduct.setProductCode(productObj.getProductId());
                         orderProduct.setCreateBy(ShiroUtils.getUserId());
                         orderProductMapper.insertSelective(orderProduct);
@@ -309,8 +311,8 @@ public class OrderServiceImpl implements OrderService {
                 orderExt.setOrderProducts(orderProducts);
             }
             BeanUtils.copyProperties(order,orderExt);
-            BigDecimal bigDecimal=new BigDecimal(order.getOrderRecAmount());
-            Long payAmount=bigDecimal.subtract(new BigDecimal(orderExt.getOrderRecAmount())).longValue();
+            //BigDecimal bigDecimal=new BigDecimal();
+            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderRecAmount());
             orderExt.setPayAmount(payAmount);
             Map<Integer,String> payWays=getAllPayWayMap();
             Map<String,String> orderSources=getAllOrderSourceMap();

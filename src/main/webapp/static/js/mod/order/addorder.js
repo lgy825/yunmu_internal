@@ -54,7 +54,7 @@ $(function () {
             $($vous).each(function (idx, elem) {
                 pays.push({
                     payId: $(elem).data("payid"),
-                    amount:$vous.parent().parent().parent().find("."+ $(elem).data("payid")).val()
+                    amount:parseInt(($vous.parent().parent().parent().find("."+ $(elem).data("payid")).val()*100).toFixed(2))
                 });
 
             });
@@ -76,7 +76,7 @@ $(function () {
             $($vouss).each(function (idx, elem) {
                 productObjs.push({
                     productId: $(elem).data("productid"),
-                    amount:$vouss.parent().parent().parent().find("."+ $(elem).data("productid")).val()
+                    amount:parseInt(($vouss.parent().parent().parent().find("."+ $(elem).data("productid")).val() * 100).toFixed(2))
                 });
 
             });
@@ -433,7 +433,7 @@ $(function () {
         })
     }
 
-    $('.oInfo_tables').on('click', '.rename', function () {
+    $('.oInfo_table').on('click', '.rename', function () {
         $(this).prev().hide();
         $(this).next().show().addClass('border-el');
     });

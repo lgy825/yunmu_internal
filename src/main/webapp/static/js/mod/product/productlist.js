@@ -86,8 +86,8 @@ function saveProduct() {
     if (!productAmount) {
         layer.msg("请输入支出金额");
         return;
-    }else if (!ValidUtils.validText(productAmount, 1, 10)) {
-        layer.msg("名称不超过5个数字，不能出现其他特殊字符");
+    }else if (!ValidUtils.validMoney(productAmount)) {
+        layer.msg("金额不能包含其它字符");
         return;
     }
     var projectId = $.trim($("#projectSel").val());
@@ -101,6 +101,7 @@ function saveProduct() {
     //     return;
     // }
     var productDesc=$.trim($("#productDesc").val());
+    productAmount = parseInt((productAmount * 100).toFixed(2)) ;
     $.ajax({
         url: ctx + "product/save",
         type: "POST",
@@ -148,11 +149,15 @@ function updateProduct() {
     if (!productAmount) {
         layer.msg("请输入支出金额");
         return;
+    }else if (!ValidUtils.validMoney(productAmount)) {
+        layer.msg("金额不能包含其它字符");
+        return;
     }
     var projectId=$("#projectSel").attr('code');
     //var payType=$("#typeSel").attr('code');
     var id=$(".ids").val();
     var productDesc=$.trim($("#productDesc").val());
+    productAmount = parseInt((productAmount * 100).toFixed(2)) ;
     $.ajax({
         url: ctx + "product/save",
         type: "POST",

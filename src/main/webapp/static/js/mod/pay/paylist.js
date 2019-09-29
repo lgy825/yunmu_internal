@@ -86,8 +86,8 @@ function savePay() {
     if (!payAmount) {
         layer.msg("请输入支出金额");
         return;
-    }else if (!ValidUtils.validText(payName, 1, 10)) {
-        layer.msg("名称不超过5个数字，不能出现其他特殊字符");
+    }else if (!ValidUtils.validMoney(payAmount)) {
+        layer.msg("金额不能出现其他特殊字符");
         return;
     }
     var projectId = $.trim($("#projectSel").val());
@@ -101,6 +101,7 @@ function savePay() {
         return;
     }
     var payDesc=$.trim($("#payDesc").val());
+    payAmount = parseInt((payAmount * 100).toFixed(2)) ;
     $.ajax({
         url: ctx + "pay/save",
         type: "POST",
@@ -148,11 +149,15 @@ function updatePay() {
     if (!payAmount) {
         layer.msg("请输入支出金额");
         return;
+    }else if (!ValidUtils.validMoney(payAmount)) {
+        layer.msg("金额不能出现其他特殊字符");
+        return;
     }
     var projectId=$("#projectSel").attr('code');
     var payType=$("#typeSel").attr('code');
     var id=$(".ids").val();
     var payDesc=$.trim($("#payDesc").val());
+    payAmount = parseInt((payAmount * 100).toFixed(2)) ;
     $.ajax({
         url: ctx + "pay/save",
         type: "POST",

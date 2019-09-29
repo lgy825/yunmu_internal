@@ -49,7 +49,7 @@
             </div>
             <div>
                 <div>
-                    <span class="color-graya8">开支金额</span>
+                    <span class="color-graya8">实收金额</span>
                     <p class="mt10 color-blue">${orderExt.orderActAmount==''||orderExt.orderActAmount==null ? "0" :orderExt.orderActAmount}</p>
                 </div>
             </div>

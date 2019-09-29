@@ -166,8 +166,8 @@ public class AppServiceImpl implements AppService{
         orderDetailUtil.setPayWay(orderExt.getPayWay());
         orderDetailUtil.setSourceWay(orderExt.getSourceWay());
         orderDetailUtil.sethNumber(orderExt.getHourseNumber());
-        BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
-        double payAmount=bigDecimal.subtract(new BigDecimal(orderExt.getOrderActAmount())).doubleValue();
+        //BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
+        double payAmount=orderExt.getOrderRecAmount().subtract(orderExt.getOrderActAmount()).doubleValue();
         orderDetailUtil.setOrderActAmount(orderExt.getOrderActAmount().doubleValue());
         orderDetailUtil.setPayAmount(payAmount);
         List<OrderItem> orderItemList=new ArrayList<>();

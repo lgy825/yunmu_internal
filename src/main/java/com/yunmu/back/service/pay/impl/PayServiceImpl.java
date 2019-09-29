@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,9 @@ public class PayServiceImpl implements PayService{
             pay.setCreateBy(ShiroUtils.getUser().getUserName());
             pay.setCreateTime(new Date());
             pay.setDelFlag(0);
+            if(pay.getPayAmount()!=null){
+                pay.setPayAmount(pay.getPayAmount().divide(new BigDecimal(100)));
+            }
             try {
                 payMapper.insert(pay);
                 return true;
@@ -109,6 +113,9 @@ public class PayServiceImpl implements PayService{
             }
             pay.setUpdateBy(ShiroUtils.getUser().getUserName());
             pay.setUpdateTime(new Date());
+            if(pay.getPayAmount()!=null){
+                pay.setPayAmount(pay.getPayAmount().divide(new BigDecimal(100)));
+            }
             payMapper.updateByPrimaryKeySelective(pay);
             return true;
         }

@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,9 @@ public class ProductServiceImpl implements ProductService {
             product.setCreateBy(ShiroUtils.getUser().getUserName());
             product.setCreateTime(new Date());
             product.setDelFlag(0);
+            if(product.getProductAmount()!=null){
+                product.setProductAmount(product.getProductAmount().divide(new BigDecimal(100)));
+            }
             try {
                 productMapper.insert(product);
                 return true;
@@ -102,6 +106,9 @@ public class ProductServiceImpl implements ProductService {
             }
             product.setUpdateBy(ShiroUtils.getUser().getUserName());
             product.setUpdateTime(new Date());
+            if(product.getProductAmount()!=null){
+                product.setProductAmount(product.getProductAmount().divide(new BigDecimal(100)));
+            }
             productMapper.updateByPrimaryKeySelective(product);
             return true;
         }
