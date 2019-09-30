@@ -233,7 +233,7 @@
     $(function () {
         setInterval(function () {
             $.ajax({
-                url: "${ctx}/index/isout",
+                url: "${ctx}/isout",
                 type: "GET",
                 cache: false,
                 async: false,
