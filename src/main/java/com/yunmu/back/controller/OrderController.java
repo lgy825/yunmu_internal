@@ -20,6 +20,7 @@ import com.yunmu.core.util.excel.ExportExcel;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,12 +54,12 @@ public class OrderController extends BaseController {
 
     @Autowired
     private OrderService orderSercvice;
-
+    @RequiresPermissions("ordermana:order:orderlist")
     @RequestMapping("/toOrderlist")
     public String toOrderlist() {
         return "order/orderlist";
     }
-
+    @RequiresPermissions("sysmgr:delorder:orderdellist")
     @RequestMapping("/toDelOrderlist")
     public String toDelOrderlist() {
         return "order/orderdellist";

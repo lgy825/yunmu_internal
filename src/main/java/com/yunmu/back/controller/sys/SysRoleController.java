@@ -40,7 +40,7 @@ public class SysRoleController extends BaseController {
         return createSuccessPageResult(sysRoleService.getRolePageByCondition(params));
     }
 
-    //@RequiresPermissions("sysmgr:role:list")
+    @RequiresPermissions("sysmgr:role:list")
     @RequestMapping("/toRolelist")
     public String toList() {
         return "sys/role/list";
