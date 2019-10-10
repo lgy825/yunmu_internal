@@ -46,12 +46,12 @@
 
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="compnymana:company:edit">
+                        <shiro:hasPermission name="sysmgr:company:edit">
                         <a href="${ctx}/company/toEdit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="compnymana:company:del">
+                        <shiro:hasPermission name="sysmgr:company:del">
                         <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                     </div>

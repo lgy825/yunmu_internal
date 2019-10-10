@@ -107,7 +107,7 @@
             <hr>
         </div>
         <div class="pdtrl20">
-            <shiro:hasPermission name="ordermana:order:add">
+            <shiro:hasPermission name="ordermana:delorder:add">
             <a href="${ctx}/order/toaddOrder">
                 <input type="button" class="blue_btn" value="新建订单">
             </a>

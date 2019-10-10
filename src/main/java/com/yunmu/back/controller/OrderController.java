@@ -54,12 +54,12 @@ public class OrderController extends BaseController {
 
     @Autowired
     private OrderService orderSercvice;
-    @RequiresPermissions("ordermana:order:orderlist")
+    //@RequiresPermissions("ordermana:order:orderlist")
     @RequestMapping("/toOrderlist")
     public String toOrderlist() {
         return "order/orderlist";
     }
-    @RequiresPermissions("sysmgr:delorder:orderdellist")
+    //@RequiresPermissions("ordermana:delorder:orderdellist")
     @RequestMapping("/toDelOrderlist")
     public String toDelOrderlist() {
         return "order/orderdellist";

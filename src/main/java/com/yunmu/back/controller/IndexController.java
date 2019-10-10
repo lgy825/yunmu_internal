@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
@@ -80,7 +81,7 @@ public class IndexController extends BaseController {
     @RequestMapping("/tologin")
     public String toLogin(HttpSession session) {
         log.info("开始访问登录页面");
-        return "login";
+        return "/login";
     }
 
 //    @RequestMapping("/workbench")
