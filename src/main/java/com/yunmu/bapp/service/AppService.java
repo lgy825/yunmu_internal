@@ -24,4 +24,6 @@ public interface AppService {
     List<AppResponseObj> getOrderPage(Map<String,String> params);
 
     OrderDetailUtil getOrderInfoById(String orderId);
+
+    Owner getOwnerById(String ownerId);
 }

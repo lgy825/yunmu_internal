@@ -135,16 +135,18 @@ public class AppServiceImpl implements AppService{
             criteria.andOrderCodeEqualTo(orderId);
             criteria.andDelFlagEqualTo(0);
             List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
-            List<String> payIds= new ArrayList<>();
-            for(OrderDetail orderDetail:orderDetails){
-                payIds.add(orderDetail.getPayCode());
+            if(orderDetails.size()>0){
+                List<String> payIds= new ArrayList<>();
+                for(OrderDetail orderDetail:orderDetails){
+                    payIds.add(orderDetail.getPayCode());
+                }
+                PayExample payExample=new PayExample();
+                PayExample.Criteria criteria1=payExample.createCriteria();
+                criteria1.andDelFlagEqualTo(0);
+                criteria1.andPayIdIn(payIds);
+                List<Pay> payList=payMapper.selectByExample(payExample);
+                orderExt.setPayExts(payList);
             }
-            PayExample payExample=new PayExample();
-            PayExample.Criteria criteria1=payExample.createCriteria();
-            criteria1.andDelFlagEqualTo(0);
-            criteria1.andPayIdIn(payIds);
-            List<Pay> payList=payMapper.selectByExample(payExample);
-            orderExt.setPayExts(payList);
             BeanUtils.copyProperties(order,orderExt);
             Map<Integer,String> payWays=getAllPayWayMap();
             Map<String,String> orderSources=getAllOrderSourceMap();
@@ -171,17 +173,26 @@ public class AppServiceImpl implements AppService{
         orderDetailUtil.setOrderActAmount(orderExt.getOrderActAmount().doubleValue());
         orderDetailUtil.setPayAmount(payAmount);
         List<OrderItem> orderItemList=new ArrayList<>();
-        for(Pay pay:orderExt.getPayExts()){
-            OrderItem orderItem=new OrderItem();
-            orderItem.setdId(pay.getPayId());
-            orderItem.setdAmount(pay.getPayAmount().doubleValue());
-            orderItem.setdDate(pay.getCreateTime());
-            orderItem.setdDesc(pay.getPayDesc());
-            orderItem.setdName(pay.getPayName());
-            orderItemList.add(orderItem);
+        if(orderExt.getPayExts()!=null && orderExt.getPayExts().size()>0){
+            for(Pay pay:orderExt.getPayExts()){
+                OrderItem orderItem=new OrderItem();
+                orderItem.setdId(pay.getPayId());
+                orderItem.setdAmount(pay.getPayAmount().doubleValue());
+                orderItem.setdDate(pay.getCreateTime());
+                orderItem.setdDesc(pay.getPayDesc());
+                orderItem.setdName(pay.getPayName());
+                orderItem.setdCount(1);
+                orderItemList.add(orderItem);
+            }
+
         }
         orderDetailUtil.setOrderItems(orderItemList);
         return orderDetailUtil;
+    }
+
+    @Override
+    public Owner getOwnerById(String ownerId) {
+        return ownerMapper.selectByPrimaryKey(ownerId);
     }
 
     public Map<Integer,String> getAllPayWayMap(){

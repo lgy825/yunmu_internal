@@ -7,6 +7,7 @@ import com.yunmu.core.model.order.OrderDetail;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
+import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.OrderDetailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,12 @@ public class AppController extends BaseController{
     @RequestMapping("/update")
     @ResponseBody
     public Result<Boolean> updatePwd(@RequestBody AppRequestParam appRequestParam) {
+        if(appRequestParam.getToken()!=null){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(!appRequestParam.getToken().equals(owner.getToken())){
+                return createFailedResult("登录过期");
+            }
+        }
         Owner owner = new Owner();
         if (appRequestParam.getOwnerId() == null) {
             return createFailedResult("用户id不能为空");
@@ -64,6 +71,7 @@ public class AppController extends BaseController{
         owner.setOwnerName(appRequestParam.getOwnerName());
         owner.setOwnerPwd(appRequestParam.getOwnerPwd());
         owner.setOwnerTel(appRequestParam.getOwnerPhone());
+        owner.setToken(IdUtils.getId(11));
         return createSuccessResult(appService.update(owner));
     }
 
@@ -71,8 +79,11 @@ public class AppController extends BaseController{
     @RequestMapping("/getDateByCondition")
     @ResponseBody
     public Result<Map<String, Object>> getDateByCondition(@RequestBody AppRequestParam appRequestParam) {
-        if (appRequestParam.getOwnerId() == null) {
-            return createFailedResult("500错误，用户id为空");
+        if(appRequestParam.getToken()!=null){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(!appRequestParam.getToken().equals(owner.getToken())){
+                return createFailedResult("登录过期");
+            }
         }
 
         Map<String, String> params = new HashMap<>();
@@ -102,8 +113,11 @@ public class AppController extends BaseController{
     @RequestMapping("/getOrderPageByCondition")
     @ResponseBody
     public Result<List<AppResponseObj>> getOrderPageByCondition(@RequestBody AppRequestParam appRequestParam) {
-        if (appRequestParam.getOwnerId() == null) {
-            return createFailedResult("500错误，用户id为空");
+        if(appRequestParam.getToken()!=null){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(!appRequestParam.getToken().equals(owner.getToken())){
+                return createFailedResult("登录过期");
+            }
         }
 
         Map<String, String> params = new HashMap<>();

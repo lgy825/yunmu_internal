@@ -17,6 +17,7 @@ public class AppRequestParam {
     private String ownerId;
     private String orderId;
 
+
     public String getOwnerId() {
         return ownerId;
     }
