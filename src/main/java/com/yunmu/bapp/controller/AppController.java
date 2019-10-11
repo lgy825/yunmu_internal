@@ -54,7 +54,7 @@ public class AppController extends BaseController{
     @RequestMapping("/update")
     @ResponseBody
     public Result<Boolean> updatePwd(@RequestBody AppRequestParam appRequestParam) {
-        if(appRequestParam.getToken()!=null){
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
             if(!appRequestParam.getToken().equals(owner.getToken())){
                 return createFailedResult("登录过期");
@@ -79,7 +79,7 @@ public class AppController extends BaseController{
     @RequestMapping("/getDateByCondition")
     @ResponseBody
     public Result<Map<String, Object>> getDateByCondition(@RequestBody AppRequestParam appRequestParam) {
-        if(appRequestParam.getToken()!=null){
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
             if(!appRequestParam.getToken().equals(owner.getToken())){
                 return createFailedResult("登录过期");
@@ -98,8 +98,11 @@ public class AppController extends BaseController{
     @RequestMapping("/getIncomeByCondition")
     @ResponseBody
     public Result<Double> getIncomeByCondition(@RequestBody AppRequestParam appRequestParam) {
-        if (appRequestParam.getOwnerId() == null) {
-            return createFailedResult("500错误，用户id为空");
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(!appRequestParam.getToken().equals(owner.getToken())){
+                return createFailedResult("登录过期");
+            }
         }
         Map<String, String> params = new HashMap<>();
         params.put("ownerId", appRequestParam.getOwnerId());
@@ -113,7 +116,7 @@ public class AppController extends BaseController{
     @RequestMapping("/getOrderPageByCondition")
     @ResponseBody
     public Result<List<AppResponseObj>> getOrderPageByCondition(@RequestBody AppRequestParam appRequestParam) {
-        if(appRequestParam.getToken()!=null){
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
             if(!appRequestParam.getToken().equals(owner.getToken())){
                 return createFailedResult("登录过期");
