@@ -111,6 +111,15 @@ public class OrderExt implements Serializable {
     private Integer isChooseProduct;
 
     private String operaterBy;
+    private String orderDesc;
+
+    public String getOrderDesc() {
+        return orderDesc;
+    }
+
+    public void setOrderDesc(String orderDesc) {
+        this.orderDesc = orderDesc;
+    }
 
     public String getOperaterBy() {
         return operaterBy;

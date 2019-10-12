@@ -16,7 +16,7 @@
         <thead>
                 <tr>
                     <th style='width: 10%;'><div>订单号</div></th>
-                    <th style='width: 8%;'><div>房间信息</div></th>
+                    <th style='width: 5%;'><div>房间信息</div></th>
                     <th style='width: 8%;'><div>开始时间</div></th>
                     <th style='width: 8%;'><div>结束时间</div></th>
                     <th style='width: 9%;'><div>订单来源</div></th>
@@ -24,7 +24,7 @@
                     <th style='width: 8%;'><div>实收金额(元)</div></th>
                     <th style='width: 8%;'><div>订单状态</div></th>
                     <th style='width: 8%;'><div>支付方式</div></th>
-                    <th style='width: 22%;'><div>操作</div></th>
+                    <th style='width: 25%;'><div>操作</div></th>
                 </tr>
         </thead>
         <tbody>
@@ -70,10 +70,14 @@
 
                 <td>
                     <div>
-                        {{if orderStatus == '0'}}
-                            成功
-                        {{else orderStatus == '1'}}
-                             失败
+                        {{if orderStatus == '10'}}
+                            订单完成
+                        {{else orderStatus == '11'}}
+                             未入住
+                        {{else orderStatus == '12'}}
+                            已入住
+                        {{else orderStatus == '13'}}
+                            已取消
                         {{/if}}
                     </div>
                 </td>
@@ -96,6 +100,9 @@
                         </shiro:hasPermission>
                         <shiro:hasPermission name="ordermana:order:del">
                         <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="ordermana:order:status">
+                            <input type="button" data-sid="{{:id}}"  class="editStatus gray_btn mr10" value="编辑状态">
                         </shiro:hasPermission>
                     </div>
                 </td>
@@ -126,9 +133,11 @@
                 <div>
                     <input id="orderId" type="text" class="inpW ml20" placeholder="订单号">
                     <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
+                    <select class="select ml20" id="orderStatus">
+                    </select>
                     <input type="text" class="inpW  inpWid2 timer" id="timeSpick" placeholder="开始时间"/>
                     <span class="zhi">至</span>
-                    <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
+                    <input type="text" class="inpW ml20 inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                     <shiro:hasPermission name="ordermana:order:export">
@@ -148,6 +157,44 @@
         </div>
     </div>
 </div>
+<!-- 修改订单状态 -->
+<div class="modality-layer none">
+    <div class="modality-box">
+        <div class="modality-title clearfix">
+            <span class="fl layer-title">修改订单状态</span>
+            <span class="fr layer-close cursor"></span>
+        </div>
+        <div class="layer-line">
+            <hr>
+        </div>
+        <div class="p20">
+            <div class="cinema mt12">
+                <input id="tempId" type="hidden" class="inpW ml20">
+                <div class="align-r relative">
+                    订单状态
+                    <i class="whats define-layer"></i>
+                    <p class="modify-what">订单只可选择一种状态</p>
+                </div>
+                <form action="" class="inline-block ml8">
+                    <div class="">
+                        <select class="select select-wid" id="orderSel">
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="mt12 clearfix">
+                <div class="align-r fl relative">
+                    修改描述
+                    <i class="whats define-layer none-bg"></i>
+                </div>
+                <div class="text-des ml8 fl"><textarea id="orderDesc"></textarea></div>
+            </div>
+            <div class="layer-prompt">
+                <input type="button" class="update blue_btn blue_btn30 mt20 mb10" onclick="updateStatus()" value="修改">
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="${ctx}/static/js/mod/order/orderlist.js"></script>
 <%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
 <script>
@@ -158,6 +205,10 @@
         $(window).on('resize', function () {
             fullScreen($('.scroll-table'), 264);
         });
+
+
+
+
     });
 </script>
 </body>

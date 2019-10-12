@@ -35,5 +35,7 @@ public interface OrderService {
 
     double getAllActByParam(Map<String,String> params);
 
+    boolean updateOrderStatus(Order order);
+
 
 }

@@ -1,7 +1,19 @@
 var hourseTypeMap={};
 var projectId="";
 $(function () {
+    loadOrderStatus();
 
+    //加载订单状态
+    function loadOrderStatus() {
+        $("#orderStatus").select2({placeholder: '*选择订单状态*'});
+        $("#orderStatus").append("<option value='-1'>*选择订单状态*</option>");
+        $("#orderStatus").append("<option value='10'>已完成</option>"+
+            "<option value='11'>未入住</option>"+
+            "<option value='12'>已入住</option>"+
+            "<option value='13'>已取消</option>"
+        );
+
+    }
 
     //出事化日其插件
     var timeSpick = $("#timeSpick").datetimepicker({
@@ -97,6 +109,11 @@ $(function () {
             return;
         }
 
+        if ($("#orderStatus").val() == -1) {
+            layer.msg("请选择订单状态");
+            return;
+        }
+
         if ($("#hourseSel").val() == -1) {
             layer.msg("请选择房间");
             return;
@@ -143,7 +160,8 @@ $(function () {
                 orderActAmount:orderActAmount,
                 isChoose:isChoose,
                 isChooseProduct:isChooseProduct,
-                productObjs:productObjs
+                productObjs:productObjs,
+                orderStatus:$("#orderStatus").val()
             }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
@@ -413,6 +431,8 @@ $(function () {
                                 '<td><div>' + (_.isUndefined(item.payName) ? '' : item.payName) + '</div></td>' +
                                 '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.payAmount ? item.payAmount : 0) + '</span>'
                                 + '<i class="rename"></i><input  type="text"  value="'+item.payAmount+'" class="rename-inp none '+item.payId+'"></span></div></td>' +
+                                '<td><div><span class="relative"><span class="rename-inp inline-block">1</span>'
+                                + '<i class="rename"></i><input  type="text"  value="1" class="rename-inp none '+item.payId+'"></span></div></td>' +
                                 '<td><div title="'+item.payDesc+'">'+item.payDesc+'</div></td>' +
                                 ' </tr>'
                             );

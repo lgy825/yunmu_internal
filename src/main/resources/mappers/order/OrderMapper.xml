@@ -23,6 +23,7 @@
     <result column="is_choose" jdbcType="INTEGER" property="isChoose" />
     <result column="is_choose_product" jdbcType="INTEGER" property="isChooseProduct" />
     <result column="order_channel" jdbcType="INTEGER" property="orderChannel" />
+    <result column="order_desc" jdbcType="VARCHAR" property="orderDesc" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -97,7 +98,7 @@
     -->
     id, hourse_code, create_time, create_by, order_start_date, order_end_time, order_pro_amount, 
     order_act_amount, order_rec_amount, order_source, order_status, order_way, del_flag, 
-    project_id, is_choose, is_choose_product, order_channel
+    project_id, is_choose, is_choose_product, order_channel, order_desc
   </sql>
   <select id="selectByExample" parameterType="com.yunmu.core.model.order.OrderExample" resultMap="BaseResultMap">
     <!--
@@ -156,13 +157,15 @@
       order_pro_amount, order_act_amount, order_rec_amount, 
       order_source, order_status, order_way, 
       del_flag, project_id, is_choose, 
-      is_choose_product, order_channel)
+      is_choose_product, order_channel, order_desc
+      )
     values (#{id,jdbcType=VARCHAR}, #{hourseCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createBy,jdbcType=VARCHAR}, #{orderStartDate,jdbcType=TIMESTAMP}, #{orderEndTime,jdbcType=TIMESTAMP}, 
       #{orderProAmount,jdbcType=DECIMAL}, #{orderActAmount,jdbcType=DECIMAL}, #{orderRecAmount,jdbcType=DECIMAL}, 
       #{orderSource,jdbcType=CHAR}, #{orderStatus,jdbcType=INTEGER}, #{orderWay,jdbcType=CHAR}, 
       #{delFlag,jdbcType=INTEGER}, #{projectId,jdbcType=VARCHAR}, #{isChoose,jdbcType=INTEGER}, 
-      #{isChooseProduct,jdbcType=INTEGER}, #{orderChannel,jdbcType=INTEGER})
+      #{isChooseProduct,jdbcType=INTEGER}, #{orderChannel,jdbcType=INTEGER}, #{orderDesc,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yunmu.core.model.order.Order">
     <!--
@@ -222,6 +225,9 @@
       <if test="orderChannel != null">
         order_channel,
       </if>
+      <if test="orderDesc != null">
+        order_desc,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -274,6 +280,9 @@
       </if>
       <if test="orderChannel != null">
         #{orderChannel,jdbcType=INTEGER},
+      </if>
+      <if test="orderDesc != null">
+        #{orderDesc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -345,6 +354,9 @@
       <if test="record.orderChannel != null">
         order_channel = #{record.orderChannel,jdbcType=INTEGER},
       </if>
+      <if test="record.orderDesc != null">
+        order_desc = #{record.orderDesc,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -372,7 +384,8 @@
       project_id = #{record.projectId,jdbcType=VARCHAR},
       is_choose = #{record.isChoose,jdbcType=INTEGER},
       is_choose_product = #{record.isChooseProduct,jdbcType=INTEGER},
-      order_channel = #{record.orderChannel,jdbcType=INTEGER}
+      order_channel = #{record.orderChannel,jdbcType=INTEGER},
+      order_desc = #{record.orderDesc,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -432,6 +445,9 @@
       <if test="orderChannel != null">
         order_channel = #{orderChannel,jdbcType=INTEGER},
       </if>
+      <if test="orderDesc != null">
+        order_desc = #{orderDesc,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -456,7 +472,8 @@
       project_id = #{projectId,jdbcType=VARCHAR},
       is_choose = #{isChoose,jdbcType=INTEGER},
       is_choose_product = #{isChooseProduct,jdbcType=INTEGER},
-      order_channel = #{orderChannel,jdbcType=INTEGER}
+      order_channel = #{orderChannel,jdbcType=INTEGER},
+      order_desc = #{orderDesc,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

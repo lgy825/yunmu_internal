@@ -7,20 +7,18 @@ import com.yunmu.back.service.order.OrderService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
+import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderExt;
-import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.Encodes;
-import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.RegxUtils;
 import com.yunmu.core.util.ShiroUtils;
 import com.yunmu.core.util.excel.ExportExcel;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,8 +35,6 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,12 +52,22 @@ public class OrderController extends BaseController {
     //@RequiresPermissions("ordermana:order:orderlist")
     @RequestMapping("/toOrderlist")
     public String toOrderlist() {
-        return "order/orderlist";
+        return "order/allorderlist";
     }
     //@RequiresPermissions("ordermana:delorder:orderdellist")
     @RequestMapping("/toDelOrderlist")
     public String toDelOrderlist() {
         return "order/orderdellist";
+    }
+
+    @RequestMapping("/toComOrderlist")
+    public String toComOrderlist() {
+        return "order/comorderdellist";
+    }
+
+    @RequestMapping("/toCanOrderlist")
+    public String toCanOrderlist() {
+        return "order/canorderlist";
     }
 
 
@@ -73,12 +78,15 @@ public class OrderController extends BaseController {
                                                        Integer pageSize,
                                                        String beginTime,
                                                        String endTime,
-                                                       String orderId,String hourseNumber) {
+                                                       String orderId,String hourseNumber,Integer orderStatus) {
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);
         params.put("hourseNumber",hourseNumber);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
+        if(orderStatus!=null  ){
+            params.put("orderStatus", orderStatus);
+        }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
             params.put("beginTime", beginTime);
         }
@@ -121,7 +129,7 @@ public class OrderController extends BaseController {
     @RequestMapping("/toedit")
     public String toEdit(String id, Model model) {
         if(StringUtils.isBlank(id)) {
-            return "order/orderlist";
+            return "order/allorderlist";
         }
         model.addAttribute("orderId", id);
         return "order/addOrder";
@@ -160,11 +168,26 @@ public class OrderController extends BaseController {
         return createSuccessResult(true);
     }
 
+    @RequestMapping("/updateStatus")
+    @ResponseBody
+    public Result<Boolean> updateOrderStatus(@RequestBody Order order) {
+        if(!StringUtils.isBlank(order.getId())) {
+            try {
+                orderSercvice.updateOrderStatus(order);
+            } catch (Exception e1) {
+                return createFailedResult(e1.getMessage(), false);
+            }
+        } else {
+            return  createFailedResult("修改订单失败");
+        }
+        return createSuccessResult(true);
+    }
+
     //跳转订单详情页面
     @RequestMapping("/tolook")
     public String tolook(String id, Model model) {
         if(StringUtils.isBlank(id)) {
-            return "order/orderlist";
+            return "order/allorderlist";
         }
         OrderExt orderExt=orderSercvice.getOrderDetail(id);
         model.addAttribute("orderExt",orderExt);

@@ -149,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setDelFlag(0);
                 order.setHourseCode(hourseCodes[i]);
                 order.setId(IdUtils.orderCodeGeneration());
-                order.setOrderStatus(0);
+                //order.setOrderStatus(0);
                 order.setOrderActAmount(actAmount);
                 orderMapper.insertSelective(order);
                 if(orderExt.getIsChoose()==2){
@@ -420,6 +420,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public double getAllActByParam(Map<String, String> params) {
         return orderMapperExt.getAllActByParam(params);
+    }
+
+    @Override
+    public boolean updateOrderStatus(Order order) {
+        orderMapper.updateByPrimaryKeySelective(order);
+        return true;
     }
 
     @Override

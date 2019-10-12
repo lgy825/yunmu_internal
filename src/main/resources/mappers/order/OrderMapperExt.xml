@@ -23,6 +23,7 @@
     <result column="is_choose" jdbcType="INTEGER" property="isChoose" />
     <result column="is_choose_product" jdbcType="INTEGER" property="isChooseProduct" />
     <result column="order_channel" jdbcType="INTEGER" property="orderChannel" />
+    <result column="order_desc" jdbcType="VARCHAR" property="orderDesc" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <!--
@@ -123,6 +124,9 @@
     </if>
     <if test="delFlag!=null">
       AND yo.del_flag =#{delFlag}
+    </if>
+    <if test="orderStatus!=null">
+      AND yo.order_status =#{orderStatus}
     </if>
     <if test="projectIds!=null and projectIds.size>0">
       and yo.project_id in

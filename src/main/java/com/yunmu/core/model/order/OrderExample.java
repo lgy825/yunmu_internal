@@ -1,5 +1,6 @@
 package com.yunmu.core.model.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -595,52 +596,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountEqualTo(Long value) {
+        public Criteria andOrderProAmountEqualTo(BigDecimal value) {
             addCriterion("order_pro_amount =", value, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountNotEqualTo(Long value) {
+        public Criteria andOrderProAmountNotEqualTo(BigDecimal value) {
             addCriterion("order_pro_amount <>", value, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountGreaterThan(Long value) {
+        public Criteria andOrderProAmountGreaterThan(BigDecimal value) {
             addCriterion("order_pro_amount >", value, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andOrderProAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("order_pro_amount >=", value, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountLessThan(Long value) {
+        public Criteria andOrderProAmountLessThan(BigDecimal value) {
             addCriterion("order_pro_amount <", value, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountLessThanOrEqualTo(Long value) {
+        public Criteria andOrderProAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("order_pro_amount <=", value, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountIn(List<Long> values) {
+        public Criteria andOrderProAmountIn(List<BigDecimal> values) {
             addCriterion("order_pro_amount in", values, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountNotIn(List<Long> values) {
+        public Criteria andOrderProAmountNotIn(List<BigDecimal> values) {
             addCriterion("order_pro_amount not in", values, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountBetween(Long value1, Long value2) {
+        public Criteria andOrderProAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_pro_amount between", value1, value2, "orderProAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderProAmountNotBetween(Long value1, Long value2) {
+        public Criteria andOrderProAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_pro_amount not between", value1, value2, "orderProAmount");
             return (Criteria) this;
         }
@@ -655,52 +656,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountEqualTo(Long value) {
+        public Criteria andOrderActAmountEqualTo(BigDecimal value) {
             addCriterion("order_act_amount =", value, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountNotEqualTo(Long value) {
+        public Criteria andOrderActAmountNotEqualTo(BigDecimal value) {
             addCriterion("order_act_amount <>", value, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountGreaterThan(Long value) {
+        public Criteria andOrderActAmountGreaterThan(BigDecimal value) {
             addCriterion("order_act_amount >", value, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andOrderActAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("order_act_amount >=", value, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountLessThan(Long value) {
+        public Criteria andOrderActAmountLessThan(BigDecimal value) {
             addCriterion("order_act_amount <", value, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountLessThanOrEqualTo(Long value) {
+        public Criteria andOrderActAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("order_act_amount <=", value, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountIn(List<Long> values) {
+        public Criteria andOrderActAmountIn(List<BigDecimal> values) {
             addCriterion("order_act_amount in", values, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountNotIn(List<Long> values) {
+        public Criteria andOrderActAmountNotIn(List<BigDecimal> values) {
             addCriterion("order_act_amount not in", values, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountBetween(Long value1, Long value2) {
+        public Criteria andOrderActAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_act_amount between", value1, value2, "orderActAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderActAmountNotBetween(Long value1, Long value2) {
+        public Criteria andOrderActAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_act_amount not between", value1, value2, "orderActAmount");
             return (Criteria) this;
         }
@@ -715,52 +716,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountEqualTo(Long value) {
+        public Criteria andOrderRecAmountEqualTo(BigDecimal value) {
             addCriterion("order_rec_amount =", value, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountNotEqualTo(Long value) {
+        public Criteria andOrderRecAmountNotEqualTo(BigDecimal value) {
             addCriterion("order_rec_amount <>", value, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountGreaterThan(Long value) {
+        public Criteria andOrderRecAmountGreaterThan(BigDecimal value) {
             addCriterion("order_rec_amount >", value, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andOrderRecAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("order_rec_amount >=", value, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountLessThan(Long value) {
+        public Criteria andOrderRecAmountLessThan(BigDecimal value) {
             addCriterion("order_rec_amount <", value, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountLessThanOrEqualTo(Long value) {
+        public Criteria andOrderRecAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("order_rec_amount <=", value, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountIn(List<Long> values) {
+        public Criteria andOrderRecAmountIn(List<BigDecimal> values) {
             addCriterion("order_rec_amount in", values, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountNotIn(List<Long> values) {
+        public Criteria andOrderRecAmountNotIn(List<BigDecimal> values) {
             addCriterion("order_rec_amount not in", values, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountBetween(Long value1, Long value2) {
+        public Criteria andOrderRecAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_rec_amount between", value1, value2, "orderRecAmount");
             return (Criteria) this;
         }
 
-        public Criteria andOrderRecAmountNotBetween(Long value1, Long value2) {
+        public Criteria andOrderRecAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_rec_amount not between", value1, value2, "orderRecAmount");
             return (Criteria) this;
         }
@@ -1272,6 +1273,76 @@ public class OrderExample {
 
         public Criteria andOrderChannelNotBetween(Integer value1, Integer value2) {
             addCriterion("order_channel not between", value1, value2, "orderChannel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescIsNull() {
+            addCriterion("order_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescIsNotNull() {
+            addCriterion("order_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescEqualTo(String value) {
+            addCriterion("order_desc =", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescNotEqualTo(String value) {
+            addCriterion("order_desc <>", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescGreaterThan(String value) {
+            addCriterion("order_desc >", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescGreaterThanOrEqualTo(String value) {
+            addCriterion("order_desc >=", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescLessThan(String value) {
+            addCriterion("order_desc <", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescLessThanOrEqualTo(String value) {
+            addCriterion("order_desc <=", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescLike(String value) {
+            addCriterion("order_desc like", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescNotLike(String value) {
+            addCriterion("order_desc not like", value, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescIn(List<String> values) {
+            addCriterion("order_desc in", values, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescNotIn(List<String> values) {
+            addCriterion("order_desc not in", values, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescBetween(String value1, String value2) {
+            addCriterion("order_desc between", value1, value2, "orderDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderDescNotBetween(String value1, String value2) {
+            addCriterion("order_desc not between", value1, value2, "orderDesc");
             return (Criteria) this;
         }
     }

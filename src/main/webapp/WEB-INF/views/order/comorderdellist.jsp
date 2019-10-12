@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>删除订单管理</title>
+    <title>已完成订单</title>
     <%@include file="/static/commons/common.jspf" %>
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
@@ -29,7 +29,8 @@
         </thead>
         <tbody>
         {{for list}}
-            <td>
+            <tr>
+                <td>
                     <div>{{:id}}</div>
                 </td>
                 <td>
@@ -72,7 +73,7 @@
                         {{if orderStatus == '10'}}
                             订单完成
                         {{else orderStatus == '11'}}
-                             未入住
+                            未入住
                         {{else orderStatus == '12'}}
                             已入住
                         {{else orderStatus == '13'}}
@@ -92,7 +93,7 @@
                             <input type="button" class="lookbtn gray_btn mr10" value="订单详情">
                             </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:edit">
+                         <shiro:hasPermission name="ordermana:order:edit">
                             <a href="${ctx}/order/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                             </a>
@@ -154,7 +155,45 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${ctx}/static/js/mod/order/orderdellist.js"></script>
+<!-- 修改订单状态 -->
+<div class="modality-layer none">
+    <div class="modality-box">
+        <div class="modality-title clearfix">
+            <span class="fl layer-title">修改订单状态</span>
+            <span class="fr layer-close cursor"></span>
+        </div>
+        <div class="layer-line">
+            <hr>
+        </div>
+        <div class="p20">
+            <div class="cinema mt12">
+                <input id="tempId" type="hidden" class="inpW ml20">
+                <div class="align-r relative">
+                    订单状态
+                    <i class="whats define-layer"></i>
+                    <p class="modify-what">订单只可选择一种状态</p>
+                </div>
+                <form action="" class="inline-block ml8">
+                    <div class="">
+                        <select class="select select-wid" id="orderSel">
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="mt12 clearfix">
+                <div class="align-r fl relative">
+                    修改描述
+                    <i class="whats define-layer none-bg"></i>
+                </div>
+                <div class="text-des ml8 fl"><textarea id="orderDesc"></textarea></div>
+            </div>
+            <div class="layer-prompt">
+                <input type="button" class="update blue_btn blue_btn30 mt20 mb10" onclick="updateStatus()" value="修改">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${ctx}/static/js/mod/order/comorderdellist.js"></script>
 <%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
 <script>
     $(function () {

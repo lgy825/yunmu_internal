@@ -1,6 +1,9 @@
 $(function(){
 
-    loadOrderStatus();
+    loadPage();
+    $("#searchBtn").click(function () {
+        loadPage();
+    });
 
     $('.layer-close').on('click', function () {
         $('.modality-layer').hide();
@@ -24,24 +27,6 @@ $(function(){
             "<option value='12'>已入住</option>"+
             "<option value='13'>已取消</option>"
         );
-    });
-
-    //加载订单状态
-    function loadOrderStatus() {
-        $("#orderStatus").select2({placeholder: '*选择订单状态*'});
-        $("#orderStatus").append("<option value='-1'>*选择订单状态*</option>");
-        $("#orderStatus").append("<option value='10'>已完成</option>"+
-            "<option value='11'>未入住</option>"+
-            "<option value='12'>已入住</option>"+
-            "<option value='13'>已取消</option>"
-        );
-
-    }
-
-
-    loadPage();
-    $("#searchBtn").click(function () {
-        loadPage();
     });
 
     $("#timeSpick").datetimepicker({
@@ -77,14 +62,13 @@ $(function(){
         $("#timeSpick").val("");
         $("#timeEpick").val("");
         $("#searchBtn").click();
-        $("#orderStatus").val("-1").trigger('change');
     });
 
-    $("#orderTable").on("click", ".delete", function (){
+    $("#orderTable").on("click", ".revoke", function (){
         var orderId = $(this).data("sid");
-        layer.confirm('删除后将无法恢复，是否继续？', function () {
+        layer.confirm('撤销确认，是否继续？', function () {
             $.ajax({
-                url: ctx + "order/delete",
+                url: ctx + "order/revoke",
                 type: "GET",
                 cache: false,
                 // async: false,
@@ -92,13 +76,13 @@ $(function(){
                 data: {id: orderId},
                 success: function (data) {
                     if (data && data.resultCode === '0') {
-                        layer.msg('删除成功 !');
+                        layer.msg('恢复成功 !');
                         loadPage();
                     } else {
                         if (data.resultDesc) {
                             layer.msg(data.resultDesc);
                         } else {
-                            layer.msg('删除失败 !');
+                            layer.msg('恢复失败 !');
                         }
                     }
                 },
@@ -109,27 +93,6 @@ $(function(){
         });
     });
 
-    $("#exportBtn").click(function () {
-        var orderId= $("#orderId").val();
-        var hourseNumber=$("#hourseNumber").val();
-        var beginTime=$("#timeSpick").val();
-        var endTime =$("#timeEpick").val();
-        if ($.trim(hourseNumber)=='' || $.trim(hourseNumber)==null) {
-            layer.msg("请至少输入房间号再导出");
-            return;
-        }
-        if (beginTime.length < 1 || endTime.length < 1) {
-            layer.confirm('您没有选择导出起止时间，是否继续？', function () {
-                location.href = ctx + "order/exportOrder?hourseNumber="+hourseNumber+"&beginTime="+beginTime+"&endTime="+endTime;
-            });
-        } else {
-            if (Date.parse(beginTime) > Date.parse(endTime)) {
-                layer.msg("结束日期不能早于开始日期");
-                return;
-            }
-            location.href = ctx + "order/exportOrder?hourseNumber="+hourseNumber+"&beginTime="+beginTime+"&endTime="+endTime;
-        }
-    });
 
 });
 function loadPage() {
@@ -154,10 +117,10 @@ function loadPage() {
             url: ctx + 'order/getpage',
             params:{
                 orderId: $.trim($("#orderId").val()),
+                orderStatus:10,
                 beginTime:$("#timeSpick").val(),
                 hourseNumber:$.trim($("#hourseNumber").val()),
-                endTime:$("#timeEpick").val(),
-                orderStatus:$("#orderStatus").val() == -1 ? null : $("#orderStatus").val()
+                endTime:$("#timeEpick").val()
             },
             success: function (data) {
                 // data为ajax返回数据

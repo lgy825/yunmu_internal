@@ -76,7 +76,8 @@
                                     <tr>
                                         <th style="width: 12%"><div>选择</div></th>
                                         <th style="width: 20%"><div>支出名称</div></th>
-                                        <th style="width: 23%"><div>支出金额</div></th>
+                                        <th style="width: 23%"><div>支出单价</div></th>
+                                        <th style="width: 23%"><div>支出数量</div></th>
                                         <th style="width: 40%"><div>支出描述</div></th>
                                     </tr>
                                     </thead>
@@ -104,7 +105,8 @@
                                     <tr>
                                         <th style="width: 12%"><div>选择</div></th>
                                         <th style="width: 20%"><div>商品名称</div></th>
-                                        <th style="width: 23%"><div>商品金额</div></th>
+                                        <th style="width: 23%"><div>商品单价</div></th>
+                                        <th style="width: 23%"><div>商品数量</div></th>
                                         <th style="width: 40%"><div>商品描述</div></th>
                                     </tr>
                                     </thead>
@@ -121,6 +123,14 @@
                     <span class="zhi">至</span>
                     <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束日期">
                     <span class="color-lred ml8">* 结束日期不能早于开始日期</span>
+                </div>
+                <!-- 必填选项 -->
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">订单状态</div>
+                    <select id="orderStatus" class="select ml16 wid-238">
+
+                    </select>
+                    <span class="color-lred ml8 mt6">* 请选择订单状态*</span>
                 </div>
                 <div class="mt30 ml170">
                     <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">
