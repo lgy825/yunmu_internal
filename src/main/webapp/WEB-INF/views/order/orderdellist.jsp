@@ -66,7 +66,6 @@
                     {{/if}}
                     </div>
                 </td>
-
                 <td>
                     <div>
                         {{if orderStatus == '10'}}
@@ -81,9 +80,7 @@
                     </div>
                 </td>
                 <td>
-                    <div>
-                        {{:payWay}}
-                    </div>
+                    <div>{{:operaterBy}}</div>
                 </td>
                 <td>
                     <div class="">

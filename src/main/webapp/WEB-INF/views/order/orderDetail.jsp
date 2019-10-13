@@ -59,10 +59,16 @@
                     <p class="mt10 color-blue">${orderExt.orderProAmount==''||orderExt.orderProAmount==null ? "0" :orderExt.orderProAmount}</p>
                 </div>
             </div>
-            <div>
+            <div class="mt12">
                 <div>
                     <span class="color-graya8">支付方式</span>
                     <p class="mt10 color-blue">${orderExt.payWay}</p>
+                </div>
+            </div>
+            <div class="mt12">
+                <div>
+                    <span class="color-graya8">订单状态</span>
+                    <p class="mt10 color-blue">${orderExt.orderStatusStr}</p>
                 </div>
             </div>
         </div>
@@ -81,7 +87,19 @@
                 </div>
                 <div>
                     <div>
-                        <span class="color-graya8">金额(元)</span>
+                        <span class="color-graya8">单价(元)</span>
+
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">数量</span>
+
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">总额</span>
 
                     </div>
                 </div>
@@ -107,6 +125,18 @@
                     <div>
                         <div>
                             <p><fmt:formatNumber value="${item.amount}" maxFractionDigits="2"
+                                                 minFractionDigits="2"/></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p><fmt:formatNumber value="${item.count}" maxFractionDigits="2"
+                                                 minFractionDigits="2"/></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p><fmt:formatNumber value="${item.allAmount}" maxFractionDigits="2"
                                                  minFractionDigits="2"/></p>
                         </div>
                     </div>
@@ -138,7 +168,19 @@
                 </div>
                 <div>
                     <div>
-                        <span class="color-graya8">金额(元)</span>
+                        <span class="color-graya8">单价(元)</span>
+
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">数量</span>
+
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span class="color-graya8">总额(元)</span>
 
                     </div>
                 </div>
@@ -164,6 +206,18 @@
                     <div>
                         <div>
                             <p><fmt:formatNumber value="${item.amount}" maxFractionDigits="2"
+                                                 minFractionDigits="2"/></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p><fmt:formatNumber value="${item.count}" maxFractionDigits="2"
+                                                 minFractionDigits="2"/></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <p><fmt:formatNumber value="${item.allAmount}" maxFractionDigits="2"
                                                  minFractionDigits="2"/></p>
                         </div>
                     </div>

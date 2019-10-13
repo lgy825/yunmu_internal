@@ -1,7 +1,10 @@
 package com.yunmu.bapp.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.yunmu.bapp.service.AppService;
 import com.yunmu.core.base.Result;
+import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.hourse.HourseMapper;
 import com.yunmu.core.dao.order.OrderDetailMapper;
 import com.yunmu.core.dao.order.OrderMapper;
@@ -26,6 +29,7 @@ import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
 import com.yunmu.core.util.OrderDetailUtil;
 import com.yunmu.core.util.OrderItem;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -193,6 +197,32 @@ public class AppServiceImpl implements AppService{
     @Override
     public Owner getOwnerById(String ownerId) {
         return ownerMapper.selectByPrimaryKey(ownerId);
+    }
+
+    @Override
+    public GenericPage<OrderExt> getOrderListByCondition(Map<String, Object> params) {
+        int pageIndex = 1, pageSize = 10;
+        if(params.containsKey("pageIndex")) {
+            if(params.get("pageIndex") != null &&
+                    StringUtils.isNotBlank(params.get("pageIndex").toString())) {
+                pageIndex = Integer.valueOf(params.get("pageIndex").toString());
+                if(pageIndex < 1) {
+                    pageIndex = 1;
+                }
+            }
+        }
+        if(params.containsKey("pageSize")) {
+            if(params.get("pageIndex") != null &&
+                    StringUtils.isNotBlank(params.get("pageSize").toString())) {
+                pageSize = Integer.valueOf(params.get("pageSize").toString());
+                if(pageSize < 1) {
+                    pageSize = 10;
+                }
+            }
+        }
+        Page<OrderExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
+        List<OrderExt> orderExts=orderMapperExt.getOrderPage(params);
+        return new GenericPage<>(pageIndex, pageSize, orderExts, pageInfo.getTotal());
     }
 
     public Map<Integer,String> getAllPayWayMap(){

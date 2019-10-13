@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -174,6 +175,32 @@ public class Dates {
         }
         return null;
     }
+
+    /**
+     * 计算两个日期相差的天数
+     * @param oldDate
+     * @param newDate
+     * @return
+     * @author WangLiping
+     */
+    public static int comparePastDate(Date oldDate,Date nowDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        int day=0;
+        try {
+            calendar.setTime(oldDate);
+            Long oTime = calendar.getTimeInMillis();
+            calendar.setTime(nowDate);
+            Long nTime = calendar.getTimeInMillis();
+
+            day=(int) ((nTime - oTime)/(3600F * 1000 * 24));
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return day;
+    }
+
 
 
 

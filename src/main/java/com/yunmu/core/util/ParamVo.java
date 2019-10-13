@@ -6,6 +6,17 @@ public class ParamVo implements Serializable  {
     String payId;
     Double amount;
 
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    Integer count;
+
+
     public Double getAmount() {
         return amount;
     }

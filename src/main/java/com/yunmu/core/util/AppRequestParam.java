@@ -16,7 +16,33 @@ public class AppRequestParam {
     private String token;
     private String ownerId;
     private String orderId;
+    Integer pageIndex;
+    Integer pageSize;
+    Integer orderStatus;
 
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
     public String getOwnerId() {
         return ownerId;

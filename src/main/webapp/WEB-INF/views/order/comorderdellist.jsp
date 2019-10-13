@@ -16,11 +16,12 @@
         <thead>
                 <tr>
                     <th style='width: 10%;'><div>订单号</div></th>
-                    <th style='width: 8%;'><div>房间信息</div></th>
+                    <th style='width: 5%;'><div>房间信息</div></th>
                     <th style='width: 8%;'><div>开始时间</div></th>
                     <th style='width: 8%;'><div>结束时间</div></th>
-                    <th style='width: 9%;'><div>订单来源</div></th>
-                    <th style='width: 10%;'><div>订单金额(元)</div></th>
+                    <th style='width: 5%;'><div>入住天数</div></th>
+                    <th style='width: 8%;'><div>订单来源</div></th>
+                    <th style='width: 8%;'><div>订单金额(元)</div></th>
                     <th style='width: 8%;'><div>实收金额(元)</div></th>
                     <th style='width: 8%;'><div>订单状态</div></th>
                     <th style='width: 8%;'><div>删除操作人</div></th>
@@ -45,6 +46,9 @@
                     <div>
                            {{dateTime:orderEndTime}}
                     </div>
+                </td>
+                <td>
+                    <div>{{:orderCount}}</div>
                 </td>
                 <td>
                     <div>{{:sourceWay}}</div>

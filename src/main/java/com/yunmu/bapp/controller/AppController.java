@@ -3,7 +3,10 @@ package com.yunmu.bapp.controller;
 import com.yunmu.bapp.service.AppService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
+import com.yunmu.core.constant.PageResult;
+import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
+import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
@@ -129,6 +132,30 @@ public class AppController extends BaseController{
         params.put("endTime", appRequestParam.getEndTime());
 
         return createSuccessResult(appService.getOrderPage(params));
+    }
+
+    //根据请求获取不同状态的收益列表
+    @RequestMapping("/getOrderPageList")
+    @ResponseBody
+    public PageResult<OrderExt> getOrderListByCondition(@RequestBody AppRequestParam appRequestParam) {
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(!appRequestParam.getToken().equals(owner.getToken())){
+                return createFailedPageResult("登录过期");
+            }
+        }
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageIndex", appRequestParam.getPageIndex() + 1);
+        params.put("pageSize", appRequestParam.getPageSize());
+        params.put("ownerId", appRequestParam.getOwnerId());
+        params.put("beginTime", appRequestParam.getBeginTime());
+        params.put("endTime", appRequestParam.getEndTime());
+        if(appRequestParam.getOrderStatus()!=null){
+            params.put("orderStatus", appRequestParam.getOrderStatus());
+        }
+
+        return createSuccessPageResult(appService.getOrderListByCondition(params));
     }
 
     //根据订单idcha'查看订单的详情

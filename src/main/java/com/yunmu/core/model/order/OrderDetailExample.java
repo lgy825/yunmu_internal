@@ -1,5 +1,6 @@
 package com.yunmu.core.model.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -405,6 +406,66 @@ public class OrderDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andAllAmountIsNull() {
+            addCriterion("all_amount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountIsNotNull() {
+            addCriterion("all_amount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountEqualTo(BigDecimal value) {
+            addCriterion("all_amount =", value, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountNotEqualTo(BigDecimal value) {
+            addCriterion("all_amount <>", value, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountGreaterThan(BigDecimal value) {
+            addCriterion("all_amount >", value, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("all_amount >=", value, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountLessThan(BigDecimal value) {
+            addCriterion("all_amount <", value, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("all_amount <=", value, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountIn(List<BigDecimal> values) {
+            addCriterion("all_amount in", values, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountNotIn(List<BigDecimal> values) {
+            addCriterion("all_amount not in", values, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("all_amount between", value1, value2, "allAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllAmountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("all_amount not between", value1, value2, "allAmount");
+            return (Criteria) this;
+        }
+
         public Criteria andAmountIsNull() {
             addCriterion("amount is null");
             return (Criteria) this;
@@ -415,53 +476,113 @@ public class OrderDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andAmountEqualTo(Long value) {
+        public Criteria andAmountEqualTo(BigDecimal value) {
             addCriterion("amount =", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotEqualTo(Long value) {
+        public Criteria andAmountNotEqualTo(BigDecimal value) {
             addCriterion("amount <>", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountGreaterThan(Long value) {
+        public Criteria andAmountGreaterThan(BigDecimal value) {
             addCriterion("amount >", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andAmountGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("amount >=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountLessThan(Long value) {
+        public Criteria andAmountLessThan(BigDecimal value) {
             addCriterion("amount <", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountLessThanOrEqualTo(Long value) {
+        public Criteria andAmountLessThanOrEqualTo(BigDecimal value) {
             addCriterion("amount <=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountIn(List<Long> values) {
+        public Criteria andAmountIn(List<BigDecimal> values) {
             addCriterion("amount in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotIn(List<Long> values) {
+        public Criteria andAmountNotIn(List<BigDecimal> values) {
             addCriterion("amount not in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountBetween(Long value1, Long value2) {
+        public Criteria andAmountBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("amount between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotBetween(Long value1, Long value2) {
+        public Criteria andAmountNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("amount not between", value1, value2, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIsNull() {
+            addCriterion("count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIsNotNull() {
+            addCriterion("count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountEqualTo(Integer value) {
+            addCriterion("count =", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotEqualTo(Integer value) {
+            addCriterion("count <>", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGreaterThan(Integer value) {
+            addCriterion("count >", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("count >=", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLessThan(Integer value) {
+            addCriterion("count <", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLessThanOrEqualTo(Integer value) {
+            addCriterion("count <=", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIn(List<Integer> values) {
+            addCriterion("count in", values, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotIn(List<Integer> values) {
+            addCriterion("count not in", values, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBetween(Integer value1, Integer value2) {
+            addCriterion("count between", value1, value2, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("count not between", value1, value2, "count");
             return (Criteria) this;
         }
 

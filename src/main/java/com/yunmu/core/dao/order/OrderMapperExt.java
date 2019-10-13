@@ -27,4 +27,6 @@ public interface OrderMapperExt {
     double getAllRecByParam(Map<String,String> params);
 
     double getAllActByParam(Map<String,String> params);
+
+    List<Order> getOrderListBycondition(Map<String,String> params);
 }

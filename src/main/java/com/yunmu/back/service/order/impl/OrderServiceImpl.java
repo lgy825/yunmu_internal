@@ -24,10 +24,7 @@ import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.product.Product;
 import com.yunmu.core.model.product.ProductExample;
 import com.yunmu.core.model.source.OrderSource;
-import com.yunmu.core.util.IdUtils;
-import com.yunmu.core.util.ParamVo;
-import com.yunmu.core.util.ProductObj;
-import com.yunmu.core.util.ShiroUtils;
+import com.yunmu.core.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -122,7 +120,10 @@ public class OrderServiceImpl implements OrderService {
                 List<ParamVo> paramVos=orderExt.getParamVos();
                 for(ParamVo paramVo:paramVos){
                     //payIds.add(paramVo.getPayId());
-                    pauSum+=paramVo.getAmount();
+                    //pauSum+=paramVo.getAmount();
+                    //计算总支出
+                    //总支出=支出单价*支出数量
+                    pauSum+=(new BigDecimal(paramVo.getAmount()).multiply(new BigDecimal(paramVo.getCount()))).doubleValue();
 
                 }
             }
@@ -132,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
                 List<ProductObj> productObjs=orderExt.getProductObjs();
                 double proAmount=0.0;
                 for(ProductObj productObj:productObjs){
-                    proAmount+=productObj.getAmount();
+                    proAmount+=(new BigDecimal(productObj.getAmount()).multiply(new BigDecimal(productObj.getCount())).doubleValue());
                     productIds.add(productObj.getProductId());
                 }
                 orderExt.setOrderProAmount(new BigDecimal(proAmount).divide(new BigDecimal(100)));
@@ -146,11 +147,17 @@ public class OrderServiceImpl implements OrderService {
                 BeanUtils.copyProperties(orderExt, order);
                 order.setCreateBy(ShiroUtils.getUser().getId());
                 order.setCreateTime(date);
+                order.setUpdateBy(ShiroUtils.getUser().getId());
+                order.setUpdateTime(date);
                 order.setDelFlag(0);
                 order.setHourseCode(hourseCodes[i]);
                 order.setId(IdUtils.orderCodeGeneration());
                 //order.setOrderStatus(0);
+                //获取订单的时间间隔
+                int dayCount= Dates.comparePastDate(order.getOrderStartDate(),order.getOrderEndTime());
+                order.setOrderCount(dayCount);
                 order.setOrderActAmount(actAmount);
+
                 orderMapper.insertSelective(order);
                 if(orderExt.getIsChoose()==2){
                     List<ParamVo> paramVos=orderExt.getParamVos();
@@ -162,6 +169,8 @@ public class OrderServiceImpl implements OrderService {
                         orderDetail.setCreateTime(date);
                         orderDetail.setOrderCode(order.getId());
                         orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).divide(new BigDecimal(100)));
+                        orderDetail.setCount(paramVo.getCount());
+                        orderDetail.setAllAmount(new BigDecimal(paramVo.getAmount()).multiply(new BigDecimal(paramVo.getCount()).divide(new BigDecimal(100))));
                         orderDetail.setPayCode(paramVo.getPayId());
                         orderDetailMapper.insertSelective(orderDetail);
                     }
@@ -174,6 +183,8 @@ public class OrderServiceImpl implements OrderService {
                         orderProduct.setCreateTime(date);
                         orderProduct.setOrderCode(order.getId());
                         orderProduct.setAmount(new BigDecimal(productObj.getAmount()).divide(new BigDecimal(100)));
+                        orderProduct.setCount(productObj.getCount());
+                        orderProduct.setAllAmount(new BigDecimal(productObj.getAmount()).multiply(new BigDecimal(productObj.getCount())).divide(new BigDecimal(100)));
                         orderProduct.setProductCode(productObj.getProductId());
                         orderProduct.setCreateBy(ShiroUtils.getUserId());
                         orderProductMapper.insertSelective(orderProduct);
@@ -220,7 +231,8 @@ public class OrderServiceImpl implements OrderService {
                 List<ParamVo> paramVos=orderExt.getParamVos();
                 for(ParamVo paramVo:paramVos){
                     //payIds.add(paramVo.getPayId());
-                    pauSum+=paramVo.getAmount();
+                    //pauSum+=paramVo.getAmount();
+                    pauSum+=(new BigDecimal(paramVo.getAmount()).multiply(new BigDecimal(paramVo.getCount()))).doubleValue();
                 }
             }
             //判断订单是否选中了商品
@@ -229,7 +241,8 @@ public class OrderServiceImpl implements OrderService {
                 List<ProductObj> productObjs=orderExt.getProductObjs();
                 double proAmount=0.0;
                 for(ProductObj productObj:productObjs){
-                    proAmount+=productObj.getAmount();
+                    //proAmount+=productObj.getAmount();
+                    proAmount+=(new BigDecimal(productObj.getAmount()).multiply(new BigDecimal(productObj.getCount())).doubleValue());
                     productIds.add(productObj.getProductId());
                 }
                 orderExt.setOrderProAmount(new BigDecimal(proAmount).divide(new BigDecimal(100)));
@@ -241,31 +254,39 @@ public class OrderServiceImpl implements OrderService {
                 Order order = new Order();
                 BeanUtils.copyProperties(orderExt, order);
                 order.setHourseCode(hourseCodes[i]);
+                int dayCount= Dates.comparePastDate(order.getOrderStartDate(),order.getOrderEndTime());
+                order.setOrderCount(dayCount);
+                order.setUpdateBy(ShiroUtils.getUser().getId());
+                order.setUpdateTime(date);
                 order.setOrderActAmount(actAmount);
                 order.setCreateBy(ShiroUtils.getUser().getId());
                 orderMapper.updateByPrimaryKeySelective(order);
                 if (orderExt.getIsChoose() == 2) {
                     List<ParamVo> paramVos = orderExt.getParamVos();
-                    for (ParamVo paramVo : paramVos) {
+                    for(ParamVo paramVo:paramVos) {
                         OrderDetail orderDetail = new OrderDetail();
                         orderDetail.setId(IdUtils.getId(11));
                         orderDetail.setDelFlag(0);
-                        orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).divide(new BigDecimal(100)));
                         orderDetail.setCreateBy(ShiroUtils.getUserId());
                         orderDetail.setCreateTime(date);
                         orderDetail.setOrderCode(order.getId());
+                        orderDetail.setAmount(new BigDecimal(paramVo.getAmount()).divide(new BigDecimal(100)));
+                        orderDetail.setCount(paramVo.getCount());
+                        orderDetail.setAllAmount(new BigDecimal(paramVo.getAmount()).multiply(new BigDecimal(paramVo.getCount()).divide(new BigDecimal(100))));
                         orderDetail.setPayCode(paramVo.getPayId());
                         orderDetailMapper.insertSelective(orderDetail);
                     }
                 }
                 if (orderExt.getIsChooseProduct() == 2) {
                     List<ProductObj> productObjs = orderExt.getProductObjs();
-                    for (ProductObj productObj : productObjs) {
-                        OrderProduct orderProduct = new OrderProduct();
+                    for(ProductObj productObj:productObjs){
+                        OrderProduct orderProduct=new OrderProduct();
                         orderProduct.setId(IdUtils.getId(11));
                         orderProduct.setCreateTime(date);
                         orderProduct.setOrderCode(order.getId());
                         orderProduct.setAmount(new BigDecimal(productObj.getAmount()).divide(new BigDecimal(100)));
+                        orderProduct.setCount(productObj.getCount());
+                        orderProduct.setAllAmount(new BigDecimal(productObj.getAmount()).multiply(new BigDecimal(productObj.getCount())).divide(new BigDecimal(100)));
                         orderProduct.setProductCode(productObj.getProductId());
                         orderProduct.setCreateBy(ShiroUtils.getUserId());
                         orderProductMapper.insertSelective(orderProduct);
@@ -311,6 +332,15 @@ public class OrderServiceImpl implements OrderService {
                 orderExt.setOrderProducts(orderProducts);
             }
             BeanUtils.copyProperties(order,orderExt);
+            if(orderExt.getOrderStatus()==10){
+                orderExt.setOrderStatusStr("订单完成");
+            }else if(orderExt.getOrderStatus()==11){
+                orderExt.setOrderStatusStr("未入住");
+            }else if(orderExt.getOrderStatus()==12){
+                orderExt.setOrderStatusStr("已入住");
+            }else if(orderExt.getOrderStatus()==13){
+                orderExt.setOrderStatusStr("已取消");
+            }
             //BigDecimal bigDecimal=new BigDecimal();
             BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderRecAmount());
             orderExt.setPayAmount(payAmount);
@@ -424,6 +454,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean updateOrderStatus(Order order) {
+        order.setUpdateBy(ShiroUtils.getUser().getId());
+        order.setUpdateTime(new Date());
         orderMapper.updateByPrimaryKeySelective(order);
         return true;
     }

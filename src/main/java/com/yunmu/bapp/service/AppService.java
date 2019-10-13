@@ -1,5 +1,8 @@
 package com.yunmu.bapp.service;
 
+import com.yunmu.core.constant.GenericPage;
+import com.yunmu.core.model.order.Order;
+import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
 import com.yunmu.core.util.AppResponseObj;
@@ -26,4 +29,6 @@ public interface AppService {
     OrderDetailUtil getOrderInfoById(String orderId);
 
     Owner getOwnerById(String ownerId);
+
+    GenericPage<OrderExt> getOrderListByCondition(Map<String, Object> params);
 }

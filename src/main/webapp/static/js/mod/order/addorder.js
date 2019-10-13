@@ -66,7 +66,8 @@ $(function () {
             $($vous).each(function (idx, elem) {
                 pays.push({
                     payId: $(elem).data("payid"),
-                    amount:parseInt(($vous.parent().parent().parent().find("."+ $(elem).data("payid")).val()*100).toFixed(2))
+                    amount:parseInt(($vous.parent().parent().parent().find("."+ $(elem).data("payid")).val()*100).toFixed(2)),
+                    count:$vous.parent().parent().parent().find(".count_"+ $(elem).data("payid")).val()
                 });
 
             });
@@ -88,7 +89,8 @@ $(function () {
             $($vouss).each(function (idx, elem) {
                 productObjs.push({
                     productId: $(elem).data("productid"),
-                    amount:parseInt(($vouss.parent().parent().parent().find("."+ $(elem).data("productid")).val() * 100).toFixed(2))
+                    amount:parseInt(($vouss.parent().parent().parent().find("."+ $(elem).data("productid")).val() * 100).toFixed(2)),
+                    count:$vouss.parent().parent().parent().find(".count_"+ $(elem).data("productid")).val()
                 });
 
             });
@@ -300,11 +302,17 @@ $(function () {
                                             console.info(".paycheck[data-payid=" + elem.payCode);
                                             $(".paycheck[data-payid='" + elem.payCode + "']").click();
                                             $(".paycheck[data-payid='" + elem.payCode + "']").parent().parent().parent().find("."+elem.payCode ).val(elem.amount);
+                                            $(".paycheck[data-payid='" + elem.payCode + "']").parent().parent().parent().find(".span_"+elem.payCode ).html(elem.amount);
+                                            $(".paycheck[data-payid='" + elem.payCode + "']").parent().parent().parent().find(".count_"+elem.payCode ).val(elem.count);
+                                            $(".paycheck[data-payid='" + elem.payCode + "']").parent().parent().parent().find(".spanCount_"+elem.payCode ).html(elem.count);
                                         });
                                         $(_.filter(su.orderProducts)).each(function (idx, elem) {
                                             //console.info(".paycheck[data-payid=" + elem.payId );
                                             $(".productcheck[data-productid='" + elem.productCode + "']").click();
                                             $(".productcheck[data-productid='" + elem.productCode + "']").parent().parent().parent().find("."+elem.productCode ).val(elem.amount);
+                                            $(".productcheck[data-productid='" + elem.productCode + "']").parent().parent().parent().find(".span_"+elem.productCode ).html(elem.amount);
+                                            $(".productcheck[data-productid='" + elem.productCode + "']").parent().parent().parent().find(".count_"+elem.productCode ).val(elem.count);
+                                            $(".productcheck[data-productid='" + elem.productCode + "']").parent().parent().parent().find(".spanCount_"+elem.productCode ).html(elem.count);
                                         });
                                         clearInterval(canedit);
                                     }, 50);
@@ -314,6 +322,7 @@ $(function () {
                                     $("#hourseSel").val(su.hourseCode);
                                     $("#paySel").val(su.orderWay);
                                     $("#sourceSel").val(su.orderSource);
+                                    $("#orderStatus").val(su.orderStatus);
                                     timeSpick.val(su.orderStartDate.split(" ")[0]);
                                     timeEpick.val(su.orderEndTime.split(" ")[0]);
 
@@ -429,10 +438,10 @@ $(function () {
                                 '<tr>' +
                                 '<td><div><span class="paycheck checkBtn check w14" data-payid="'+item.payId+'"></span></div></td>' +
                                 '<td><div>' + (_.isUndefined(item.payName) ? '' : item.payName) + '</div></td>' +
-                                '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.payAmount ? item.payAmount : 0) + '</span>'
+                                '<td><div><span class="relative"><span class="rename-inp inline-block span_'+item.payId+'">' + (item.payAmount ? item.payAmount : 0) + '</span>'
                                 + '<i class="rename"></i><input  type="text"  value="'+item.payAmount+'" class="rename-inp none '+item.payId+'"></span></div></td>' +
-                                '<td><div><span class="relative"><span class="rename-inp inline-block">1</span>'
-                                + '<i class="rename"></i><input  type="text"  value="1" class="rename-inp none '+item.payId+'"></span></div></td>' +
+                                '<td><div><span class="relative"><span class="rename-inp inline-block spanCount_'+item.payId+'">1</span>'
+                                + '<i class="rename"></i><input  type="text"  value="1" class="rename-inp none count_'+item.payId+'"></span></div></td>' +
                                 '<td><div title="'+item.payDesc+'">'+item.payDesc+'</div></td>' +
                                 ' </tr>'
                             );
@@ -514,8 +523,10 @@ $(function () {
                                 '<tr>' +
                                 '<td><div><span class="productcheck checkBtn check w14" data-productid="'+item.id+'"></span></div></td>' +
                                 '<td><div>' + (_.isUndefined(item.productName) ? '' : item.productName) + '</div></td>' +
-                                '<td><div><span class="relative"><span class="rename-inp inline-block">' + (item.productAmount ? item.productAmount : 0) + '</span>'
+                                '<td><div><span class="relative"><span class="rename-inp inline-block span_'+item.id+'">' + (item.productAmount ? item.productAmount : 0) + '</span>'
                                 + '<i class="rename"></i><input  type="text"  value="'+item.productAmount+'" class="rename-inp none '+item.id+'"></span></div></td>' +
+                                '<td><div><span class="relative"><span class="rename-inp inline-block spanCount_'+item.id+'">1</span>'
+                                + '<i class="rename"></i><input  type="text"  value="1" class="rename-inp none count_'+item.id+'"></span></div></td>' +
                                 '<td><div title="'+item.productDesc+'">'+item.productDesc+'</div></td>' +
                                 ' </tr>'
                             );
