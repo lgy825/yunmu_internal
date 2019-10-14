@@ -20,8 +20,8 @@ $(function(){
         $("#orderSel").select2({placeholder: '*选择订单状态*'});
         $("#orderSel").append("<option value='-1'>*选择订单状态*</option>");
         $("#orderSel").append("<option value='10'>已完成</option>"+
-            "<option value='11'>未入住</option>"+
-            "<option value='12'>已入住</option>"+
+            "<option value='11'>待完成</option>"+
+            // "<option value='12'>已入住</option>"+
             "<option value='13'>已取消</option>"
         );
     });
