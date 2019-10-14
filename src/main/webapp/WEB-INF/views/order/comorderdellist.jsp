@@ -92,21 +92,21 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="ordermana:order:detail">
+                        <shiro:hasPermission name="ordermana:comorder:detail">
                             <a href="${ctx}/order/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="订单详情">
                             </a>
                         </shiro:hasPermission>
-                         <shiro:hasPermission name="ordermana:order:edit">
+                         <shiro:hasPermission name="ordermana:comorder:edit">
                             <a href="${ctx}/order/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                             </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:del">
+                        <shiro:hasPermission name="ordermana:comorder:del">
                             <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:status">
-                            <input type="button" onclick="editStatus('{{:id}}')" class="edit gray_btn mr10" value="编辑状态">
+                        <shiro:hasPermission name="ordermana:comorder:status">
+                            <input type="button" onclick="editStatus('{{:id}}')" class="editStatus gray_btn mt12 mr10" value="编辑状态">
                         </shiro:hasPermission>
                     </div>
                 </td>
@@ -123,7 +123,7 @@
             <hr>
         </div>
         <div class="pdtrl20">
-            <shiro:hasPermission name="ordermana:delorder:add">
+            <shiro:hasPermission name="ordermana:comorder:add">
             <a href="${ctx}/order/toaddOrder">
                 <input type="button" class="blue_btn" value="新建订单">
             </a>

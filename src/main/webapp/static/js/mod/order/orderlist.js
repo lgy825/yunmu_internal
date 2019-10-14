@@ -31,8 +31,8 @@ $(function(){
         $("#orderStatus").select2({placeholder: '*选择订单状态*'});
         $("#orderStatus").append("<option value='-1'>*选择订单状态*</option>");
         $("#orderStatus").append("<option value='10'>已完成</option>"+
-            "<option value='11'>未入住</option>"+
-            "<option value='12'>已入住</option>"+
+            "<option value='11'>待完成</option>"+
+            // "<option value='12'>已入住</option>"+
             "<option value='13'>已取消</option>"
         );
 
@@ -185,6 +185,7 @@ function updateStatus() {
             if (data && data.resultCode === '0') {
                 layer.msg("修改成功");
                 $('.modality-layer').hide();
+                $("#orderDesc").val("");
                 loadPage();
             } else {
                 if (data.resultDesc) {

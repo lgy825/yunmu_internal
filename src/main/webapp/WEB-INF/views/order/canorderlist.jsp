@@ -106,7 +106,7 @@
                         <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                         <shiro:hasPermission name="ordermana:canorder:status">
-                            <input type="button" data-sid="{{:id}}"  class="editStatus gray_btn mr10" value="编辑状态">
+                            <input type="button" data-sid="{{:id}}"  class="editStatus gray_btn mt12 mr10" value="编辑状态">
                         </shiro:hasPermission>
                     </div>
                 </td>

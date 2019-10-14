@@ -106,7 +106,7 @@
                         <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                         <shiro:hasPermission name="ordermana:order:status">
-                            <input type="button" data-sid="{{:id}}"  class="editStatus gray_btn mr10" value="编辑状态">
+                            <input type="button" data-sid="{{:id}}"  class="editStatus gray_btn mt12 mr10" value="编辑状态">
                         </shiro:hasPermission>
                     </div>
                 </td>
@@ -137,11 +137,11 @@
                 <div>
                     <input id="orderId" type="text" class="inpW ml20" placeholder="订单号">
                     <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
-                    <select class="select ml20" id="orderStatus">
+                    <select class="select  ml20" id="orderStatus">
                     </select>
-                    <input type="text" class="inpW  inpWid2 timer" id="timeSpick" placeholder="开始时间"/>
+                    <input type="text" class="inpW ml20 timer" id="timeSpick" placeholder="开始时间"/>
                     <span class="zhi">至</span>
-                    <input type="text" class="inpW ml20 inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
+                    <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                     <shiro:hasPermission name="ordermana:order:export">
