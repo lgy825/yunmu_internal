@@ -52,7 +52,7 @@
             <h1 class="login-logo"></h1>
             <p class="mt20 fz30">互联网智慧运营专家</p>
             <p class="text-large mt20">云幕国际管理平台</p>
-            <p class="mt20 fz30">全面助力长租公寓时代</p>
+            <p class="mt20 fz30">全面助力酒店公寓时代</p>
         </div>
         <div class="login-input fr">
             <p class="f24 fw tc">登 录</p>
