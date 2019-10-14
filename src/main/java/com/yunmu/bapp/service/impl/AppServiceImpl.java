@@ -104,7 +104,7 @@ public class AppServiceImpl implements AppService{
         double actAmountAll=orderMapperExt.getActAmountByCondition(params);
         //获取支出
         BigDecimal bigDecimal=new BigDecimal(recAmountAll);
-        double extraCosts=bigDecimal.subtract(new BigDecimal(actAmountAll)).doubleValue();
+        double extraCosts=(bigDecimal.subtract(new BigDecimal(actAmountAll))).setScale(1,BigDecimal.ROUND_UP).doubleValue();
 
         Map<String,Object> resultMap=new HashMap<>();
         resultMap.put("incomeAll",actAmountAll);
@@ -134,24 +134,32 @@ public class AppServiceImpl implements AppService{
         OrderExt orderExt=new OrderExt();
         if(order!=null){
             //根据订单id获取支出信息
-            OrderDetailExample orderDetailExample=new OrderDetailExample();
-            OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
-            criteria.andOrderCodeEqualTo(orderId);
-            criteria.andDelFlagEqualTo(0);
-            List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
-            if(orderDetails.size()>0){
-                List<String> payIds= new ArrayList<>();
+            if(order.getIsChoose()!=null && order.getIsChoose()==2){
+                OrderDetailExample orderDetailExample=new OrderDetailExample();
+                OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
+                criteria.andOrderCodeEqualTo(orderId);
+                criteria.andDelFlagEqualTo(0);
+                List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
                 for(OrderDetail orderDetail:orderDetails){
-                    payIds.add(orderDetail.getPayCode());
+                    Pay pay=payMapper.selectByPrimaryKey(orderDetail.getPayCode());
+                    orderDetail.setPayName(pay.getPayName());
+                    orderDetail.setPayDesc(pay.getPayDesc());
                 }
-                PayExample payExample=new PayExample();
-                PayExample.Criteria criteria1=payExample.createCriteria();
-                criteria1.andDelFlagEqualTo(0);
-                criteria1.andPayIdIn(payIds);
-                List<Pay> payList=payMapper.selectByExample(payExample);
-                orderExt.setPayExts(payList);
+                orderExt.setOrderDetails(orderDetails);
             }
             BeanUtils.copyProperties(order,orderExt);
+            if(orderExt.getOrderStatus()==10){
+                orderExt.setOrderStatusStr("订单完成");
+            }else if(orderExt.getOrderStatus()==11){
+                orderExt.setOrderStatusStr("未入住");
+            }else if(orderExt.getOrderStatus()==12){
+                orderExt.setOrderStatusStr("已入住");
+            }else if(orderExt.getOrderStatus()==13){
+                orderExt.setOrderStatusStr("已取消");
+            }
+            //BigDecimal bigDecimal=new BigDecimal();
+            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderRecAmount());
+            orderExt.setPayAmount(payAmount);
             Map<Integer,String> payWays=getAllPayWayMap();
             Map<String,String> orderSources=getAllOrderSourceMap();
             if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
@@ -165,6 +173,7 @@ public class AppServiceImpl implements AppService{
                 orderExt.setHourseNumber( hourseMapper.selectByPrimaryKey(orderExt.getHourseCode()).getHourseNumber());
             }
         }
+
         OrderDetailUtil orderDetailUtil=new OrderDetailUtil();
         orderDetailUtil.setoDate(orderExt.getCreateTime());
         orderDetailUtil.setoId(orderExt.getId());
@@ -177,15 +186,15 @@ public class AppServiceImpl implements AppService{
         orderDetailUtil.setOrderActAmount(orderExt.getOrderActAmount().doubleValue());
         orderDetailUtil.setPayAmount(payAmount);
         List<OrderItem> orderItemList=new ArrayList<>();
-        if(orderExt.getPayExts()!=null && orderExt.getPayExts().size()>0){
-            for(Pay pay:orderExt.getPayExts()){
+        if(orderExt.getOrderDetails()!=null && orderExt.getOrderDetails().size()>0){
+            for(OrderDetail pay:orderExt.getOrderDetails()){
                 OrderItem orderItem=new OrderItem();
-                orderItem.setdId(pay.getPayId());
-                orderItem.setdAmount(pay.getPayAmount().doubleValue());
+                orderItem.setdId(pay.getId());
+                orderItem.setdAmount(pay.getAmount().doubleValue());
                 orderItem.setdDate(pay.getCreateTime());
                 orderItem.setdDesc(pay.getPayDesc());
                 orderItem.setdName(pay.getPayName());
-                orderItem.setdCount(1);
+                orderItem.setdCount(pay.getCount());
                 orderItemList.add(orderItem);
             }
 
