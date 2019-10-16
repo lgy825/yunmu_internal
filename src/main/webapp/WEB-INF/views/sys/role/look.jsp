@@ -59,7 +59,7 @@
 
 
                 <div class="pl88 mt30">
-                    <a href="${ctx}/sysrole/tolist">
+                    <a href="${ctx}/sysrole/toRolelist">
                         <input id="returnBtn" type="button" class="gray_btn gray-btn30 ml20" value="返回角色列表">
                     </a>
                 </div>
