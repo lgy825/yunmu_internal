@@ -169,5 +169,14 @@ public class AppController extends BaseController{
 
     }
 
+    //根据订单ID获取订单详情
+    @RequestMapping("/getOrderDetailById")
+    @ResponseBody
+    public Result<OrderExt> getOrderDetailById(@RequestBody AppRequestParam appRequestParam) {
+        if (appRequestParam.getOrderId() == null) {
+            return createFailedResult("500错误,订单id为空");
+        }
+        return createSuccessResult(appService.getOrderDetail(appRequestParam.getOrderId()));
+    }
 
 }

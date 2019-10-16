@@ -31,4 +31,6 @@ public interface AppService {
     Owner getOwnerById(String ownerId);
 
     GenericPage<OrderExt> getOrderListByCondition(Map<String, Object> params);
+
+    OrderExt getOrderDetail(String id);
 }

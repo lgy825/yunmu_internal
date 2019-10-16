@@ -19,11 +19,14 @@ import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
 import com.yunmu.core.model.order.OrderDetailExample;
 import com.yunmu.core.model.order.OrderExt;
+import com.yunmu.core.model.order.OrderProduct;
+import com.yunmu.core.model.order.OrderProductExample;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
 import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.model.pay.PayExample;
 import com.yunmu.core.model.pay.PayWay;
+import com.yunmu.core.model.product.Product;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
@@ -232,6 +235,55 @@ public class AppServiceImpl implements AppService{
         Page<OrderExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<OrderExt> orderExts=orderMapperExt.getOrderPage(params);
         return new GenericPage<>(pageIndex, pageSize, orderExts, pageInfo.getTotal());
+    }
+
+    @Override
+    public OrderExt getOrderDetail(String id) {
+        //先根据订单号获取订单信息
+        Order order=orderMapper.selectByPrimaryKey(id);
+        OrderExt orderExt=new OrderExt();
+        if(order!=null){
+            //根据订单id获取支出信息
+            if(order.getIsChoose()!=null && order.getIsChoose()==2){
+                OrderDetailExample orderDetailExample=new OrderDetailExample();
+                OrderDetailExample.Criteria criteria=orderDetailExample.createCriteria();
+                criteria.andOrderCodeEqualTo(id);
+                criteria.andDelFlagEqualTo(0);
+                List<OrderDetail> orderDetails=orderDetailMapper.selectByExample(orderDetailExample);
+                for(OrderDetail orderDetail:orderDetails){
+                    Pay pay=payMapper.selectByPrimaryKey(orderDetail.getPayCode());
+                    orderDetail.setPayName(pay.getPayName());
+                    orderDetail.setPayDesc(pay.getPayDesc());
+                }
+                orderExt.setOrderDetails(orderDetails);
+            }
+            BeanUtils.copyProperties(order,orderExt);
+            if(orderExt.getOrderStatus()==10){
+                orderExt.setOrderStatusStr("订单完成");
+            }else if(orderExt.getOrderStatus()==11){
+                orderExt.setOrderStatusStr("未入住");
+            }else if(orderExt.getOrderStatus()==12){
+                orderExt.setOrderStatusStr("已入住");
+            }else if(orderExt.getOrderStatus()==13){
+                orderExt.setOrderStatusStr("已取消");
+            }
+            //BigDecimal bigDecimal=new BigDecimal();
+            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderRecAmount());
+            orderExt.setPayAmount(payAmount);
+            Map<Integer,String> payWays=getAllPayWayMap();
+            Map<String,String> orderSources=getAllOrderSourceMap();
+            if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
+                orderExt.setPayWay(payWays.get(Integer.parseInt(orderExt.getOrderWay())));
+            }
+            if(orderSources.containsKey(orderExt.getOrderSource())){
+                orderExt.setSourceWay(orderSources.get(orderExt.getOrderSource()));
+            }
+            //获取房间号
+            if(orderExt.getHourseCode()!=null){
+                orderExt.setHourseNumber( hourseMapper.selectByPrimaryKey(orderExt.getHourseCode()).getHourseNumber());
+            }
+        }
+        return orderExt;
     }
 
     public Map<Integer,String> getAllPayWayMap(){
