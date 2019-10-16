@@ -2,7 +2,7 @@ var hourseTypeMap={};
 var projectId="";
 $(function () {
     loadOrderStatus();
-
+    initTimePicker();
     //加载订单状态
     function loadOrderStatus() {
         $("#orderStatus").select2({placeholder: '*选择订单状态*'});
@@ -13,6 +13,18 @@ $(function () {
             "<option value='13'>已取消</option>"
         );
 
+    }
+
+
+    function initTimePicker() {
+        $('.times').each(function () {
+            $(this).datetimepicker('destroy');
+            $(this).datetimepicker({
+                                       format: 'H:i',
+                                       step: 1,
+                                       datepicker: false
+                                   });
+        });
     }
 
     //出事化日其插件
@@ -132,6 +144,8 @@ $(function () {
 
         var startTime = timeSpick.val();
         var endTime = timeEpick.val();
+        var stimes=$("#stimes").val()+":00";
+        var etimes=$("#etimes").val()+":00";
         if (startTime.length < 1 || endTime.length < 1) {
             layer.msg("请选择起止时间");
             return;
@@ -141,6 +155,8 @@ $(function () {
                 return;
             }
         }
+
+
 
         $.ajax({
             url: ctx + "order/addOrder",
@@ -157,8 +173,8 @@ $(function () {
                 orderWay: $.trim($("#paySel").val()),
                 orderSource: $.trim($("#sourceSel").val()),
                 hourseCodes: $.isArray($("#hourseSel").val())  ? $("#hourseSel").val().join(",") : ($("#hourseSel").val() == -1 ? "" : $("#hourseSel").val()),
-                orderStartDate:startTime+ " 00:00:00",
-                orderEndTime:endTime+ " 23:59:59",
+                orderStartDate:startTime+" "+stimes,
+                orderEndTime:endTime+" "+etimes,
                 orderActAmount:orderActAmount,
                 isChoose:isChoose,
                 isChooseProduct:isChooseProduct,

@@ -120,8 +120,10 @@
                 <div class="mt20">
                     <div class="align-r mr8">订单时间</div>
                     <input type="text" class="inpW inpWid2 timer" id="timeSpick" placeholder="开始日期">
+                    <input type="text" class="times inpW inpWid2 timer"  id="stimes" placeholder="开始时间">
                     <span class="zhi">至</span>
                     <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束日期">
+                    <input type="text" class="times inpW inpWid2 timer"  id="etimes" placeholder="结束时间">
                     <span class="color-lred ml8">* 结束日期不能早于开始日期</span>
                 </div>
                 <!-- 必填选项 -->

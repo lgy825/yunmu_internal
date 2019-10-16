@@ -234,6 +234,19 @@ public class AppServiceImpl implements AppService{
         }
         Page<OrderExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<OrderExt> orderExts=orderMapperExt.getOrderPage(params);
+        Map<Integer,String> payWays=getAllPayWayMap();
+        Map<String,String> orderSources=getAllOrderSourceMap();
+        for(OrderExt orderExt:orderExts){
+            if(orderExt.getHourseCode()!=null){
+                orderExt.setHourseNumber(hourseMapper.selectByPrimaryKey(orderExt.getHourseCode()).getHourseNumber());
+            }
+            if(payWays.containsKey(Integer.parseInt(orderExt.getOrderWay()))){
+                orderExt.setPayWay(payWays.get(Integer.parseInt(orderExt.getOrderWay())));
+            }
+            if(orderSources.containsKey(orderExt.getOrderSource())){
+                orderExt.setSourceWay(orderSources.get(orderExt.getOrderSource()));
+            }
+        }
         return new GenericPage<>(pageIndex, pageSize, orderExts, pageInfo.getTotal());
     }
 
