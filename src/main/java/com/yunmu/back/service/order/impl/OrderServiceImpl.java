@@ -262,7 +262,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setUpdateBy(ShiroUtils.getUser().getId());
                 order.setUpdateTime(date);
                 order.setOrderActAmount(actAmount);
-                order.setCreateBy(ShiroUtils.getUser().getId());
+                //order.setCreateBy(ShiroUtils.getUser().getId());
                 if(order.getOrderStatus()==10){
                     order.setCompleteTime(date);
                 }
@@ -372,8 +372,8 @@ public class OrderServiceImpl implements OrderService {
         Order order=new Order();
         order.setDelFlag(1);
         order.setId(orderId);
-        order.setCreateBy(ShiroUtils.getUserId());
-        order.setCreateTime(new Date());
+        order.setUpdateBy(ShiroUtils.getUserId());
+        order.setUpdateTime(new Date());
         orderMapper.updateByPrimaryKeySelective(order);
         orderMapperExt.deleteOrderDetail(orderId);
         return true;
@@ -384,8 +384,8 @@ public class OrderServiceImpl implements OrderService {
         Order order=new Order();
         order.setDelFlag(0);
         order.setId(orderId);
-        order.setCreateBy(ShiroUtils.getUserId());
-        order.setCreateTime(new Date());
+        order.setUpdateBy(ShiroUtils.getUserId());
+        order.setUpdateTime(new Date());
         orderMapper.updateByPrimaryKeySelective(order);
         orderMapperExt.deleteOrderDetail(orderId);
         return true;

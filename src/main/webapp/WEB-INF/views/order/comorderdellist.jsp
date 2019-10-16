@@ -118,7 +118,7 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">删除订单管理</div>
+        <div class="b_title">完成订单</div>
         <div class="hr">
             <hr>
         </div>

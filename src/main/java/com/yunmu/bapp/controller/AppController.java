@@ -146,13 +146,23 @@ public class AppController extends BaseController{
         }
 
         Map<String, Object> params = new HashMap<>();
-        params.put("pageIndex", appRequestParam.getPageIndex() + 1);
-        params.put("pageSize", appRequestParam.getPageSize());
-        params.put("ownerId", appRequestParam.getOwnerId());
-        params.put("beginTime", appRequestParam.getBeginTime());
-        params.put("endTime", appRequestParam.getEndTime());
-        if(appRequestParam.getOrderStatus()!=null){
-            params.put("orderStatus", appRequestParam.getOrderStatus());
+
+        try {
+            if(appRequestParam.getPageIndex()!=null){
+                params.put("pageIndex", appRequestParam.getPageIndex() + 1);
+            }
+            if(appRequestParam.getPageSize()!=null){
+                params.put("pageSize", appRequestParam.getPageSize());
+            }
+            params.put("ownerId", appRequestParam.getOwnerId());
+            params.put("beginTime", appRequestParam.getBeginTime());
+            params.put("endTime", appRequestParam.getEndTime());
+            if(appRequestParam.getOrderStatus()!=null){
+                params.put("orderStatus", appRequestParam.getOrderStatus());
+            }
+        } catch (Exception e) {
+            return createFailedPageResult("服务器异常，请联系管理员");
+
         }
 
         return createSuccessPageResult(appService.getOrderListByCondition(params));

@@ -18,24 +18,24 @@ $(function () {
     //出事化日其插件
     var timeSpick = $("#timeSpick").datetimepicker({
         format: 'Y-m-d',
-        minDate: 0,
-        onChangeDateTime: function (curDate) {
-            var curDateTime = curDate.sformat("yyyy-MM-dd");
-            $("#timeEpick").datetimepicker({
-                minDate: curDateTime ? curDateTime : false
-            });
-        },
+        // minDate: 0,
+        // onChangeDateTime: function (curDate) {
+        //     var curDateTime = curDate.sformat("yyyy-MM-dd");
+        //     $("#timeEpick").datetimepicker({
+        //         minDate: curDateTime ? curDateTime : false
+        //     });
+        // },
         timepicker: false
     });
     var timeEpick = $("#timeEpick").datetimepicker({
         format: 'Y-m-d',
-        minDate: 0,
-        onChangeDateTime: function (curDate) {
-            var curDateTime = curDate.sformat("yyyy-MM-dd");
-            $("#timeSpick").datetimepicker({
-                maxDate: curDateTime ? curDateTime : false
-            });
-        },
+        // minDate: 0,
+        // onChangeDateTime: function (curDate) {
+        //     var curDateTime = curDate.sformat("yyyy-MM-dd");
+        //     $("#timeSpick").datetimepicker({
+        //         maxDate: curDateTime ? curDateTime : false
+        //     });
+        // },
         timepicker: false
     });
 

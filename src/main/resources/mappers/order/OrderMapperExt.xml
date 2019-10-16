@@ -138,7 +138,7 @@
         #{project}
       </foreach>
     </if>
-    ORDER BY update_time DESC
+    ORDER BY create_time DESC
   </select>
 
   <select id="getRecAmountByCondition" parameterType="java.util.Map" resultType="Double">
