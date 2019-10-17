@@ -144,8 +144,8 @@ $(function () {
 
         var startTime = timeSpick.val();
         var endTime = timeEpick.val();
-        var stimes=$("#stimes").val()+":00";
-        var etimes=$("#etimes").val()+":00";
+        var stimes=$("#stimes").val();
+        var etimes=$("#etimes").val();
         if (startTime.length < 1 || endTime.length < 1) {
             layer.msg("请选择起止时间");
             return;
@@ -155,8 +155,16 @@ $(function () {
                 return;
             }
         }
-
-
+        if(stimes.length<1){
+            stimes="00:00:00";
+        }else{
+            stimes+=":00";
+        }
+        if(etimes.length<1){
+            etimes="00:00:00";
+        }else{
+            etimes+=":00";
+        }
 
         $.ajax({
             url: ctx + "order/addOrder",

@@ -20,7 +20,7 @@ public class TaskService {
     private OwnerMapperExt ownerMapperExt;
     private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
-    @Scheduled(fixedRate = 24*3600*1000)
+    @Scheduled(fixedRate = 10*24*3600*1000)
     public void deleteInvalidCheckCode() {
 
         //更新业主的token信息
