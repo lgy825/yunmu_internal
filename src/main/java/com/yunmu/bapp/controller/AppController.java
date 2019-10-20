@@ -8,6 +8,9 @@ import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.owner.Owner;
+import com.yunmu.core.model.sys.AppVersion;
+import com.yunmu.core.model.sys.Bussiness;
+import com.yunmu.core.model.sys.BussinessExt;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
 import com.yunmu.core.util.IdUtils;
@@ -59,9 +62,12 @@ public class AppController extends BaseController{
     public Result<Boolean> updatePwd(@RequestBody AppRequestParam appRequestParam) {
         if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
-            if(!appRequestParam.getToken().equals(owner.getToken())){
-                return createFailedResult("登录过期");
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedResult("登录过期");
+                }
             }
+
         }
         Owner owner = new Owner();
         if (appRequestParam.getOwnerId() == null) {
@@ -84,9 +90,12 @@ public class AppController extends BaseController{
     public Result<Map<String, Object>> getDateByCondition(@RequestBody AppRequestParam appRequestParam) {
         if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
-            if(!appRequestParam.getToken().equals(owner.getToken())){
-                return createFailedResult("登录过期");
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedResult("登录过期");
+                }
             }
+
         }
 
         Map<String, String> params = new HashMap<>();
@@ -103,9 +112,12 @@ public class AppController extends BaseController{
     public Result<Double> getIncomeByCondition(@RequestBody AppRequestParam appRequestParam) {
         if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
-            if(!appRequestParam.getToken().equals(owner.getToken())){
-                return createFailedResult("登录过期");
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedResult("登录过期");
+                }
             }
+
         }
         Map<String, String> params = new HashMap<>();
         params.put("ownerId", appRequestParam.getOwnerId());
@@ -121,9 +133,12 @@ public class AppController extends BaseController{
     public Result<List<AppResponseObj>> getOrderPageByCondition(@RequestBody AppRequestParam appRequestParam) {
         if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
-            if(!appRequestParam.getToken().equals(owner.getToken())){
-                return createFailedResult("登录过期");
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedResult("登录过期");
+                }
             }
+
         }
 
         Map<String, String> params = new HashMap<>();
@@ -140,9 +155,12 @@ public class AppController extends BaseController{
     public PageResult<OrderExt> getOrderListByCondition(@RequestBody AppRequestParam appRequestParam) {
         if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
             Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
-            if(!appRequestParam.getToken().equals(owner.getToken())){
-                return createFailedPageResult("登录过期");
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedPageResult("登录过期");
+                }
             }
+
         }
 
         Map<String, Object> params = new HashMap<>();
@@ -187,6 +205,52 @@ public class AppController extends BaseController{
             return createFailedResult("500错误,订单id为空");
         }
         return createSuccessResult(appService.getOrderDetail(appRequestParam.getOrderId()));
+    }
+
+    //获取商务经理界面
+    //根据订单ID获取订单详情
+    @RequestMapping("/getBussinessByProjectId")
+    @ResponseBody
+    public Result<Bussiness> getBussinessByProjectId(@RequestBody AppRequestParam appRequestParam){
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedResult("登录过期");
+                }
+            }
+
+        }
+        if(appRequestParam.getProjectId()==null || "".equals(appRequestParam.getProjectId())){
+            return createFailedResult("服务器异常");
+        }
+        return  createSuccessResult(appService.getBussinessByProjectId(appRequestParam.getProjectId()));
+    }
+
+    //获取关于我们的说明
+    @RequestMapping("/getAppVersionByProjectId")
+    @ResponseBody
+    public Result<AppVersion> getAppVersionByCompanyCode(@RequestBody AppRequestParam appRequestParam){
+        if(appRequestParam.getToken()!=null && !"".equals(appRequestParam.getToken())){
+            Owner owner=appService.getOwnerById(appRequestParam.getOwnerId());
+            if(owner!=null){
+                if(!appRequestParam.getToken().equals(owner.getToken())){
+                    return createFailedResult("登录过期");
+                }
+            }
+
+        }
+        if(appRequestParam.getAppType()==null || "".equals(appRequestParam.getAppType())){
+            return createFailedResult("服务器异常");
+        }
+        if(appRequestParam.getProjectId()==null || "".equals(appRequestParam.getProjectId())){
+            return createFailedResult("服务器异常");
+        }
+
+        return createSuccessResult(appService.getAppVersionByProjectId(appRequestParam.getProjectId(),appRequestParam.getAppType()));
+
+
+
     }
 
 }

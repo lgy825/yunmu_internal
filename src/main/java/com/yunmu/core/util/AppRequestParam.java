@@ -19,6 +19,25 @@ public class AppRequestParam {
     Integer pageIndex;
     Integer pageSize;
     Integer orderStatus;
+    private String projectId;
+
+    private String appType;
+
+    public String getAppType() {
+        return appType;
+    }
+
+    public void setAppType(String appType) {
+        this.appType = appType;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
     public Integer getPageIndex() {
         return pageIndex;

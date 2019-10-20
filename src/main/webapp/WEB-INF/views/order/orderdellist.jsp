@@ -68,14 +68,10 @@
                 </td>
                 <td>
                     <div>
-                        {{if orderStatus == '10'}}
-                            订单完成
-                        {{else orderStatus == '11'}}
-                             未入住
-                        {{else orderStatus == '12'}}
-                            已入住
-                        {{else orderStatus == '13'}}
-                            已取消
+                        {{if delFlag == '0'}}
+                            未删除
+                        {{else delFlag == '1'}}
+                             已删除
                         {{/if}}
                     </div>
                 </td>
@@ -84,21 +80,13 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="ordermana:order:detail">
-                            <a href="${ctx}/order/tolook?id={{:id}}">
+                        <shiro:hasPermission name="ordermana:delorder:detail">
+                        <a href="${ctx}/order/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="订单详情">
-                            </a>
+                        </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:edit">
-                            <a href="${ctx}/order/toedit?id={{:id}}">
-                            <input type="button" class="editbtn gray_btn mr10" value="编辑">
-                            </a>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:del">
-                            <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:status">
-                            <input type="button" onclick="editStatus('{{:id}}')" class="edit gray_btn mr10" value="编辑状态">
+                        <shiro:hasPermission name="ordermana:delorder:revoke">
+                        <input type="button" class="revoke gray_btn mr10" data-sid="{{:id}}" value="撤销删除">
                         </shiro:hasPermission>
                     </div>
                 </td>

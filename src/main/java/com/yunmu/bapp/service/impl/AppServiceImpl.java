@@ -13,7 +13,10 @@ import com.yunmu.core.dao.owner.OwnerMapper;
 import com.yunmu.core.dao.owner.OwnerMapperExt;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayWayMapper;
+import com.yunmu.core.dao.project.ProjectMapper;
 import com.yunmu.core.dao.source.OrderSourceMapper;
+import com.yunmu.core.dao.sys.AppVersionMapper;
+import com.yunmu.core.dao.sys.BussinessMapper;
 import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
@@ -27,7 +30,9 @@ import com.yunmu.core.model.pay.Pay;
 import com.yunmu.core.model.pay.PayExample;
 import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.product.Product;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.source.OrderSource;
+import com.yunmu.core.model.sys.*;
 import com.yunmu.core.util.AppRequestParam;
 import com.yunmu.core.util.AppResponseObj;
 import com.yunmu.core.util.OrderDetailUtil;
@@ -68,6 +73,12 @@ public class AppServiceImpl implements AppService{
     private PayWayMapper payWayMapper;
     @Autowired
     private OrderSourceMapper orderSourceMapper;
+    @Autowired
+    private BussinessMapper bussinessMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
+    @Autowired
+    private AppVersionMapper appVersionMapper;
 
     @Override
     public OwnerExt getOwnerByCondition(Owner owner) {
@@ -233,7 +244,7 @@ public class AppServiceImpl implements AppService{
             }
         }
         Page<OrderExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
-        List<OrderExt> orderExts=orderMapperExt.getOrderPage(params);
+        List<OrderExt> orderExts=orderMapperExt.getOrderList(params);
         Map<Integer,String> payWays=getAllPayWayMap();
         Map<String,String> orderSources=getAllOrderSourceMap();
         for(OrderExt orderExt:orderExts){
@@ -281,7 +292,7 @@ public class AppServiceImpl implements AppService{
                 orderExt.setOrderStatusStr("已取消");
             }
             //BigDecimal bigDecimal=new BigDecimal();
-            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderRecAmount());
+            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderActAmount());
             orderExt.setPayAmount(payAmount);
             Map<Integer,String> payWays=getAllPayWayMap();
             Map<String,String> orderSources=getAllOrderSourceMap();
@@ -297,6 +308,39 @@ public class AppServiceImpl implements AppService{
             }
         }
         return orderExt;
+    }
+
+    @Override
+    public Bussiness getBussinessByProjectId(String projectId) {
+        BussinessExample bussinessExample=new BussinessExample();
+        BussinessExample.Criteria criteria=bussinessExample.createCriteria();
+        criteria.andProjectIdEqualTo(projectId);
+        criteria.andDelFlagEqualTo(0);
+        bussinessExample.setOrderByClause("create_time desc");
+        List<Bussiness> bussinessList=bussinessMapper.selectByExample(bussinessExample);
+        if(bussinessList.size()>0){
+
+            return bussinessList.get(0);
+        }
+        return new Bussiness();
+    }
+
+    @Override
+    public AppVersion getAppVersionByProjectId(String projectId,String appType) {
+        //通过项目id获取公司code
+        Project project=projectMapper.selectByPrimaryKey(projectId);
+        AppVersionExample appVersionExample=new AppVersionExample();
+        AppVersionExample.Criteria criteria=appVersionExample.createCriteria();
+        criteria.andDelFlagEqualTo(0);
+        criteria.andStatusEqualTo(0);
+        criteria.andCompanyCodeEqualTo(project.getCompanyCode());
+        criteria.andAppTypeEqualTo(appType);
+        appVersionExample.setOrderByClause("create_time desc");
+        List<AppVersion> appVersionList=appVersionMapper.selectByExample(appVersionExample);
+        if(appVersionList.size()>0){
+            return  appVersionList.get(0);
+        }
+        return new AppVersion();
     }
 
     public Map<Integer,String> getAllPayWayMap(){

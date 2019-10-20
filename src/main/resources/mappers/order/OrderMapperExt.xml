@@ -174,7 +174,7 @@
   </select>
 
   <select id="getCountByCondition" parameterType="java.util.Map" resultType="Integer">
-    SELECT sum(order_count)  from yunmu_order orderer where orderer.del_flag = 0 and order_status=10 and orderer.hourse_code in(
+    SELECT IFNULL(sum(order_count),0)  from yunmu_order orderer where orderer.del_flag = 0 and order_status=10 and orderer.hourse_code in(
       SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
       <if test="ownerId != null and ownerId != ''">
         AND hourse.owner_code = #{ownerId}
@@ -190,7 +190,7 @@
 
 
   <select id="getOrderPageBycondition" resultType="com.yunmu.core.util.AppResponseObj" parameterType="java.util.Map">
-    SELECT mo.id as oId,mo.order_act_amount AS incomeAll ,mo.complete_time as date
+    SELECT mo.id as oId,IFNULL(mo.order_act_amount,0) AS incomeAll ,mo.complete_time as date
     from yunmu_order mo
     where mo.del_flag=0 and mo.hourse_code in(
       SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
@@ -255,7 +255,7 @@
   </select>
 
   <select id="getAllRecByParam" parameterType="java.util.Map" resultType="Double">
-    SELECT SUM(yo.order_rec_amount)
+    SELECT IFNULL(SUM(yo.order_rec_amount),0)
     FROM  yunmu_order yo
     where yo.del_flag=0 and yo.hourse_code in(
     SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
@@ -269,7 +269,7 @@
   </select>
 
   <select id="getAllActByParam" parameterType="java.util.Map" resultType="Double">
-    SELECT SUM(yo.order_act_amount)
+    SELECT IFNULL(SUM(yo.order_act_amount),0)
     FROM  yunmu_order yo
     where yo.del_flag=0 and yo.hourse_code in(
     SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
@@ -280,5 +280,30 @@
     <if test="endTime!=null">
       AND yo.complete_time <![CDATA[<=]]> #{endTime}
     </if>
+  </select>
+
+  <select id="getOrderList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from yunmu_order yo where yo.del_flag=0 and yo.hourse_code in(
+      SELECT hourse.id from yunmu_hourse hourse where hourse.del_flag=0
+      <if test="ownerId != null and ownerId != ''">
+        AND hourse.owner_code = #{ownerId}
+      </if>
+    )
+    <if test="beginTime!=null">
+      AND  yo.create_time >= #{beginTime}
+    </if>
+    <if test="endTime!=null">
+      AND yo.create_time <![CDATA[<=]]> #{endTime}
+    </if>
+    <if test="orderStatus!=null">
+      AND yo.order_status =#{orderStatus}
+    </if>
+    ORDER BY create_time DESC
   </select>
 </mapper>

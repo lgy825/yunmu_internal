@@ -5,6 +5,9 @@ import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.owner.Owner;
 import com.yunmu.core.model.owner.OwnerExt;
+import com.yunmu.core.model.sys.AppVersion;
+import com.yunmu.core.model.sys.Bussiness;
+import com.yunmu.core.model.sys.BussinessExt;
 import com.yunmu.core.util.AppResponseObj;
 import com.yunmu.core.util.OrderDetailUtil;
 
@@ -33,4 +36,8 @@ public interface AppService {
     GenericPage<OrderExt> getOrderListByCondition(Map<String, Object> params);
 
     OrderExt getOrderDetail(String id);
+
+    Bussiness getBussinessByProjectId(String projectId);
+
+    AppVersion getAppVersionByProjectId(String projectId,String appType);
 }

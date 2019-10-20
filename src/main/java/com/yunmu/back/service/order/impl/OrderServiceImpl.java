@@ -348,7 +348,7 @@ public class OrderServiceImpl implements OrderService {
                 orderExt.setOrderStatusStr("已取消");
             }
             //BigDecimal bigDecimal=new BigDecimal();
-            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderRecAmount());
+            BigDecimal payAmount=order.getOrderRecAmount().subtract(orderExt.getOrderActAmount());
             orderExt.setPayAmount(payAmount);
             Map<Integer,String> payWays=getAllPayWayMap();
             Map<String,String> orderSources=getAllOrderSourceMap();
