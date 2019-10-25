@@ -118,7 +118,7 @@ public class AppServiceImpl implements AppService{
         double actAmountAll=orderMapperExt.getActAmountByCondition(params);
         //获取支出
         BigDecimal bigDecimal=new BigDecimal(recAmountAll);
-        double extraCosts=(bigDecimal.subtract(new BigDecimal(actAmountAll))).setScale(1,BigDecimal.ROUND_UP).doubleValue();
+        double extraCosts=(bigDecimal.subtract(new BigDecimal(actAmountAll))).setScale(2,BigDecimal.ROUND_UP).doubleValue();
 
         Map<String,Object> resultMap=new HashMap<>();
         resultMap.put("incomeAll",actAmountAll);
