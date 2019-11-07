@@ -109,8 +109,8 @@ public class OrderServiceImpl implements OrderService {
     public boolean saveOrder(OrderExt orderExt) {
         if(orderExt!=null){
             //获取房间号
-            String codes=orderExt.getHourseCodes();
-            String[] hourseCodes=codes.split(",");
+//            String codes=orderExt.getHourseCodes();
+//            String[] hourseCodes=codes.split(",");
             Double pauSum=0.0;
             Date date=new Date();
             //List<String> payIds= new ArrayList<>();
@@ -142,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal actAmount=orderExt.getOrderRecAmount().subtract(new BigDecimal(pauSum).divide(new BigDecimal(100)));
 
             //保存订单
-            for(int i=0;i<hourseCodes.length;i++){
+            //for(int i=0;i<hourseCodes.length;i++){
                 Order order=new Order();
                 BeanUtils.copyProperties(orderExt, order);
                 order.setCreateBy(ShiroUtils.getUser().getId());
@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setUpdateBy(ShiroUtils.getUser().getId());
                 order.setUpdateTime(date);
                 order.setDelFlag(0);
-                order.setHourseCode(hourseCodes[i]);
+                //order.setHourseCode(hourseCodes[i]);
                 order.setId(IdUtils.orderCodeGeneration());
                 if(order.getOrderStatus()==10){
                     order.setCompleteTime(date);
@@ -194,7 +194,7 @@ public class OrderServiceImpl implements OrderService {
                     }
 
                 }
-            }
+            //}
             return true;
         }
         return false;
@@ -206,8 +206,8 @@ public class OrderServiceImpl implements OrderService {
         if(orderExt!=null){
             //获取房间号
             Date date=new Date();
-            String codes=orderExt.getHourseCodes();
-            String[] hourseCodes=codes.split(",");
+//            String codes=orderExt.getHourseCodes();
+//            String[] hourseCodes=codes.split(",");
             //计算支持总金额
             Double pauSum=0.0;
             //判断之前支出详情有没存储该订单的数据，有则删除
@@ -253,19 +253,19 @@ public class OrderServiceImpl implements OrderService {
             //BigDecimal bigDecimal=new BigDecimal(orderExt.getOrderRecAmount());
             BigDecimal actAmount=orderExt.getOrderRecAmount().subtract(new BigDecimal(pauSum).divide(new BigDecimal(100)));
             //保存订单
-            for(int i=0;i<hourseCodes.length;i++) {
+            //for(int i=0;i<hourseCodes.length;i++) {
                 Order order = new Order();
                 BeanUtils.copyProperties(orderExt, order);
-                order.setHourseCode(hourseCodes[i]);
+                //order.setHourseCode(hourseCodes[i]);
                 int dayCount= Dates.comparePastDate(order.getOrderStartDate(),order.getOrderEndTime());
                 order.setOrderCount(dayCount);
                 order.setUpdateBy(ShiroUtils.getUser().getId());
                 order.setUpdateTime(date);
                 order.setOrderActAmount(actAmount);
                 //order.setCreateBy(ShiroUtils.getUser().getId());
-                if(order.getOrderStatus()==10){
-                    order.setCompleteTime(date);
-                }
+//                if(order.getOrderStatus()==10){
+//                    order.setCompleteTime(date);
+//                }
                 orderMapper.updateByPrimaryKeySelective(order);
                 if (orderExt.getIsChoose() == 2) {
                     List<ParamVo> paramVos = orderExt.getParamVos();
@@ -298,7 +298,7 @@ public class OrderServiceImpl implements OrderService {
                         orderProductMapper.insertSelective(orderProduct);
                     }
                 }
-            }
+            //}
             return true;
         }
         return false;

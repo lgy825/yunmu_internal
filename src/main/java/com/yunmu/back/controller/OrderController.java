@@ -240,18 +240,20 @@ public class OrderController extends BaseController {
             //计算总收益
             double orderRec=orderSercvice.getAllRecByParam(params);
             double orderAct=orderSercvice.getAllActByParam(params);
-            BigDecimal bigDecimal=new BigDecimal(orderAct);
+            BigDecimal bigDecimal=new BigDecimal(orderRec);
             double orderPay=bigDecimal.subtract(new BigDecimal(orderAct)).doubleValue();
             //计算总支出
             List<String> headList = Lists.newArrayList();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             headList.add("订单号");
             headList.add("房间号");
-            headList.add("订单创建时间");
+            headList.add("订单开始时间");
+            headList.add("订单结束时间");
+            headList.add("入住天数");
             headList.add("订单来源");
             headList.add("支付方式");
+            headList.add("订单金额(元)");
             headList.add("实收金额(元)");
-            headList.add("支出金额(元)");
 
             List<String> parmList = Lists.newArrayList();
             parmList.add("房间号:" + hourseNumber);
@@ -266,7 +268,9 @@ public class OrderController extends BaseController {
                     List<String> list1 = new ArrayList<String>();
                     list1.add(orderExt.getId());
                     list1.add(orderExt.getHourseNumber());
-                    list1.add(sdf.format(orderExt.getCreateTime()));
+                    list1.add(sdf.format(orderExt.getOrderStartDate()));
+                    list1.add(sdf.format(orderExt.getOrderEndTime()));
+                    list1.add(orderExt.getOrderCount()+"");
                     list1.add(orderExt.getSourceWay());
                     list1.add(orderExt.getPayWay());
                     list1.add(orderExt.getOrderRecAmount().toString());

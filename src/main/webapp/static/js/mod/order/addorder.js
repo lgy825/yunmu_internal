@@ -180,7 +180,7 @@ $(function () {
                 projectId: $.trim($("#projectSel").val()),
                 orderWay: $.trim($("#paySel").val()),
                 orderSource: $.trim($("#sourceSel").val()),
-                hourseCodes: $.isArray($("#hourseSel").val())  ? $("#hourseSel").val().join(",") : ($("#hourseSel").val() == -1 ? "" : $("#hourseSel").val()),
+                hourseCode: $("#hourseSel").val(),
                 orderStartDate:startTime+" "+stimes,
                 orderEndTime:endTime+" "+etimes,
                 orderActAmount:orderActAmount,
