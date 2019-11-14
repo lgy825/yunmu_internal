@@ -199,10 +199,10 @@
       </if>
     )
     <if test="beginTime!=null">
-      AND  mo.complete_time >= #{beginTime}
+      AND  mo.create_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND mo.complete_time <![CDATA[<=]]> #{endTime}
+      AND mo.create_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
@@ -221,13 +221,13 @@
     </if>
     )
     <if test="beginTime!=null">
-      AND  yo.complete_time >= #{beginTime}
+      AND  yo.create_time >= #{beginTime}
     </if>
     <if test="orderStatus!=null">
       AND  yo.order_status >= #{orderStatus}
     </if>
     <if test="endTime!=null">
-      AND yo.complete_time <![CDATA[<=]]> #{endTime}
+      AND yo.create_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
@@ -243,21 +243,21 @@
     'true' as QUERYID,
     <include refid="Base_Column_List" />
     FROM  yunmu_order yo
-    where yo.del_flag=0 and yo.hourse_code in(
+    where yo.del_flag=0 and order_status=10 and yo.hourse_code in(
         SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
     )
     <if test="beginTime!=null">
-      AND  yo.create_time >= #{beginTime}
+      AND  yo.complete_time >= #{beginTime}
     </if>
     <if test="endTime!=null">
-      AND yo.create_time <![CDATA[<=]]> #{endTime}
+      AND yo.complete_time <![CDATA[<=]]> #{endTime}
     </if>
   </select>
 
   <select id="getAllRecByParam" parameterType="java.util.Map" resultType="Double">
     SELECT IFNULL(SUM(yo.order_rec_amount),0)
     FROM  yunmu_order yo
-    where yo.del_flag=0 and yo.hourse_code in(
+    where yo.del_flag=0 and order_status=10 and yo.hourse_code in(
     SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
     )
     <if test="beginTime!=null">
@@ -271,7 +271,7 @@
   <select id="getAllActByParam" parameterType="java.util.Map" resultType="Double">
     SELECT IFNULL(SUM(yo.order_act_amount),0)
     FROM  yunmu_order yo
-    where yo.del_flag=0 and yo.hourse_code in(
+    where yo.del_flag=0 and order_status=10 and yo.hourse_code in(
     SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
     )
     <if test="beginTime!=null">

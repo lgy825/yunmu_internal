@@ -167,7 +167,7 @@ public class AppController extends BaseController{
 
         try {
             if(appRequestParam.getPageIndex()!=null){
-                params.put("pageIndex", appRequestParam.getPageIndex() + 1);
+                params.put("pageIndex", appRequestParam.getPageIndex());
             }
             if(appRequestParam.getPageSize()!=null){
                 params.put("pageSize", appRequestParam.getPageSize());

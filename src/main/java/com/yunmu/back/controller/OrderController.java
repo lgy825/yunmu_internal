@@ -241,7 +241,7 @@ public class OrderController extends BaseController {
             double orderRec=orderSercvice.getAllRecByParam(params);
             double orderAct=orderSercvice.getAllActByParam(params);
             BigDecimal bigDecimal=new BigDecimal(orderRec);
-            double orderPay=bigDecimal.subtract(new BigDecimal(orderAct)).doubleValue();
+            double orderPay=bigDecimal.subtract(new BigDecimal(orderAct)).setScale(2,BigDecimal.ROUND_UP).doubleValue();
             //计算总支出
             List<String> headList = Lists.newArrayList();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -254,6 +254,7 @@ public class OrderController extends BaseController {
             headList.add("支付方式");
             headList.add("订单金额(元)");
             headList.add("实收金额(元)");
+            headList.add("支出金额(元)");
 
             List<String> parmList = Lists.newArrayList();
             parmList.add("房间号:" + hourseNumber);
@@ -275,6 +276,7 @@ public class OrderController extends BaseController {
                     list1.add(orderExt.getPayWay());
                     list1.add(orderExt.getOrderRecAmount().toString());
                     list1.add(orderExt.getOrderActAmount().toString());
+                    list1.add(orderExt.getOrderRecAmount().subtract(orderExt.getOrderActAmount()).setScale(2,BigDecimal.ROUND_UP).toString());
                     list.add(list1);
                 }
                 for (int i = 0; i < list.size(); i++) {
