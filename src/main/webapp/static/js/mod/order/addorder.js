@@ -350,6 +350,8 @@ $(function () {
                                     timeSpick.val(su.orderStartDate.split(" ")[0]);
                                     timeEpick.val(su.orderEndTime.split(" ")[0]);
 
+                                    $("#orderStatus").attr("disabled",true);
+
                                 } else {
                                     if (data.resultDesc) {
                                         layer.msg(data.resultDesc);
