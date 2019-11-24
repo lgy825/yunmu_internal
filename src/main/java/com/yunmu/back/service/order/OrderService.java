@@ -5,6 +5,7 @@ import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.source.OrderSource;
+import com.yunmu.core.util.IncomSummaryObj;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,13 @@ public interface OrderService {
     double getAllActByParam(Map<String,String> params);
 
     boolean updateOrderStatus(Order order);
+
+    int getCountByCondition(Map<String,String> params);
+
+
+    IncomSummaryObj getIncomSummary(Map<String, Object> params);
+
+
 
 
 }

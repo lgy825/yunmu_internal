@@ -3,6 +3,7 @@ package com.yunmu.core.dao.order;
 import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderExt;
 import com.yunmu.core.util.AppResponseObj;
+import com.yunmu.core.util.IncomSummaryObj;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +33,8 @@ public interface OrderMapperExt {
 
 
     List<OrderExt> getOrderList(Map<String, Object> params);
+
+    IncomSummaryObj getIncomSummary(Map<String, Object> params);
+
+    int getOrderCount(Map<String,String> params);
 }

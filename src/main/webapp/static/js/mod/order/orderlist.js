@@ -2,6 +2,9 @@ $(function(){
 
     loadOrderStatus();
 
+    loadCollectData();
+
+
     $('.layer-close').on('click', function () {
         $('.modality-layer').hide();
         $(".update").show();
@@ -42,6 +45,7 @@ $(function(){
     loadPage();
     $("#searchBtn").click(function () {
         loadPage();
+        loadCollectData();
     });
 
     $("#timeSpick").datetimepicker({
@@ -164,6 +168,44 @@ function loadPage() {
                 $("#orderTable").empty().html($("#trTmpl").render(data.resultData));
             },
             totalName: 'total'
+        }
+    });
+}
+
+function loadCollectData(){
+    $.ajax({
+        url: ctx + "order/getIncomSummary",
+        cache: false,
+        // async: false,
+        dataType: 'json',
+        data:{
+            orderId: $.trim($("#orderId").val()),
+            beginTime:$("#timeSpick").val(),
+            hourseNumber:$.trim($("#hourseNumber").val()),
+            endTime:$("#timeEpick").val(),
+            orderStatus:$("#orderStatus").val() == -1 ? null : $("#orderStatus").val()
+        },
+        success: function (data) {
+            if (data && data.resultCode === '0') {
+                var incomSummaryObj=data.resultData;
+                $("#orderRecAmountAll").html(incomSummaryObj.orderRecAmountAll+"<i>元</i>");
+                $("#orderPayAmountAll").html(incomSummaryObj.orderPayAmountAll+"<i>元</i>");
+                $("#orderActmountAll").html(incomSummaryObj.orderActmountAll+"<i>元</i>");
+                $("#orderCountAll").html(incomSummaryObj.orderCountAll+"<i>天</i>");
+
+            } else {
+                if (data.resultDesc) {
+                    layer.msg(data.resultDesc);
+                } else {
+                    layer.msg('获取收益汇总失败 !');
+                }
+            }
+        },
+        error: function () {
+            layer.msg('获取收益汇总失败 !');
+        },
+        beforeSend: function () {
+            layer.load(1, {shade:[0.3]})
         }
     });
 }

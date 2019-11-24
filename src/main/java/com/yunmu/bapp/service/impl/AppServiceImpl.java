@@ -279,10 +279,11 @@ public class AppServiceImpl implements AppService{
                     orderDetail.setPayName(pay.getPayName());
                     orderDetail.setPayDesc(pay.getPayDesc());
                 }
-                if(orderDetails==null){
-                    orderDetails=new ArrayList<>();
-                }
+
                 orderExt.setOrderDetails(orderDetails);
+            }
+            if(orderExt.getOrderDetails()==null){
+                orderExt.setOrderDetails(new ArrayList<>());
             }
             BeanUtils.copyProperties(order,orderExt);
             if(orderExt.getOrderStatus()==10){

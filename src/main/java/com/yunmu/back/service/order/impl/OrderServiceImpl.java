@@ -470,6 +470,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public int getCountByCondition(Map<String, String> params) {
+        return orderMapperExt.getOrderCount(params);
+    }
+
+    @Override
+    public IncomSummaryObj getIncomSummary(Map<String, Object> params) {
+        IncomSummaryObj incomSummaryObj=orderMapperExt.getIncomSummary(params);
+        BigDecimal orderPayAmountAll=incomSummaryObj.getOrderRecAmountAll().subtract(incomSummaryObj.getOrderActmountAll()).setScale(2,BigDecimal.ROUND_UP);
+        incomSummaryObj.setOrderPayAmountAll(orderPayAmountAll);
+        return incomSummaryObj;
+    }
+
+    @Override
     public List<PayWay> getPayWay() {
         List<PayWay> payWays=payWayMapper.getPayWayAll();
         return payWays;

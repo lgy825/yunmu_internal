@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>订单管理</title>
+    <title>装修合同列表</title>
     <%@include file="/static/commons/common.jspf" %>
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
@@ -20,11 +20,11 @@
                     <th style='width: 8%;'><div>开始时间</div></th>
                     <th style='width: 8%;'><div>结束时间</div></th>
                     <th style='width: 5%;'><div>入住天数</div></th>
-                    <th style='width: 9%;'><div>订单来源</div></th>
+                    <th style='width: 8%;'><div>订单来源</div></th>
                     <th style='width: 8%;'><div>订单金额(元)</div></th>
                     <th style='width: 8%;'><div>实收金额(元)</div></th>
                     <th style='width: 8%;'><div>订单状态</div></th>
-                    <th style='width: 8%;'><div>支付方式</div></th>
+                    <th style='width: 8%;'><div>删除操作人</div></th>
                     <th style='width: 22%;'><div>操作</div></th>
                 </tr>
         </thead>
@@ -77,7 +77,7 @@
                         {{if orderStatus == '10'}}
                             订单完成
                         {{else orderStatus == '11'}}
-                             未入住
+                            未入住
                         {{else orderStatus == '12'}}
                             已入住
                         {{else orderStatus == '13'}}
@@ -92,21 +92,21 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="ordermana:order:detail">
-                        <a href="${ctx}/order/tolook?id={{:id}}">
+                        <shiro:hasPermission name="ordermana:comorder:detail">
+                            <a href="${ctx}/order/tolook?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="订单详情">
-                        </a>
+                            </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:edit">
-                        <a href="${ctx}/order/toedit?id={{:id}}">
+                         <shiro:hasPermission name="ordermana:comorder:edit">
+                            <a href="${ctx}/order/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
-                        </a>
+                            </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:del">
-                        <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
+                        <shiro:hasPermission name="ordermana:comorder:del">
+                            <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="ordermana:order:status">
-                            <input type="button" data-sid="{{:id}}"  class="editStatus gray_btn mt12 mr10" value="编辑状态">
+                        <shiro:hasPermission name="ordermana:comorder:status">
+                            <input type="button" onclick="editStatus('{{:id}}')" class="editStatus gray_btn mt12 mr10" value="编辑状态">
                         </shiro:hasPermission>
                     </div>
                 </td>
@@ -118,12 +118,12 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">订单管理</div>
+        <div class="b_title">完成订单</div>
         <div class="hr">
             <hr>
         </div>
         <div class="pdtrl20">
-            <shiro:hasPermission name="ordermana:order:add">
+            <shiro:hasPermission name="ordermana:comorder:add">
             <a href="${ctx}/order/toaddOrder">
                 <input type="button" class="blue_btn" value="新建订单">
             </a>
@@ -137,62 +137,16 @@
                 <div>
                     <input id="orderId" type="text" class="inpW ml20" placeholder="订单号">
                     <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
-                    <select class="select  ml20" id="orderStatus">
-                    </select>
-                    <input type="text" class="inpW ml20 timer" id="timeSpick" placeholder="开始时间"/>
+                    <input type="text" class="inpW  inpWid2 timer" id="timeSpick" placeholder="开始时间"/>
                     <span class="zhi">至</span>
                     <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
-                    <shiro:hasPermission name="ordermana:order:export">
-                    <input id="exportBtn" type="button" class="blue_btn ml20" value="导出订单">
-                    </shiro:hasPermission>
+<%--                    <shiro:hasPermission name="ordermana:order:export">--%>
+<%--                    <input id="exportBtn" type="button" class="blue_btn ml20" value="导出订单">--%>
+<%--                    </shiro:hasPermission>--%>
                 </div>
             </form>
-            <div class="pdtrl20" id="collect">
-                <div class="movBox clearfix p20 bgc-f9">
-                    <div>
-                        <div>
-                            <div class="label labelWid1 relative">
-                                订单总额
-                                <i class="whats"></i>
-                                <p class="modify-what">所有客房的订单总额</p>
-                            </div>
-                            <b class="color-green" id="orderRecAmountAll"></b>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <div class="label labelWid1 relative">
-                                支出总额
-                                <i class="whats"></i>
-                                <p class="modify-what">所有客房的总支出金额</p>
-                            </div>
-                            <b class="color-green" id="orderPayAmountAll"></b>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <div class="label labelWid1 relative">
-                                实收总额
-                                <i class="whats"></i>
-                                <p class="modify-what">所有客房的实际总收益</p>
-                            </div>
-                            <b class="color-green" id="orderActmountAll"></b>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <div class="label labelWid1 relative">
-                                入住总天数
-                                <i class="whats"></i>
-                                <p class="modify-what">所有客房的入住总天数</p>
-                            </div>
-                            <b class="color-red" id="orderCountAll"></b>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="pdtrl20">
             <div class="scroll-table">
@@ -243,7 +197,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${ctx}/static/js/mod/order/orderlist.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/order/comorderdellist.js"></script>
 <%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
 <script>
     $(function () {
@@ -253,9 +207,6 @@
         $(window).on('resize', function () {
             fullScreen($('.scroll-table'), 264);
         });
-
-
-
     });
 </script>
 </body>

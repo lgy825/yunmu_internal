@@ -13,6 +13,7 @@ import com.yunmu.core.model.pay.PayWay;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.source.OrderSource;
 import com.yunmu.core.util.Encodes;
+import com.yunmu.core.util.IncomSummaryObj;
 import com.yunmu.core.util.RegxUtils;
 import com.yunmu.core.util.ShiroUtils;
 import com.yunmu.core.util.excel.ExportExcel;
@@ -78,7 +79,8 @@ public class OrderController extends BaseController {
                                                        Integer pageSize,
                                                        String beginTime,
                                                        String endTime,
-                                                       String orderId,String hourseNumber,Integer orderStatus) {
+                                                       String orderId,String hourseNumber,Integer orderStatus,
+                                                       Model model) {
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);
         params.put("hourseNumber",hourseNumber);
@@ -97,8 +99,35 @@ public class OrderController extends BaseController {
         List<Project> projects= ShiroUtils.getAllMyCinemaList();
         List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
         params.put("projectIds",projectIds);
+
         return createSuccessPageResult(orderSercvice.getPageByCondition(params));
     }
+
+    @RequestMapping("/getIncomSummary")
+    @ResponseBody
+    public Result<IncomSummaryObj> getIncomSummary(String beginTime, String endTime,
+                                                   String orderId, String hourseNumber,
+                                                   Integer orderStatus) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("orderId", orderId);
+        params.put("hourseNumber",hourseNumber);
+        if(orderStatus!=null  ){
+            params.put("orderStatus", orderStatus);
+        }
+        if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
+            params.put("beginTime", beginTime);
+        }
+        if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
+            params.put("searchTimeEnd", endTime);
+        }
+        params.put("delFlag",0);
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        params.put("projectIds",projectIds);
+        //获取订单汇总信息
+        return createSuccessResult(orderSercvice.getIncomSummary(params));
+    }
+
 
     @RequestMapping("/getdelpage")
     @ResponseBody
@@ -242,6 +271,7 @@ public class OrderController extends BaseController {
             double orderAct=orderSercvice.getAllActByParam(params);
             BigDecimal bigDecimal=new BigDecimal(orderRec);
             double orderPay=bigDecimal.subtract(new BigDecimal(orderAct)).setScale(2,BigDecimal.ROUND_UP).doubleValue();
+            int orderCount=orderSercvice.getCountByCondition(params);
             //计算总支出
             List<String> headList = Lists.newArrayList();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -262,6 +292,7 @@ public class OrderController extends BaseController {
             parmList.add("订单总收益:"+orderRec);
             parmList.add("应收总金额:"+orderAct);
             parmList.add("支出总金额:"+orderPay);
+            parmList.add("入住总天数:"+orderCount);
             ee = new ExportExcel("业主收支列表", headList, parmList);
             if (orderList != null) {
                 List<List<String>> list = new ArrayList<List<String>>();
