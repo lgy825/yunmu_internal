@@ -51,12 +51,32 @@ $(function () {
         timepicker: false
     });
 
+    var timeComplete = $("#timeComplete").datetimepicker({
+                                                       format: 'Y-m-d',
+                                                       // minDate: 0,
+                                                       // onChangeDateTime: function (curDate) {
+                                                       //     var curDateTime = curDate.sformat("yyyy-MM-dd");
+                                                       //     $("#timeEpick").datetimepicker({
+                                                       //         minDate: curDateTime ? curDateTime : false
+                                                       //     });
+                                                       // },
+                                                       timepicker: false
+                                                   });
+
     loadPay();
     loadProduct();
     loadOrderSource();
     loadHourseAndType();
     loadPayWay();
     loadProject();
+
+    $("#orderStatus").change(function(){
+        if($("#orderStatus").val()==10){
+            $("#completeStr").show();
+        }else{
+            $("#completeStr").hide();
+        }
+    });
 
 
 

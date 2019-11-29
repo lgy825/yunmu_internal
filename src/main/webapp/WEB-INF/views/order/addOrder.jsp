@@ -134,6 +134,10 @@
                     </select>
                     <span class="color-lred ml8 mt6">* 请选择订单状态*</span>
                 </div>
+                <div class="mt20 none" id="completeStr">
+                    <div class="align-r mr8">订单所属日期</div>
+                    <input type="text" class="inpW inpWid2 timer" id="timeComplete" placeholder="订单所属日期">
+                </div>
                 <div class="mt30 ml170">
                     <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">
                     <a href="${ctx}/order/toOrderlist">
