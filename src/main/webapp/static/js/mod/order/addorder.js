@@ -147,6 +147,13 @@ $(function () {
             layer.msg("请选择订单状态");
             return;
         }
+        var completeTime = timeComplete.val();
+        if($("#orderStatus").val() ==10){
+            if (timeComplete.length < 1 ) {
+                layer.msg("请选择订单所属时间");
+                return;
+            }
+        }
 
         if ($("#hourseSel").val() == -1) {
             layer.msg("请选择房间");
@@ -185,6 +192,11 @@ $(function () {
         }else{
             etimes+=":00";
         }
+        var nowDate = new Date();
+        var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        var time=hour+":"+minute+":"+second;
 
         $.ajax({
             url: ctx + "order/addOrder",
@@ -207,7 +219,8 @@ $(function () {
                 isChoose:isChoose,
                 isChooseProduct:isChooseProduct,
                 productObjs:productObjs,
-                orderStatus:$("#orderStatus").val()
+                orderStatus:$("#orderStatus").val(),
+                completeTime:completeTime?completeTime+" "+time:""
             }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
@@ -369,6 +382,12 @@ $(function () {
                                     $("#orderStatus").val(su.orderStatus);
                                     timeSpick.val(su.orderStartDate.split(" ")[0]);
                                     timeEpick.val(su.orderEndTime.split(" ")[0]);
+                                    if(su.orderStatus){
+                                        $("#completeStr").show();
+                                    }else{
+                                        $("#completeStr").hide();
+                                    }
+                                    timeComplete.val(su.completeTime.split(" ")[0]);
 
                                     $("#orderStatus").attr("disabled",true);
 

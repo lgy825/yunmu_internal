@@ -152,9 +152,9 @@ public class OrderServiceImpl implements OrderService {
                 order.setDelFlag(0);
                 //order.setHourseCode(hourseCodes[i]);
                 order.setId(IdUtils.orderCodeGeneration());
-                if(order.getOrderStatus()==10){
-                    order.setCompleteTime(date);
-                }
+//                if(order.getOrderStatus()==10){
+//                    order.setCompleteTime(date);
+//                }
                 //order.setOrderStatus(0);
                 //获取订单的时间间隔
                 int dayCount= Dates.comparePastDate(order.getOrderStartDate(),order.getOrderEndTime());
@@ -462,9 +462,9 @@ public class OrderServiceImpl implements OrderService {
     public boolean updateOrderStatus(Order order) {
         order.setUpdateBy(ShiroUtils.getUser().getId());
         order.setUpdateTime(new Date());
-        if(order.getOrderStatus()==10){
-            order.setCompleteTime(new Date());
-        }
+//        if(order.getOrderStatus()==10){
+//            order.setCompleteTime(new Date());
+//        }
         orderMapper.updateByPrimaryKeySelective(order);
         return true;
     }

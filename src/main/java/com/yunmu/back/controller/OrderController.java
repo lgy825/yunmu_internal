@@ -90,10 +90,10 @@ public class OrderController extends BaseController {
             params.put("orderStatus", orderStatus);
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
-            params.put("beginTime", beginTime);
+            params.put("beginTime", beginTime+"00:00:00");
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
-            params.put("searchTimeEnd", endTime);
+            params.put("searchTimeEnd", endTime+"23:59:59");
         }
         params.put("delFlag",0);
         List<Project> projects= ShiroUtils.getAllMyCinemaList();
@@ -115,10 +115,10 @@ public class OrderController extends BaseController {
             params.put("orderStatus", orderStatus);
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
-            params.put("beginTime", beginTime);
+            params.put("beginTime", beginTime+"00:00:00");
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
-            params.put("searchTimeEnd", endTime);
+            params.put("searchTimeEnd", endTime+"23:59:59");
         }
         params.put("delFlag",0);
         List<Project> projects= ShiroUtils.getAllMyCinemaList();
@@ -143,10 +143,10 @@ public class OrderController extends BaseController {
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
-            params.put("beginTime", beginTime);
+            params.put("beginTime", beginTime+"00:00:00");
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
-            params.put("searchTimeEnd", endTime);
+            params.put("searchTimeEnd", endTime+"23:59:59");
         }
         List<Project> projects= ShiroUtils.getAllMyCinemaList();
         List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
@@ -258,10 +258,10 @@ public class OrderController extends BaseController {
             params.put("hourseNumber", hourseNumber);
         }
         if(beginTime!=null && !"".equals(beginTime)){
-            params.put("beginTime", beginTime);
+            params.put("beginTime", beginTime+"00:00:00");
         }
         if(endTime!=null && !"".equals(endTime)){
-            params.put("endTime", endTime);
+            params.put("endTime", endTime+"23:59:59");
         }
         try {
             //根据参数获取导出的订单列表

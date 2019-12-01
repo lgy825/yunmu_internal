@@ -1,3 +1,4 @@
+var timeComplete;
 $(function(){
 
     loadOrderStatus();
@@ -13,6 +14,15 @@ $(function(){
         $("#orderStatus").val("-1").trigger('change');
 
     });
+
+    $("#orderSel").change(function(){
+        if($("#orderSel").val()==10){
+            $("#completeStr").show();
+        }else{
+            $("#completeStr").hide();
+        }
+    });
+
 
 
     $("#orderTable").on("click", ".editStatus", function (){
@@ -66,6 +76,18 @@ $(function(){
         //     var curDateTime = curDate.sformat("yyyy-MM-dd");
         //     $("#timeSpick").datetimepicker({
         //         maxDate: curDateTime ? curDateTime : false
+        //     });
+        // },
+        timepicker: false
+    });
+
+    timeComplete = $("#timeComplete").datetimepicker({
+        format: 'Y-m-d',
+        // minDate: 0,
+        // onChangeDateTime: function (curDate) {
+        //     var curDateTime = curDate.sformat("yyyy-MM-dd");
+        //     $("#timeEpick").datetimepicker({
+        //         minDate: curDateTime ? curDateTime : false
         //     });
         // },
         timepicker: false
@@ -211,6 +233,20 @@ function loadCollectData(){
 }
 function updateStatus() {
 
+    var completeTime = timeComplete.val();
+    if($("#orderStatus").val() ==10){
+        if (timeComplete.length < 1 ) {
+            layer.msg("请选择订单所属时间");
+            return;
+        }
+    }
+
+    var nowDate = new Date();
+    var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+    var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+    var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+    var time=hour+":"+minute+":"+second;
+
     $.ajax({
         url: ctx + "order/updateStatus",
         type: "POST",
@@ -221,13 +257,15 @@ function updateStatus() {
         data: JSON.stringify({
             id:$.trim($("#tempId").val()),
             orderDesc: $.trim($("#orderDesc").val()),
-            orderStatus:$("#orderSel").val()
+            orderStatus:$("#orderSel").val(),
+            completeTime:completeTime?completeTime+" "+time:""
         }),
         success: function (data) {
             if (data && data.resultCode === '0') {
                 layer.msg("修改成功");
                 $('.modality-layer').hide();
                 $("#orderDesc").val("");
+                $("#completeStr").hide();
                 loadPage();
             } else {
                 if (data.resultDesc) {

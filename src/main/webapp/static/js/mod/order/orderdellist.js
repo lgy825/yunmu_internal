@@ -28,6 +28,13 @@ $(function(){
         timepicker: false
     });
 
+    $("#orderSel").change(function(){
+        if($("#orderStatus").val()==10){
+            $("#completeStr").show();
+        }else{
+            $("#completeStr").hide();
+        }
+    });
 
     function loadPage() {
         if($("#pagetotal").pagination()) {
@@ -51,9 +58,9 @@ $(function(){
                 url: ctx + 'order/getdelpage',
                 params:{
                     orderId: $.trim($("#orderId").val()),
-                    beginTime:$("#timeSpick").val(),
+                    beginTime:$("#timeSpick").val()+"00:00:00",
                     hourseNumber:$.trim($("#hourseNumber").val()),
-                    endTime:$("#timeEpick").val()
+                    endTime:$("#timeEpick").val()+"23:59:59"
                 },
                 success: function (data) {
                     // data为ajax返回数据

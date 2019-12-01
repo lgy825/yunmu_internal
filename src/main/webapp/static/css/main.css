@@ -602,6 +602,9 @@
 .inpWid3 {
     width: 148px
 }
+.inpWid4 {
+    width: 270px
+}
 
 .inputBg {
     background: url(../img/dui.png) no-repeat right center;

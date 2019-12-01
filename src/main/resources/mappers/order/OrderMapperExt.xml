@@ -123,8 +123,8 @@
     <if test="hourseNumber != null and hourseNumber != ''">
       AND yh.hourse_number LIKE '%${hourseNumber}%'
     </if>
-    <if test="endTime!=null">
-      AND yo.create_time <![CDATA[<=]]> #{endTime}
+    <if test="searchTimeEnd!=null">
+      AND yo.create_time <![CDATA[<=]]> #{searchTimeEnd}
     </if>
     <if test="delFlag!=null">
       AND yo.del_flag =#{delFlag}
@@ -158,8 +158,8 @@
     <if test="hourseNumber != null and hourseNumber != ''">
       AND yh.hourse_number LIKE '%${hourseNumber}%'
     </if>
-    <if test="endTime!=null">
-      AND yo.create_time <![CDATA[<=]]> #{endTime}
+    <if test="searchTimeEnd!=null">
+      AND yo.create_time <![CDATA[<=]]> #{searchTimeEnd}
     </if>
     <if test="delFlag!=null">
       AND yo.del_flag =#{delFlag}

@@ -1,0 +1,23 @@
+package com.yunmu.back.service.contract;
+
+import com.yunmu.core.constant.GenericPage;
+import com.yunmu.core.model.contract.Contract;
+import com.yunmu.core.model.contract.ContractExt;
+import com.yunmu.core.model.pay.Pay;
+import com.yunmu.core.model.pay.PayExt;
+
+import java.util.Map;
+
+/**
+ * Created by 13544 on 2019/6/18.
+ */
+public interface ContractService {
+
+    GenericPage<ContractExt> getPageByCondition(Map<String, Object> params);
+
+    boolean addRentContract(Contract contract);
+
+    boolean updateRentContract(Contract contract);
+
+
+}
