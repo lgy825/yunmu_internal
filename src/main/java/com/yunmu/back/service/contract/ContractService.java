@@ -15,9 +15,9 @@ public interface ContractService {
 
     GenericPage<ContractExt> getPageByCondition(Map<String, Object> params);
 
-    boolean addRentContract(Contract contract);
+    boolean addContract(Contract contract);
 
-    boolean updateRentContract(Contract contract);
+    boolean updateContract(Contract contract);
 
     Contract getContract(String id);
 

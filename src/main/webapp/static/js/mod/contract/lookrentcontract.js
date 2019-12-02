@@ -70,6 +70,7 @@ $(function(){
                    success: function (data) {
                        if (data && data.resultCode === '0') {
                            su = data.resultData;
+                           //$("#projectSel").val(su.projectId);
                            $("#contractName").val(su.contractName);
                            $("#contractCode").val(su.contractCode);
                            $("#rentAmount").val(su.rentAmount);
@@ -84,7 +85,7 @@ $(function(){
                            $("#rentAmount").val(su.rentAmount);
                            $("#rentIncreaseWay").val(su.rentIncreaseWay);
                            $("#contractExcute").val(su.contractExcute);
-                           $("#excuteIDcard").val(su.excuteIDcard);
+                           $("#excuteIDcard").val(su.excuteIdcard);
                            $("#excuteProxy").val(su.excuteProxy);
                            $("#excuteTel").val(su.excuteTel);
                            $("#excuteAddr").val(su.excuteAddr);
@@ -93,15 +94,13 @@ $(function(){
                            $("#banksName").val(su.banksName);
                            $("#bankNumber").val(su.bankNumber);
                            $("#contractEntrust").val(su.contractEntrust);
-                           $("#entrustIDcard").val(su.entrustIDcard);
+                           $("#entrustIDcard").val(su.entrustIdcard);
                            $("#entrustProxy").val(su.entrustProxy);
                            $("#entrustTel").val(su.entrustTel);
                            $("#hourseAddr").val(su.hourseAddr);
                            $("#hourseArea").val(su.hourseArea);
                            $("#hourseUses").val(su.hourseUses);
-                           $("#entrustIDcard").val(su.entrustIDcard);
-                           $("#entrustProxy").val(su.entrustProxy);
-                           $("#entrustTel").val(su.entrustTel);
+
 
 
                        } else {

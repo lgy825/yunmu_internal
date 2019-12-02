@@ -78,7 +78,7 @@ $(function(){
                            timeContractEnd.val(su.contractEndTime.split(" ")[0]);
                            timeContract.val(su.contractTime.split(" ")[0]);
                            $("#contractExcute").val(su.contractExcute);
-                           $("#excuteIDcard").val(su.excuteIDcard);
+                           $("#excuteIDcard").val(su.excuteIdcard);
                            $("#excuteProxy").val(su.excuteProxy);
                            $("#excuteTel").val(su.excuteTel);
                            $("#excuteAddr").val(su.excuteAddr);
@@ -87,15 +87,12 @@ $(function(){
                            $("#banksName").val(su.banksName);
                            $("#bankNumber").val(su.bankNumber);
                            $("#contractEntrust").val(su.contractEntrust);
-                           $("#entrustIDcard").val(su.entrustIDcard);
                            $("#entrustProxy").val(su.entrustProxy);
                            $("#entrustTel").val(su.entrustTel);
                            $("#hourseAddr").val(su.hourseAddr);
                            $("#hourseArea").val(su.hourseArea);
                            $("#hourseUses").val(su.hourseUses);
-                           $("#entrustIDcard").val(su.entrustIDcard);
-                           $("#entrustProxy").val(su.entrustProxy);
-                           $("#entrustTel").val(su.entrustTel);
+                           $("#entrustIDcard").val(su.entrustIdcard);
 
 
                        } else {

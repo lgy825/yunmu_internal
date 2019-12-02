@@ -42,6 +42,11 @@ public class ContractController extends BaseController{
         return "contract/rentcontractlist";
     }
 
+    @RequestMapping("/toTrustContractlist")
+    public String toTrustContractlist() {
+        return "contract/trustcontractlist";
+    }
+
     @RequestMapping("/getpage")
     @ResponseBody
     public PageResult<ContractExt> getShopPageByCondition(HttpServletRequest request,
@@ -62,13 +67,13 @@ public class ContractController extends BaseController{
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
             params.put("endTime", endTime+"23:59:59");
         }
-        if(projectId!=null){
-            params.put("projectId", projectId);
-        }else{
-            List<Project> projects= ShiroUtils.getAllMyCinemaList();
-            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-            params.put("projectIds",projectIds);
-        }
+//        if(projectId!=null){
+//            params.put("projectId", projectId);
+//        }else{
+//            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+//            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+//            params.put("projectIds",projectIds);
+//        }
 
         return createSuccessPageResult(contractService.getPageByCondition(params));
     }
@@ -78,40 +83,63 @@ public class ContractController extends BaseController{
         return "contract/newrentcontract";
     }
 
+    @RequestMapping("/toaddTrust")
+    public String toaddTrust() {
+        return "contract/newtrustcontract";
+    }
+
     @RequestMapping("/tolookRent")
     public String tolookRent(String id,Model model) {
         if (StringUtils.isBlank(id)) {
-            return "owner/ownerlist";
+            return "contract/rentcontractlist";
         }
         model.addAttribute("contractId", id);
         return "contract/lookrentcontract";
     }
 
+    @RequestMapping("/tolookTrust")
+    public String tolookTrust(String id,Model model) {
+        if (StringUtils.isBlank(id)) {
+            return "contract/trustcontractlist";
+        }
+        model.addAttribute("contractId", id);
+        return "contract/looktrustcontract";
+    }
+
 
 
     //addOrder
-    @RequestMapping("/addRentContract")
+    @RequestMapping("/addContract")
     @ResponseBody
-    public Result<Boolean> addRentContract(@RequestBody Contract contract) {
+    public Result<Boolean> addContract(@RequestBody Contract contract) {
         if(StringUtils.isBlank(contract.getId())) {
             try {
-                contractService.addRentContract(contract);
+                contractService.addContract(contract);
             } catch (Exception e1) {
                 return createFailedResult(e1.getMessage(), false);
             }
         } else {
-            return  createSuccessResult(contractService.updateRentContract(contract));
+            return  createSuccessResult(contractService.updateContract(contract));
         }
         return createSuccessResult(true);
     }
 
     @RequestMapping("/toeditRent")
-    public String toEdit(String id, Model model) {
+    public String toeditRent(String id, Model model) {
         if(StringUtils.isBlank(id)) {
             return "contract/toRentContractlist";
         }
         model.addAttribute("contractId", id);
         return "contract/newrentcontract";
+    }
+
+    @RequestMapping("/toeditTrust")
+    public String toeditTrust(String id, Model model) {
+        if(StringUtils.isBlank(id)) {
+            return "contract/toTrustContractlist";
+        }
+        model.addAttribute("contractId", id);
+        return "contract/newtrustcontract";
     }
 
     @RequestMapping("/getContract")

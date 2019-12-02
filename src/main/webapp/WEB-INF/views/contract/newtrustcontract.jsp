@@ -86,7 +86,7 @@
                         </p>
                         <p class="mt12">
                             <div class="b_label lab_wid1 relative">身份证号(统一社会信用代码):</div>
-                            <input id="excuteIDcard" type="text" class="inpW inpWid4 mr8" maxlength="32" placeholder="委托方">
+                            <input id="excuteIDcard" type="text" class="inpW inpWid4 mr8" maxlength="32" placeholder="身份证号(统一社会信用代码)">
                             <span class="color-lred">* 请输入甲方身份证号(统一社会信用代码) </span>
                         </p>
                         <p class="mt12">
@@ -144,7 +144,7 @@
                         <p class="mt12">
                             <div class="b_label lab_wid1 relative">身份证号(统一社会信用代码):</div>
                             <input id="entrustIDcard" type="text" class="inpW inpWid4 mr8" maxlength="32" placeholder="身份证号(统一社会信用代码)">
-                            <span class="color-lred none">* 身份证号(统一社会信用代码) </span>
+                            <span class="color-lred">* 身份证号(统一社会信用代码) </span>
                         </p>
                         <p class="mt12">
                             <div class="b_label lab_wid1 relative">代理人:</div>
@@ -191,7 +191,7 @@
     </div>
     <div class="tc mt30">
         <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">
-        <a href="${ctx}/contract/toRentContractlist">
+        <a href="${ctx}/contract/toTrustContractlist">
             <input type="button" class="gray_btn gray-btn30 ml20" value="返回租赁合同列表">
         </a>
     </div>

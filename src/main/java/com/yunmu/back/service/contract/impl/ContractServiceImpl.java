@@ -79,12 +79,12 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addRentContract(Contract contract) {
+    public boolean addContract(Contract contract) {
 
         contract.setCreateTime(new Date());
         contract.setCreateBy(ShiroUtils.getUserId());
         contract.setId(IdUtils.getId(11));
-        contract.setContractType(10);
+        //contract.setContractType(10);
         contract.setDelFlag(0);
 
         contractMapper.insertSelective(contract);
@@ -92,7 +92,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public boolean updateRentContract(Contract contract) {
+    public boolean updateContract(Contract contract) {
 
         contract.setUpdateBy(ShiroUtils.getUserId());
         contract.setUpdateTime(new Date());

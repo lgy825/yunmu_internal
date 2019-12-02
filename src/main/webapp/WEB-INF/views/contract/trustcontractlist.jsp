@@ -47,7 +47,7 @@
                     </div>
                 </td>
                 <td>
-                    <div>{{:identityName}}</div>
+                    <div>{{:entrustProxy}}</div>
                 </td>
                 <td>
                     <div>{{:operaterBy}}</div>
@@ -68,7 +68,7 @@
                             </a>
                         </shiro:hasPermission>
                         <shiro:hasPermission name="contract:trust:del">
-                        <input type="button" class="deleteRent gray_btn mr10" data-sid="{{:id}}" value="删除">
+                        <input type="button" class="deleteTrust gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                     </div>
                 </td>
@@ -97,13 +97,13 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
-                    <select class="select  ml20" id="projectSel">
-                    </select>
+<%--                    <select class="select  ml20" id="projectSel">--%>
+<%--                    </select>--%>
                     <input id="contractCode" type="text" class="inpW ml20" placeholder="合同编码">
                     <input id="contractName" type="text" class="inpW ml20" placeholder="合同名称">
                     <input type="text" class="inpW ml20 timer" id="timeSpick" placeholder="开始时间"/>
                     <span class="zhi">至</span>
-                    <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束时间"/>
+                    <input type="text" class="inpW timer" id="timeEpick" placeholder="结束时间"/>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                 </div>
