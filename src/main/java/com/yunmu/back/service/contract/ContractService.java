@@ -19,5 +19,9 @@ public interface ContractService {
 
     boolean updateRentContract(Contract contract);
 
+    Contract getContract(String id);
+
+    boolean delete(String contractId);
+
 
 }

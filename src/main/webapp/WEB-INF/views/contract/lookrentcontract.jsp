@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="renderer" content="webkit">
-    <title>新增租赁合同</title>
+    <title>查看租赁合同</title>
     <%@include file="/static/commons/common.jspf" %>
     <link rel="stylesheet" href="${ctx}/static/css/jquery.datetimepicker.css">
 </head>
@@ -13,7 +13,7 @@
 <input type="hidden" id="contractId" value="${contractId}"/>
 <div class="p20">
     <div class="bgc-ff min620">
-        <h1 class="b_title">新增租赁合同</h1>
+        <h1 class="b_title">查看租赁合同</h1>
         <div class="dashed">
             <hr>
         </div>
@@ -225,7 +225,7 @@
             </div>
         </div>
             <div class="tc mt30">
-                <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">
+<%--                <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">--%>
                 <a href="${ctx}/contract/toRentContractlist">
                     <input type="button" class="gray_btn gray-btn30 ml20" value="返回租赁合同列表">
                 </a>
@@ -234,6 +234,6 @@
     </div>
 </div>
 <script type="text/javascript" src="${ctx}/static/js/lib/jquery.datetimepicker.js"></script>
-<script src="${ctx}/static/js/mod/contract/newrentcontract.js"></script>
+<script src="${ctx}/static/js/mod/contract/lookrentcontract.js"></script>
 </body>
 </html>

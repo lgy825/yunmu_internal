@@ -44,6 +44,10 @@
     <result column="rent_increase_way" jdbcType="VARCHAR" property="rentIncreaseWay" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
     <result column="contract_time" jdbcType="TIMESTAMP" property="contractTime" />
+    <result column="contract_entrust" jdbcType="VARCHAR" property="contractEntrust" />
+    <result column="entrust_IDcard" jdbcType="VARCHAR" property="entrustIdcard" />
+    <result column="entrust_proxy" jdbcType="VARCHAR" property="entrustProxy" />
+    <result column="entrust_tel" jdbcType="VARCHAR" property="entrustTel" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -122,7 +126,8 @@
     bank_number, contract_addr, hourse_area, hourse_addr, hourse_uses, operative_way, 
     contract_start_time, contract_end_time, create_time, create_by, update_time, update_by, 
     contract_desc, rent_free_count, rent_amount, rent_free_start_time, rent_free_end_time, 
-    rent_increase_way, del_flag, contract_time
+    rent_increase_way, del_flag, contract_time, contract_entrust, entrust_IDcard, entrust_proxy, 
+    entrust_tel
   </sql>
   <select id="selectByExample" parameterType="com.yunmu.core.model.contract.ContractExample" resultMap="BaseResultMap">
     <!--
@@ -188,8 +193,9 @@
       create_time, create_by, update_time, 
       update_by, contract_desc, rent_free_count, 
       rent_amount, rent_free_start_time, rent_free_end_time, 
-      rent_increase_way, del_flag, contract_time
-      )
+      rent_increase_way, del_flag, contract_time, 
+      contract_entrust, entrust_IDcard, entrust_proxy, 
+      entrust_tel)
     values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, 
       #{contractType,jdbcType=INTEGER}, #{contractCode,jdbcType=VARCHAR}, #{contractIdentity,jdbcType=VARCHAR}, 
       #{identityName,jdbcType=VARCHAR}, #{identityIdcard,jdbcType=VARCHAR}, #{indentityTel,jdbcType=VARCHAR}, 
@@ -202,8 +208,9 @@
       #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=VARCHAR}, #{contractDesc,jdbcType=VARCHAR}, #{rentFreeCount,jdbcType=INTEGER}, 
       #{rentAmount,jdbcType=DECIMAL}, #{rentFreeStartTime,jdbcType=TIMESTAMP}, #{rentFreeEndTime,jdbcType=TIMESTAMP}, 
-      #{rentIncreaseWay,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{contractTime,jdbcType=TIMESTAMP}
-      )
+      #{rentIncreaseWay,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{contractTime,jdbcType=TIMESTAMP}, 
+      #{contractEntrust,jdbcType=VARCHAR}, #{entrustIdcard,jdbcType=VARCHAR}, #{entrustProxy,jdbcType=VARCHAR}, 
+      #{entrustTel,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yunmu.core.model.contract.Contract">
     <!--
@@ -326,6 +333,18 @@
       <if test="contractTime != null">
         contract_time,
       </if>
+      <if test="contractEntrust != null">
+        contract_entrust,
+      </if>
+      <if test="entrustIdcard != null">
+        entrust_IDcard,
+      </if>
+      <if test="entrustProxy != null">
+        entrust_proxy,
+      </if>
+      <if test="entrustTel != null">
+        entrust_tel,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -441,6 +460,18 @@
       </if>
       <if test="contractTime != null">
         #{contractTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contractEntrust != null">
+        #{contractEntrust,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustIdcard != null">
+        #{entrustIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustProxy != null">
+        #{entrustProxy,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustTel != null">
+        #{entrustTel,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -575,6 +606,18 @@
       <if test="record.contractTime != null">
         contract_time = #{record.contractTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.contractEntrust != null">
+        contract_entrust = #{record.contractEntrust,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustIdcard != null">
+        entrust_IDcard = #{record.entrustIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustProxy != null">
+        entrust_proxy = #{record.entrustProxy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustTel != null">
+        entrust_tel = #{record.entrustTel,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -623,7 +666,11 @@
       rent_free_end_time = #{record.rentFreeEndTime,jdbcType=TIMESTAMP},
       rent_increase_way = #{record.rentIncreaseWay,jdbcType=VARCHAR},
       del_flag = #{record.delFlag,jdbcType=INTEGER},
-      contract_time = #{record.contractTime,jdbcType=TIMESTAMP}
+      contract_time = #{record.contractTime,jdbcType=TIMESTAMP},
+      contract_entrust = #{record.contractEntrust,jdbcType=VARCHAR},
+      entrust_IDcard = #{record.entrustIdcard,jdbcType=VARCHAR},
+      entrust_proxy = #{record.entrustProxy,jdbcType=VARCHAR},
+      entrust_tel = #{record.entrustTel,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -746,6 +793,18 @@
       <if test="contractTime != null">
         contract_time = #{contractTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="contractEntrust != null">
+        contract_entrust = #{contractEntrust,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustIdcard != null">
+        entrust_IDcard = #{entrustIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustProxy != null">
+        entrust_proxy = #{entrustProxy,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustTel != null">
+        entrust_tel = #{entrustTel,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -791,7 +850,11 @@
       rent_free_end_time = #{rentFreeEndTime,jdbcType=TIMESTAMP},
       rent_increase_way = #{rentIncreaseWay,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=INTEGER},
-      contract_time = #{contractTime,jdbcType=TIMESTAMP}
+      contract_time = #{contractTime,jdbcType=TIMESTAMP},
+      contract_entrust = #{contractEntrust,jdbcType=VARCHAR},
+      entrust_IDcard = #{entrustIdcard,jdbcType=VARCHAR},
+      entrust_proxy = #{entrustProxy,jdbcType=VARCHAR},
+      entrust_tel = #{entrustTel,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

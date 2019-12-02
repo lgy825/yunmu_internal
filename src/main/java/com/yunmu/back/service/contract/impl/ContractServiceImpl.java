@@ -10,6 +10,7 @@ import com.yunmu.core.dao.contract.ContractMapperExt;
 import com.yunmu.core.dao.pay.PayMapper;
 import com.yunmu.core.dao.pay.PayMapperExt;
 import com.yunmu.core.dao.project.ProjectMapper;
+import com.yunmu.core.dao.sys.SysUserMapper;
 import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.contract.Contract;
 import com.yunmu.core.model.contract.ContractExt;
@@ -38,6 +39,8 @@ public class ContractServiceImpl implements ContractService {
     private ContractMapperExt contractMapperExt;
     @Autowired
     private ContractMapper contractMapper;
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
 
     @Override
@@ -64,7 +67,12 @@ public class ContractServiceImpl implements ContractService {
         Page<ContractExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<ContractExt> contractExts=contractMapperExt.getRentContractPage(params);
         for(ContractExt contractExt:contractExts ){
-
+            contractExt.setOperaterBy(sysUserMapper.selectByPrimaryKey(contractExt.getCreateBy()).getUserName());
+            if(contractExt.getContractType()==10){
+                contractExt.setTypeName("租赁合同");
+            }else if(contractExt.getContractType()==11){
+                contractExt.setTypeName("委托合同");
+            }
         }
         return new GenericPage<>(pageIndex, pageSize, contractExts, pageInfo.getTotal());
     }
@@ -89,6 +97,22 @@ public class ContractServiceImpl implements ContractService {
         contract.setUpdateBy(ShiroUtils.getUserId());
         contract.setUpdateTime(new Date());
         contractMapper.updateByPrimaryKeySelective(contract);
-        return false;
+        return true;
+    }
+
+    @Override
+    public Contract getContract(String id) {
+        return contractMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public boolean delete(String contractId) {
+        Contract contract=new Contract();
+        contract.setDelFlag(1);
+        contract.setUpdateBy(ShiroUtils.getUserId());
+        contract.setUpdateTime(new Date());
+        contract.setId(contractId);
+        contractMapper.updateByPrimaryKey(contract);
+        return true;
     }
 }

@@ -150,7 +150,7 @@ function loadPage() {
                 contractName:$.trim($("#contractName").val()),
                 endTime:$("#timeEpick").val(),
                 projectId:$("#projectSel").val() == -1 ? null : $("#projectSel").val(),
-                contractType:10
+                contractType:11
             },
             success: function (data) {
                 // data为ajax返回数据

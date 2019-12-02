@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="renderer" content="webkit">
-    <title>新增租赁合同</title>
+    <title>查看委托合同</title>
     <%@include file="/static/commons/common.jspf" %>
     <link rel="stylesheet" href="${ctx}/static/css/jquery.datetimepicker.css">
 </head>
@@ -13,7 +13,7 @@
 <input type="hidden" id="contractId" value="${contractId}"/>
 <div class="p20">
     <div class="bgc-ff min620">
-        <h1 class="b_title">新增租赁合同</h1>
+        <h1 class="b_title">查看委托合同</h1>
         <div class="dashed">
             <hr>
         </div>
@@ -67,41 +67,6 @@
                             <input type="text" class="inpW inpWid4 timer" id="timeContract" placeholder="签约时间">
                             <span class="color-lred">* 请选择签约时间</span>
                         </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="dashed">
-            <hr>
-        </div>
-        <div class="p20">
-            <div class="pl70 clearfix">
-                <span class="b_label lab_wid1 fl">租期租金明细</span>
-                <div class="pl88 w764">
-                    <div class="p_selBox">
-                        <div class="bore6 p20 p_selingBox mb20 relative">
-                            <p>
-                                <div class="b_label lab_wid1 relative">免租期/月:</div>
-                                <input id="rentFreeCount" type="text" class="inpW inpWid4 mr8" maxlength="8" placeholder="合同名称">
-                                <span class="color-lred">* 请输入免租期，只能输入数字 </span>
-                            </p>
-                            <p class="mt12">
-                                <div class="b_label lab_wid1 relative">免租时间:</div>
-                                <input type="text" class="inpW inpWid3 timer" id="timeRentFreeStart" placeholder="起租开始日期">
-                                <div class="b_label"> 至 </div>
-                                <input type="text" class="inpW inpWid3 timer" id="timeRentFreeEnd" placeholder="起租结束日期">
-                            </p>
-                            <p class="mt12">
-                                <div class="b_label lab_wid1 relative">租金(元/月):</div>
-                                <input id="rentAmount" type="text" class="inpW inpWid4 mr8" maxlength="8" placeholder="租金">
-                                <span class="color-lred">* 请输入租金，不超过16字符 </span>
-                            </p>
-                            <p class="mt12">
-                                <div class="b_label lab_wid1 relative">递增方式:</div>
-                                <input id="rentIncreaseWay" type="text" class="inpW inpWid4 mr8" maxlength="16" placeholder="递增方式">
-                                <span class="color-lred">* 请输入递增方式，不超过16字符 </span>
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -225,8 +190,8 @@
             </div>
         </div>
             <div class="tc mt30">
-                <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">
-                <a href="${ctx}/contract/toRentContractlist">
+<%--                <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">--%>
+                <a href="${ctx}/contract/toTrustContractlist">
                     <input type="button" class="gray_btn gray-btn30 ml20" value="返回租赁合同列表">
                 </a>
             </div>
@@ -234,6 +199,6 @@
     </div>
 </div>
 <script type="text/javascript" src="${ctx}/static/js/lib/jquery.datetimepicker.js"></script>
-<script src="${ctx}/static/js/mod/contract/newrentcontract.js"></script>
+<script src="${ctx}/static/js/mod/contract/looktrustcontract.js"></script>
 </body>
 </html>

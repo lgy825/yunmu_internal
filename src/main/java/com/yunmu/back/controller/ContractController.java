@@ -47,10 +47,12 @@ public class ContractController extends BaseController{
     public PageResult<ContractExt> getShopPageByCondition(HttpServletRequest request,
                                                           Integer pageIndex, Integer pageSize,
                                                           String contractCode, String contracName,
-                                                          String beginTime, String endTime, String projectId) {
+                                                          String beginTime, String endTime, String projectId,
+                                                            String contractType) {
         Map<String, Object> params = new HashMap<>();
         params.put("contractCode", contractCode);
         params.put("contracName", contracName);
+        params.put("contractType", contractType);
         params.put("projectId", projectId);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
@@ -77,7 +79,11 @@ public class ContractController extends BaseController{
     }
 
     @RequestMapping("/tolookRent")
-    public String tolookRent() {
+    public String tolookRent(String id,Model model) {
+        if (StringUtils.isBlank(id)) {
+            return "owner/ownerlist";
+        }
+        model.addAttribute("contractId", id);
         return "contract/lookrentcontract";
     }
 
@@ -108,7 +114,18 @@ public class ContractController extends BaseController{
         return "contract/newrentcontract";
     }
 
+    @RequestMapping("/getContract")
+    @ResponseBody
+    public Result<Contract> get(String id){
+        return createSuccessResult(contractService.getContract(id));
+    }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Result<Boolean> deleteRent(String id) {
+
+        return createSuccessResult(contractService.delete(id));
+    }
 
 
 

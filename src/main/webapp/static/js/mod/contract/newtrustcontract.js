@@ -108,45 +108,6 @@ $(function(){
             return;
         }
 
-        var rentFreeCount = $.trim($("#rentFreeCount").val());
-
-        if (!rentFreeCount) {
-            layer.msg("请输入免租期");
-            return;
-        }else{
-            if(!ValidUtils.validNum(rentFreeCount,5)){
-                layer.msg("免租期只能输入为数字");
-                return;
-            }
-        }
-
-        var rentFreeStartTime = timeRentFreeStart.val();
-        var rentFreeEndTime = timeRentFreeEnd.val();
-        if (rentFreeStartTime.length < 1 || rentFreeEndTime.length < 1) {
-            layer.msg("请选择起止时间");
-            return;
-        } else {
-            if (Date.parse(rentFreeStartTime) > Date.parse(rentFreeEndTime)) {
-                layer.msg("结束日期不能早于开始日期");
-                return;
-            }
-        }
-
-        var rentAmount = $.trim($("#rentAmount").val());
-        if (!rentAmount) {
-            layer.msg("请输入租金");
-            return;
-        }else if (!ValidUtils.validMoney(rentAmount)) {
-            layer.msg("租金不能包含特殊字符，保留一位有效数字");
-            return;
-        }
-
-        var rentIncreaseWay = $.trim($("#rentIncreaseWay").val());
-        if (!rentIncreaseWay) {
-            layer.msg("请输入递增方式");
-            return;
-        }
-
         var contractExcute = $.trim($("#contractExcute").val());
         if (!contractExcute) {
             layer.msg("请输入甲方信息");
@@ -228,10 +189,10 @@ $(function(){
         //     return;
         // }
         var hourseAddr = $.trim($("#hourseAddr").val());
-        if (!hourseAddr) {
-            layer.msg("请输入房屋地址");
-            return;
-        }
+        // if (!hourseAddr) {
+        //     layer.msg("请输入房屋地址");
+        //     return;
+        // }
 
         var hourseArea = $.trim($("#hourseArea").val());
         if (!hourseArea) {
@@ -248,7 +209,7 @@ $(function(){
 
 
         $.ajax({
-            url: ctx + "contract/addRentContract",
+            url: ctx + "contract/addContract",
             type: "POST",
             cache: false,
             async: false,
@@ -264,11 +225,6 @@ $(function(){
                 contractEndTime:contractEndTime+" 23:59:59",
                 operativeWay:operativeWay,
                 contractTime:contractTime+" 00:00:00",
-                rentFreeCount:rentFreeCount,
-                rentFreeStartTime:rentFreeStartTime+" 00:00:00",
-                rentFreeEndTime:rentFreeEndTime+" 23:59:59",
-                rentAmount:rentAmount,
-                rentIncreaseWay:rentIncreaseWay,
                 contractExcute:contractExcute,
                 excuteIDcard:excuteIDcard,
                 excuteProxy:excuteProxy,
@@ -289,7 +245,7 @@ $(function(){
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     layer.msg("保存成功");
-                    location.href = ctx + "contrct/toRentContractlist";
+                    location.href = ctx + "contrct/toTrustContractlist";
                 } else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);
@@ -326,17 +282,11 @@ $(function(){
                            su = data.resultData;
                            $("#contractName").val(su.contractName);
                            $("#contractCode").val(su.contractCode);
-                           $("#rentAmount").val(su.rentAmount);
                            $("#contractIdentity").val(su.contractIdentity);
-                           $("#rentFreeCount").val(su.rentFreeCount);
                            $("#operativeWay").val(su.operativeWay);
                            timeContractStart.val(su.contractStartTime.split(" ")[0]);
                            timeContractEnd.val(su.contractEndTime.split(" ")[0]);
                            timeContract.val(su.contractTime.split(" ")[0]);
-                           timeRentFreeStart.val(su.rentFreeStartTime.split(" ")[0]);
-                           timeRentFreeEnd.val(su.rentFreeEndTime.split(" ")[0]);
-                           $("#rentAmount").val(su.rentAmount);
-                           $("#rentIncreaseWay").val(su.rentIncreaseWay);
                            $("#contractExcute").val(su.contractExcute);
                            $("#excuteIDcard").val(su.excuteIDcard);
                            $("#excuteProxy").val(su.excuteProxy);

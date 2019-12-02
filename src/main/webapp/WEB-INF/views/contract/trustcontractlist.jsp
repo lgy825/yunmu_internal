@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>租赁合同管理</title>
+    <title>委托合同管理</title>
     <%@include file="/static/commons/common.jspf" %>
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
@@ -21,7 +21,6 @@
                     <th style='width: 9%;'><div>合同类型</div></th>
                     <th style='width: 10%;'><div>签约时间</div></th>
                     <th style='width: 6%;'><div>签约人</div></th>
-                    <th style='width: 9%;'><div>合同状态</div></th>
                     <th style='width: 6%;'><div>创建人</div></th>
                     <th style='width: 10%;'><div>创建时间</div></th>
                     <th style='width: 20%;'><div>操作</div></th>
@@ -51,15 +50,6 @@
                     <div>{{:identityName}}</div>
                 </td>
                 <td>
-                    <div>
-                    {{if contractStatus==10}}
-                            已授权
-                    {{else}}
-                           未授权
-                    {{/if}}
-                    </div>
-                </td>
-                <td>
                     <div>{{:operaterBy}}</div>
                 </td>
                 <td>
@@ -67,17 +57,17 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="contract:rent:edit">
-                        <a href="${ctx}/contract/toeditRent?id={{:id}}">
+                        <shiro:hasPermission name="contract:trust:edit">
+                        <a href="${ctx}/contract/toeditTrust?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="contract:rent:look">
-                            <a href="${ctx}/contract/tolookRent?id={{:id}}">
+                        <shiro:hasPermission name="contract:trust:look">
+                            <a href="${ctx}/contract/tolookTrust?id={{:id}}">
                             <input type="button" class="lookbtn gray_btn mr10" value="查看">
                             </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="contract:rent:del">
+                        <shiro:hasPermission name="contract:trust:del">
                         <input type="button" class="deleteRent gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                     </div>
@@ -90,14 +80,14 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">租赁合同管理</div>
+        <div class="b_title">委托合同管理</div>
         <div class="hr">
             <hr>
         </div>
         <div class="pdtrl20">
             <shiro:hasPermission name="contract:rent:add">
-            <a href="${ctx}/contract/toaddRent">
-                <input type="button" class="blue_btn" value="新建租赁合同">
+            <a href="${ctx}/contract/toaddTrust">
+                <input type="button" class="blue_btn" value="新建委托合同">
             </a>
             </shiro:hasPermission>
             <a href="" class="none">
@@ -130,7 +120,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${ctx}/static/js/mod/contract/rentcontractlist.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/contract/trustcontractlist.js"></script>
 <%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
 <script>
     $(function () {

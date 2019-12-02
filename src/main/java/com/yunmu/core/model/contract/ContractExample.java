@@ -2724,6 +2724,286 @@ public class ContractExample {
             addCriterion("contract_time not between", value1, value2, "contractTime");
             return (Criteria) this;
         }
+
+        public Criteria andContractEntrustIsNull() {
+            addCriterion("contract_entrust is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustIsNotNull() {
+            addCriterion("contract_entrust is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustEqualTo(String value) {
+            addCriterion("contract_entrust =", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustNotEqualTo(String value) {
+            addCriterion("contract_entrust <>", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustGreaterThan(String value) {
+            addCriterion("contract_entrust >", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustGreaterThanOrEqualTo(String value) {
+            addCriterion("contract_entrust >=", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustLessThan(String value) {
+            addCriterion("contract_entrust <", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustLessThanOrEqualTo(String value) {
+            addCriterion("contract_entrust <=", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustLike(String value) {
+            addCriterion("contract_entrust like", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustNotLike(String value) {
+            addCriterion("contract_entrust not like", value, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustIn(List<String> values) {
+            addCriterion("contract_entrust in", values, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustNotIn(List<String> values) {
+            addCriterion("contract_entrust not in", values, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustBetween(String value1, String value2) {
+            addCriterion("contract_entrust between", value1, value2, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractEntrustNotBetween(String value1, String value2) {
+            addCriterion("contract_entrust not between", value1, value2, "contractEntrust");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardIsNull() {
+            addCriterion("entrust_IDcard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardIsNotNull() {
+            addCriterion("entrust_IDcard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardEqualTo(String value) {
+            addCriterion("entrust_IDcard =", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardNotEqualTo(String value) {
+            addCriterion("entrust_IDcard <>", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardGreaterThan(String value) {
+            addCriterion("entrust_IDcard >", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardGreaterThanOrEqualTo(String value) {
+            addCriterion("entrust_IDcard >=", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardLessThan(String value) {
+            addCriterion("entrust_IDcard <", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardLessThanOrEqualTo(String value) {
+            addCriterion("entrust_IDcard <=", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardLike(String value) {
+            addCriterion("entrust_IDcard like", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardNotLike(String value) {
+            addCriterion("entrust_IDcard not like", value, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardIn(List<String> values) {
+            addCriterion("entrust_IDcard in", values, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardNotIn(List<String> values) {
+            addCriterion("entrust_IDcard not in", values, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardBetween(String value1, String value2) {
+            addCriterion("entrust_IDcard between", value1, value2, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdcardNotBetween(String value1, String value2) {
+            addCriterion("entrust_IDcard not between", value1, value2, "entrustIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyIsNull() {
+            addCriterion("entrust_proxy is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyIsNotNull() {
+            addCriterion("entrust_proxy is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyEqualTo(String value) {
+            addCriterion("entrust_proxy =", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyNotEqualTo(String value) {
+            addCriterion("entrust_proxy <>", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyGreaterThan(String value) {
+            addCriterion("entrust_proxy >", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyGreaterThanOrEqualTo(String value) {
+            addCriterion("entrust_proxy >=", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyLessThan(String value) {
+            addCriterion("entrust_proxy <", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyLessThanOrEqualTo(String value) {
+            addCriterion("entrust_proxy <=", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyLike(String value) {
+            addCriterion("entrust_proxy like", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyNotLike(String value) {
+            addCriterion("entrust_proxy not like", value, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyIn(List<String> values) {
+            addCriterion("entrust_proxy in", values, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyNotIn(List<String> values) {
+            addCriterion("entrust_proxy not in", values, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyBetween(String value1, String value2) {
+            addCriterion("entrust_proxy between", value1, value2, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustProxyNotBetween(String value1, String value2) {
+            addCriterion("entrust_proxy not between", value1, value2, "entrustProxy");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelIsNull() {
+            addCriterion("entrust_tel is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelIsNotNull() {
+            addCriterion("entrust_tel is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelEqualTo(String value) {
+            addCriterion("entrust_tel =", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelNotEqualTo(String value) {
+            addCriterion("entrust_tel <>", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelGreaterThan(String value) {
+            addCriterion("entrust_tel >", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelGreaterThanOrEqualTo(String value) {
+            addCriterion("entrust_tel >=", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelLessThan(String value) {
+            addCriterion("entrust_tel <", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelLessThanOrEqualTo(String value) {
+            addCriterion("entrust_tel <=", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelLike(String value) {
+            addCriterion("entrust_tel like", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelNotLike(String value) {
+            addCriterion("entrust_tel not like", value, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelIn(List<String> values) {
+            addCriterion("entrust_tel in", values, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelNotIn(List<String> values) {
+            addCriterion("entrust_tel not in", values, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelBetween(String value1, String value2) {
+            addCriterion("entrust_tel between", value1, value2, "entrustTel");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustTelNotBetween(String value1, String value2) {
+            addCriterion("entrust_tel not between", value1, value2, "entrustTel");
+            return (Criteria) this;
+        }
     }
 
     /**
