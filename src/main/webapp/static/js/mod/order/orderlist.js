@@ -234,9 +234,9 @@ function loadCollectData(){
 function updateStatus() {
 
     var completeTime = timeComplete.val();
-    if($("#orderStatus").val() ==10){
-        if (timeComplete.length < 1 ) {
-            layer.msg("请选择订单所属时间");
+    if($("#orderSel").val() ==10){
+        if (completeTime.length < 1 ) {
+            layer.msg("如果订单状态完成，请选择完成日期");
             return;
         }
     }

@@ -119,10 +119,10 @@
                 </div>
                 <div class="mt20">
                     <div class="align-r mr8">订单时间</div>
-                    <input type="text" class="inpW inpWid2 timer" id="timeSpick" placeholder="开始日期">
+                    <input type="text" class="inpW inpWid5 timer" id="timeSpick" placeholder="开始日期">
                     <input type="text" class="times inpW inpWid2 timer"  id="stimes" placeholder="开始时间">
                     <span class="zhi">至</span>
-                    <input type="text" class="inpW inpWid2 timer" id="timeEpick" placeholder="结束日期">
+                    <input type="text" class="inpW inpWid5 timer" id="timeEpick" placeholder="结束日期">
                     <input type="text" class="times inpW inpWid2 timer"  id="etimes" placeholder="结束时间">
                     <span class="color-lred ml8">* 结束日期不能早于开始日期</span>
                 </div>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="mt20 none" id="completeStr">
                     <div class="align-r mr8">订单所属日期</div>
-                    <input type="text" class="inpW inpWid2 timer" id="timeComplete" placeholder="订单所属日期">
+                    <input type="text" class="inpW inpWid5 timer" id="timeComplete" placeholder="订单所属日期">
                 </div>
                 <div class="mt30 ml170">
                     <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">

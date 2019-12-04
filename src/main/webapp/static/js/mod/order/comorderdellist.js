@@ -132,6 +132,14 @@ function loadPage() {
 }
 function updateStatus() {
 
+    var completeTime = timeComplete.val();
+    if($("#orderStatus").val() ==10){
+        if (completeTime.length < 1 ) {
+            layer.msg("请选择订单所属时间");
+            return;
+        }
+    }
+
     $.ajax({
         url: ctx + "order/updateStatus",
         type: "POST",
