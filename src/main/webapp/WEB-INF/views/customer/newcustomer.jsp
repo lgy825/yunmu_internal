@@ -16,13 +16,13 @@
         </div>
         <div class="p20">
             <input id="customerId" type="hidden" value="${customerId}" />
-            <div class="">
+            <div class="pl70">
                 <!-- 必填选项 -->
-                <div class="clearfix">
-                    <div class="align-r mr8 mt6">项目</div>
-                    <select id="companySel" class="select ml20 wid-238">
+                <div class="mt12 clearfix">
+                    <div class="align-r mr8 mt6">所属项目</div>
+                    <select id="projectSel" class="select ml16 wid-238">
                     </select>
-                    <span class="color-lred ml8 mt6">* 选择客户所属项目</span>
+                    <span class="color-lred ml8 mt6">* 选择所属的项目，必选</span>
                 </div>
                 <div class="mt12">
                     <div class="align-r">客户代理人</div>
@@ -77,6 +77,49 @@
                     <input id="bankNumber" maxlength="32" type="text" class="inpW set-inpwid ml8" placeholder="请输入客户银行账号">
                     <span class="color-lred ml8 none">请输入客户银行账号，可为空</span>
                 </div>
+
+            </div>
+        </div>
+        <div class="dashed">
+            <hr>
+        </div>
+        <div class="p20">
+            <div class="pl70 clearfix">
+                <span class="b_label lab_wid1 fl">房间信息</span>
+                <div class="pl88 w764">
+                    <div class="p_selBox">
+                        <div class="bore6 p_selingBox mb20 p20 relative">
+                            <span class="close-set" style="display: none;"></span>
+                            <div class="p20">
+                                <p>
+                                    <div class="b_label lab_wid1">房间号:</div>
+                                    <input  type="text" class="inpW inpWid4 mr8 roomNumber" maxlength="64" placeholder="房屋地址">
+                                    <span class="color-lred">请输入房间号 </span>
+                                </p>
+                                <p class="mt12">
+                                    <div class="b_label lab_wid1">房间地址:</div>
+                                    <input type="text" class="inpW inpWid4 mr8 roomAddr"  maxlength="64" placeholder="房屋地址">
+                                <%--                            <span class="color-lred">请输入房屋地址(可不填) </span>--%>
+                                </p>
+                                <p class="mt12">
+                                    <div class="b_label lab_wid1">房屋面积:</div>
+                                    <input  type="text" class="inpW inpWid4 mr8 roomArea" maxlength="16" placeholder="房屋面积(建筑面积)">
+                                    <span class="color-lred">* 请输入房屋面积 </span>
+                                </p>
+                                    <p class="mt12">
+                                    <div class="b_label lab_wid1">房产编码:</div>
+                                    <input type="text" class="inpW inpWid4 mr8 roomSerialCode" maxlength="16" placeholder="房产编码">
+                                <%--                            <span class="color-lred">* 请输入房屋用途(可不填)，不超过16字符 </span>--%>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <input type="button" class="blue_btn new-add fr p_addBtn" value="添加房间信息">
+                    </div>
+                </div>
+            </div>
+            <div class="tc mt30">
                 <div class="pl88 mt30">
                     <input id="saveBtn" type="button" class="blue_btn blue_btn30" value="创建完成">
                     <a href="${ctx}/customer/toPersonnallist">
@@ -90,5 +133,5 @@
 </body>
 
 <!-- scripts -->
-<script type="text/javascript" src="${ctx}/static/js/mod/sys/user/newcustomer.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/customer/newcustomer.js"></script>
 </html>

@@ -1,41 +1,247 @@
+
+var chooseRoleArr = [];
+
 $(function(){
 
-    //loadProject();
+    loadProject();
+    loadCompany();
+    loadPersonnel();
+    loadCustomer();
+    $('.p_addBtn').on('click',function(){
+        $('.p_selBox').append($('.p_selingBox:last').clone(true));
+        $('.p_selingBox:last').find(".close-set").show();
+    });
 
-    // //加载项目
-    // function loadProject() {
-    //     $.ajax({
-    //         url: ctx + "project/getpage",
-    //         type: "GET",
-    //         cache: false,
-    //         async: false,
-    //         dataType: 'json',
-    //         data: {
-    //             pageIndex: 1,
-    //             pageSize: 99999
-    //         },
-    //         success: function (data) {
-    //             if (data && data.resultCode === '0') {
-    //                 // // 城市列表
-    //                 $("#projectSel").select2({placeholder: '请选择所属项目'});
-    //                 $("#projectSel").append("<option value='-1'>*所属项目*</option>");
-    //                 $(data.resultData.list).each(function (idx, pro) {
-    //                     $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
-    //                 });
-    //
-    //             }else {
-    //                 if (data.resultDesc) {
-    //                     layer.msg(data.resultDesc);
-    //                 } else {
-    //                     layer.msg('查询失败 !');
-    //                 }
-    //             }
-    //         },
-    //         error: function () {
-    //             layer.msg('查询失败 !');
-    //         }
-    //     });
-    // }
+    $(".close-set").click(function () {
+        $(this).parent().remove();
+    });
+
+    //加载项目
+    function loadProject() {
+        $.ajax({
+            url: ctx + "project/getpage",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                pageIndex: 1,
+                pageSize: 99999
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    // // 城市列表
+                    $("#projectSel").select2({placeholder: '请选择所属项目'});
+                    $("#projectSel").append("<option value='-1'>*所属项目*</option>");
+                    $(data.resultData.list).each(function (idx, pro) {
+                        $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
+                    });
+
+                }else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
+
+    //加载业务员信息
+    function loadPersonnel() {
+        $.ajax({
+            url: ctx + "personnel/getpage",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                pageIndex: 1,
+                pageSize: 99999
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    // // 城市列表
+                    $("#personnelSel").select2({placeholder: '请选择业务员'});
+                    $("#personnelSel").append("<option value='-1'>*所属业务员*</option>");
+                    $(data.resultData.list).each(function (idx, pro) {
+                        $("#personnelSel").append("<option value='" + pro.id + "'>" + pro.personnelName + "</option>");
+                    });
+
+                }else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
+
+    //加载客户信息
+    function loadCustomer() {
+        $.ajax({
+            url: ctx + "customer/getpage",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                pageIndex: 1,
+                pageSize: 99999
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    // // 城市列表
+                    $("#customerSel").select2({placeholder: '请选择所属客户'});
+                    $("#customerSel").append("<option value='-1'>*所属客户*</option>");
+                    $(data.resultData.list).each(function (idx, pro) {
+                        $("#customerSel").append("<option value='" + pro.id + "'>" + pro.customerName + "</option>");
+                    });
+
+                    $("#customerSel").change(function () {
+                        if (!$(this).val() || $(this).val() == -1) {
+
+                        }else{
+                            getRoleList([], $("#customerSel").val());
+                        }
+                        clearRoleSearch();
+                    });
+
+                }else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
+
+    //公司选中事件
+    $("#companySel").change(function(){
+        var companyCode=$(this).val();
+        // 加载数据 -------------
+        if (companyCode) {
+            $.ajax({
+                url: ctx + "company/get",
+                type: "GET",
+                cache: false,
+                async: false,
+                dataType: 'json',
+                data: {
+                    id: companyCode,
+                },
+                success: function (data) {
+                    if (data && data.resultCode === '0') {
+                        su = data.resultData;
+                        $("#entrustIDcard").val(su.companyZipcode);
+
+                    } else {
+                        if (data.resultDesc) {
+                            layer.msg(data.resultDesc);
+                        } else {
+                            layer.msg('查询失败 !');
+                        }
+                    }
+                },
+                error: function () {
+                    layer.msg('查询失败 !');
+                }
+            });
+        }
+
+    });
+
+    //业务员选中事件
+    $("#personnelSel").change(function(){
+        var personnelCode=$(this).val();
+        // 加载数据 -------------
+        if (personnelCode) {
+            $.ajax({
+                url: ctx + "personnel/get",
+                type: "GET",
+                cache: false,
+                async: false,
+                dataType: 'json',
+                data: {
+                    id: personnelCode,
+                },
+                success: function (data) {
+                    if (data && data.resultCode === '0') {
+                        su = data.resultData;
+                        $("#entrustTel").val(su.personnelTel);
+
+                    } else {
+                        if (data.resultDesc) {
+                            layer.msg(data.resultDesc);
+                        } else {
+                            layer.msg('查询失败 !');
+                        }
+                    }
+                },
+                error: function () {
+                    layer.msg('查询失败 !');
+                }
+            });
+        }
+
+    });
+
+    //客户选中事件
+    $("#customerSel").change(function(){
+        var customerCode=$(this).val();
+        // 加载数据 -------------
+        if (customerCode) {
+            $.ajax({
+                url: ctx + "customer/get",
+                type: "GET",
+                cache: false,
+                async: false,
+                dataType: 'json',
+                data: {
+                    id: customerCode,
+                },
+                success: function (data) {
+                    if (data && data.resultCode === '0') {
+                        su = data.resultData;
+                        $("#idCard").val(su.idCard);
+                        $("#customerProxyName").val(su.customerProxyName);
+                        $("#customerTel").val(su.customerTel);
+                        $("#customerAddr").val(su.customerAddr);
+                        $("#customerEmail").val(su.customerEmail);
+                        $("#openingBank").val(su.openingBank);
+                        $("#bankName").val(su.bankName);
+                        $("#bankNumber").val(su.bankNumber);
+
+                    } else {
+                        if (data.resultDesc) {
+                            layer.msg(data.resultDesc);
+                        } else {
+                            layer.msg('查询失败 !');
+                        }
+                    }
+                },
+                error: function () {
+                    layer.msg('查询失败 !');
+                }
+            });
+        }
+
+    });
+
 
 
     var timeContractStart= $("#timeContractStart").datetimepicker({
@@ -97,36 +303,24 @@ $(function(){
 
     $("#saveBtn").click(function () {
 
-        var contractName = $.trim($("#contractName").val());
-        if (!contractName) {
-            layer.msg("请输入合同名称");
+
+        if ($("#projectSel").val() == -1) {
+            layer.msg("请选择合同所属的项目");
             return;
         }
 
-        // if ($("#projectSel").val() == -1) {
-        //     layer.msg("请选择合同所属的项目");
-        //     return;
-        // }
 
-
-        // var contractType = $.trim($("#contractType").val());
-        // if (!contractType) {
-        //     layer.msg("请输入合同类型");
-        //     return;
-        // }
+        var contractType = $.trim($("#contractType").val());
+        if (!contractType) {
+            layer.msg("请输入合同类型");
+            return;
+        }
 
         var contractCode = $.trim($("#contractCode").val());
         if (!contractCode) {
             layer.msg("请输入合同编码");
             return;
         }
-
-        var contractIdentity = $.trim($("#contractIdentity").val());
-        if (!contractIdentity) {
-            layer.msg("请选择我方身份");
-            return;
-        }
-
 
 
         var contractStartTime = timeContractStart.val();
@@ -143,7 +337,13 @@ $(function(){
 
         var operativeWay = $.trim($("#operativeWay").val());
         if (!operativeWay) {
-            layer.msg("请输入运营方式");
+            layer.msg("请选择运营方式");
+            return;
+        }
+
+        var payType = $.trim($("#payType").val());
+        if (!payType) {
+            layer.msg("请选择支付方式");
             return;
         }
 
@@ -153,17 +353,6 @@ $(function(){
             return;
         }
 
-        var rentFreeCount = $.trim($("#rentFreeCount").val());
-
-        if (!rentFreeCount) {
-            layer.msg("请输入免租期");
-            return;
-        }else{
-            if(!ValidUtils.validNum(rentFreeCount,5)){
-                layer.msg("免租期只能输入为数字");
-                return;
-            }
-        }
 
         var rentFreeStartTime = timeRentFreeStart.val();
         var rentFreeEndTime = timeRentFreeEnd.val();
@@ -178,122 +367,55 @@ $(function(){
         }
 
         var rentAmount = $.trim($("#rentAmount").val());
-        if (!rentAmount) {
-            layer.msg("请输入租金");
-            return;
-        }else if (!ValidUtils.validMoney(rentAmount)) {
-            layer.msg("租金不能包含特殊字符，保留一位有效数字");
-            return;
+        if(contractType==10){
+            if (!rentAmount) {
+                layer.msg("请输入租金");
+                return;
+            }else if (!ValidUtils.validMoney(rentAmount)) {
+                layer.msg("租金不能包含特殊字符，保留一位有效数字");
+                return;
+            }
         }
 
         var rentIncreaseWay = $.trim($("#rentIncreaseWay").val());
         if (!rentIncreaseWay) {
-            layer.msg("请输入递增方式");
+            layer.msg("请选择递增方式");
             return;
         }
 
-        var contractExcute = $.trim($("#contractExcute").val());
-        if (!contractExcute) {
-            layer.msg("请输入甲方信息");
-            return;
-        }
-        var excuteIDcard = $.trim($("#excuteIDcard").val());
-        if (!excuteIDcard) {
-            layer.msg("请输入甲方身份证号(统一社会信用代码)");
+        var customerSel = $.trim($("#customerSel").val());
+        if (!customerSel) {
+            layer.msg("请选择甲方信息");
             return;
         }
 
-        var excuteProxy = $.trim($("#excuteProxy").val());
-        if (!excuteProxy) {
-            layer.msg("请输入甲方代理人姓名");
+        var companySel = $.trim($("#companySel").val());
+        if (!companySel) {
+            layer.msg("请选择乙方公司");
             return;
         }
 
-        var excuteTel = $.trim($("#excuteTel").val());
-        // if (!excuteTel) {
-        //     layer.msg("请输入甲方联系方式");
-        //     return;
-        // }
-
-        var excuteAddr = $.trim($("#excuteAddr").val());
-        // if (!excuteAddr) {
-        //     layer.msg("请输入甲方地址");
-        //     return;
-        // }
-
-        var excuteEmail = $.trim($("#excuteEmail").val());
-        if (!ValidUtils.validEmail(excuteEmail)) {
-            layer.msg("邮箱输入不合法");
+        var personnelSel = $.trim($("#personnelSel").val());
+        if (!personnelSel) {
+            layer.msg("请选择乙方业务代表");
             return;
         }
 
-        var excuteOpeningBank = $.trim($("#excuteOpeningBank").val());
-        if (!excuteOpeningBank) {
-            layer.msg("请输入甲方银行卡开户行");
+        var rooms = "";
+
+        if ($(".rolespan.cur").length < 1) {
+            layer.msg("请至少选择一个房间");
             return;
         }
 
-        var banksName = $.trim($("#banksName").val());
-        if (!banksName) {
-            layer.msg("请输入甲方银行卡户名");
-            return;
-        }
-
-        var bankNumber = $.trim($("#bankNumber").val());
-        if (!bankNumber) {
-            layer.msg("请输入甲方银行卡账号");
-            return;
-        }else if (!ValidUtils.validNum(bankNumber)) {
-            layer.msg("开户行只能是数字，不能包含特殊字符");
-            return;
-        }
-
-        var contractEntrust = $.trim($("#contractEntrust").val());
-        if (!contractEntrust) {
-            layer.msg("请输入乙方名称");
-            return;
-        }
-
-        var entrustIDcard = $.trim($("#entrustIDcard").val());
-        if (!entrustIDcard) {
-            layer.msg("请输入乙方身份证号(统一社会信用代码)");
-            return;
-        }
-
-        var entrustProxy = $.trim($("#entrustProxy").val());
-        if (!entrustProxy) {
-            layer.msg("请输入乙方代理人姓名");
-            return;
-        }
-
-
-        var entrustTel = $.trim($("#entrustTel").val());
-        // if (!entrustProxy) {
-        //     layer.msg("请输入乙方代理人姓名");
-        //     return;
-        // }
-        var hourseAddr = $.trim($("#hourseAddr").val());
-        if (!hourseAddr) {
-            layer.msg("请输入房屋地址");
-            return;
-        }
-
-        var hourseArea = $.trim($("#hourseArea").val());
-        if (!hourseArea) {
-            layer.msg("请输入房屋面积");
-            return;
-        }
-
-        var hourseUses = $.trim($("#hourseUses").val());
-        // if (!hourseUses) {
-        //     layer.msg("请输入房屋用途");
-        //     return;
-        // }
-
-
+        var chooseR = [];
+        $(".rolespan.cur").each(function () {
+            chooseR.push($(this).attr("ccode"));
+        });
+        rooms = chooseR.join(",");
 
         $.ajax({
-            url: ctx + "contract/addRentContract",
+            url: ctx + "contract/addContract",
             type: "POST",
             cache: false,
             async: false,
@@ -302,35 +424,22 @@ $(function(){
             data: JSON.stringify({
                 //projectId:projectId,
                 id:$.trim($("#contractId").val()),
-                contractName:contractName,
-                contractType:10,
+               // contractName:contractName,
+                contractType:contractType,
                 contractCode:contractCode,
-                contractIdentity:contractIdentity,
                 contractStartTime:contractStartTime+" 00:00:00",
                 contractEndTime:contractEndTime+" 23:59:59",
                 operativeWay:operativeWay,
                 contractTime:contractTime+" 00:00:00",
-                rentFreeCount:rentFreeCount,
                 rentFreeStartTime:rentFreeStartTime+" 00:00:00",
                 rentFreeEndTime:rentFreeEndTime+" 23:59:59",
                 rentAmount:rentAmount,
-                rentIncreaseWay:rentIncreaseWay,
-                contractExcute:contractExcute,
-                excuteIdcard:excuteIDcard,
-                excuteProxy:excuteProxy,
-                excuteTel:excuteTel,
-                excuteAddr:excuteAddr,
-                excuteEmail:excuteEmail,
-                excuteOpeningBank:excuteOpeningBank,
-                banksName:banksName,
-                bankNumber:bankNumber,
-                contractEntrust:contractEntrust,
-                entrustIdcard:entrustIDcard,
-                entrustProxy:entrustProxy,
-                entrustTel:entrustTel,
-                hourseAddr:hourseAddr,
-                hourseArea:hourseArea,
-                hourseUses:hourseUses
+                personnelCode:customerSel,
+                companyCode:companySel,
+                personnelCode:personnelSel,
+                payType:payType,
+                rentIncreaseWay:$.trim($("#rentIncreaseWay").val())
+
             }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
@@ -415,6 +524,115 @@ $(function(){
                 layer.msg('查询失败 !');
             }
         });
+    }
+
+    function loadCompany() {
+        $.ajax({
+            url: ctx + "company/getpage",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                pageIndex: 1,
+                pageSize: 99999
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    // // 城市列表
+                    $("#companySel").select2({placeholder: '请选择所属公司'});
+                    $("#companySel").append("<option value='-1'>所属公司</option>");
+                    $(data.resultData.list).each(function (idx, comp) {
+                        $("#companySel").append("<option value='" + comp.companyCode + "'>" + comp.companyName + "</option>");
+                    });
+                } else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
+
+
+    $("#rolenamesearch").on('keyup', function () {
+        var searchStr = $.trim($(this).val());
+
+        if (searchStr) {
+
+            // 渲染匹配的影院(选中已选择的影院)
+            var searchResult = _.filter(roleArr, function (elem) {
+                return elem.roleName.indexOf(searchStr) != -1;
+            });
+
+            showRoleList(searchResult);
+
+        } else {
+            showRoleList(roleArr, chooseRoleArr);
+        }
+    });
+
+    function getRoleList(chooseRole, companyCode) {
+        $.ajax({
+            url: ctx + "customer/getroompage",
+            type: "GET",
+            cache: false,
+            // async: false,
+            dataType: 'json',
+            data: {customerCode: companyCode, pageIndex:0, pageSize: 99999},
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    roleArr = data.resultData.list;
+                    if(roleArr.length < 1) {
+                        layer.msg("所选客户无所用房间");
+                        $("#customerSel").val("-1").trigger("change");
+                        clearRoleSearch();
+                    }
+                    showRoleList(roleArr, chooseRole);
+                    $("#roleDiv").show();
+                }
+            }
+        });
+    }
+
+    function showRoleList(roleArr, chooseRoleId) {
+        $("#roleDiv").empty();
+        $(roleArr).each(function (idx, elem) {
+            var cur = '';
+            if (chooseRoleId != null &&
+                chooseRoleId != undefined &&
+                $.inArray(elem.id, chooseRoleId) != -1) {
+                cur = 'cur';
+                if (chooseRoleArr) {
+                    chooseRoleArr.push(elem.id)
+                }
+            }
+            $("#roleDiv").append(
+                '<p><span class="rolespan checkBtn check ' + cur + '" ccode="'
+                + elem.id
+                + '">' + elem.roomNumber + '</span></p>'
+            );
+        });
+        //复选框
+        $("#roleDiv").find('.check').off("click").on('click', function () {
+            var _this = $(this);
+            _this.toggleClass('cur');
+            if (_this.hasClass('cur') && $.inArray(_this.attr('ccode'), chooseRoleArr) == -1) {
+                chooseRoleArr.push($(this).attr('ccode'))
+            } else {
+                _.pull(chooseRoleArr, $(this).attr('ccode'));
+            }
+        });
+    }
+
+
+    function clearRoleSearch() {
+        $("#rolenamesearch").val("");
     }
 
 

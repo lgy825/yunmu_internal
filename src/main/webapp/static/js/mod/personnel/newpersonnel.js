@@ -38,36 +38,45 @@ $(function () {
             return;
         }
 
+        var personnelAge = $.trim($("#personnelAge").val());
+        if (personnelAge && !ValidUtils.validNum(personnelAge, 2)) {
+            layer.msg("年龄格式输入有误，只能为数字");
+            return;
+        }
+
         if ($("#companySel").val() == -1) {
             layer.msg("请选择业务员所属的公司");
             return;
         }
 
-        if ($("#personnalSex").val() == -1) {
+        if ($("#personnelSex").val() == -1) {
             layer.msg("请选择业务员的性别");
             return;
         }
 
-        var timeJoined = timeJoined.val();
-        if (timeJoined.length < 1 ) {
+        var joinedDate = timeJoined.val();
+        alert(joinedDate)
+        if (joinedDate.length < 1 ) {
             layer.msg("请选择员工的入职日期");
             return;
         }
         $.ajax({
-            url: ctx + "personnal/save",
+            url: ctx + "personnel/savePersonnel",
             type: "POST",
             cache: false,
+            async: false,
             dataType: 'json',
-            data: {
-                id: $("#personnalId").val(),
+            contentType: "application/json",
+            data:JSON.stringify( {
+                id: $("#personnelId").val(),
                 companyCode: companyCode,
                 personnelName: personnelName,
                 personnelEmail: personnelEmail,
                 personnelTel: personnelTel,
-                personnalSex: $("#personnalSex").val(),
-                joinedDate: timeJoined,
+                personnelSex: $("#personnelSex").val(),
+                joinedDate: joinedDate+" 00:00:00",
                 personnelAddr: $("#personnelAddr").val()
-            },
+            }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     layer.msg("保存成功");
@@ -118,17 +127,19 @@ $(function () {
                             async: false,
                             dataType: 'json',
                             data: {
-                                id: $("#userId").val(),
+                                id: $("#personnelId").val(),
                             },
                             success: function (data) {
                                 if (data && data.resultCode === '0') {
                                     su = data.resultData;
                                     $("#companySel").val(su.companyCode).trigger("change");
-                                    $("#personnelrName").val(su.personnelName);
-                                    $("#personnelrEmail").val(su.personnelEmail);
+                                    $("#personnelName").val(su.personnelName);
+                                    $("#personnelEmail").val(su.personnelEmail);
                                     $("#personnelTel").val(su.personnelTel);
                                     $("#personnelAddr").val(su.personnelAddr);
-                                    $("#personnalSex").val(su.personnalSex);
+                                    $("#personnelSex").val(su.personnelSex);
+                                    $("#personnelAge").val(su.personnelAge);
+                                    $("#personnelIdCard").val(su.personnelIdCard);
                                     timeJoined.val(su.joinedDate.split(" ")[0]);
 
                                 } else {
@@ -160,7 +171,7 @@ $(function () {
     }
 
 
-    $("#personnalName, #personnalTel").blur(function () {
+    $("#personnelName, #personnelTel").blur(function () {
         $(this).val($.trim($(this).val()));
 
         if (ValidUtils.validText($(this).val(), 1, 15)) {
@@ -174,7 +185,7 @@ $(function () {
     }).focus(function () {
         $(this).next().removeClass("none");
     });
-    $("#personnalTel").blur(function () {
+    $("#personnelTel").blur(function () {
         $(this).val($.trim($(this).val()));
 
         if (ValidUtils.validNum($(this).val(), 15)) {
@@ -190,7 +201,7 @@ $(function () {
     });
 
 
-    $("#personnalEmail").blur(function () {
+    $("#personnelEmail").blur(function () {
         $(this).val($.trim($(this).val()));
 
         if ($(this).val()) {

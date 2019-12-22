@@ -52,12 +52,12 @@
                 </td>
                 <td>
                     <div class="">
-                        <shiro:hasPermission name="personnal:usr:edit">
-                        <a href="${ctx}/personnal/toedit?id={{:id}}">
+                        <shiro:hasPermission name="contract:personnel:edit">
+                        <a href="${ctx}/personnel/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="personnal:usr:startstop">
+                        <shiro:hasPermission name="contract:personnel:startstop">
                         {{if disabledFlg == 1}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
@@ -79,8 +79,8 @@
             <hr>
         </div>
         <div class="pdtrl20">
-            <shiro:hasPermission name="personnal:usr:add">
-            <a href="${ctx}/personnal/toadd">
+            <shiro:hasPermission name="contract:personnel:add">
+            <a href="${ctx}/personnel/toadd">
                 <input type="button" class="blue_btn" value="新建业务员">
             </a>
             </shiro:hasPermission>

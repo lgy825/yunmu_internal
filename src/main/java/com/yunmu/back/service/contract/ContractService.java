@@ -3,8 +3,6 @@ package com.yunmu.back.service.contract;
 import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.model.contract.Contract;
 import com.yunmu.core.model.contract.ContractExt;
-import com.yunmu.core.model.pay.Pay;
-import com.yunmu.core.model.pay.PayExt;
 
 import java.util.Map;
 

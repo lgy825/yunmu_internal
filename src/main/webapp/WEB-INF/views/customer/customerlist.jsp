@@ -20,6 +20,7 @@
                     <th style='width: 15%;'><div>客户邮箱</div></th>
                     <th style='width: 10%;'><div>客户地址</div></th>
                     <th style='width: 10%;'><div>客户状态</div></th>
+                    <th style='width: 10%;'><div>房间统计</div></th>
                     <th style='width: 20%;'><div>操作</div></th>
                 </tr>
         </thead>
@@ -51,13 +52,16 @@
                     </div>
                 </td>
                 <td>
+                    <div>{{:customerCount}}</div>
+                </td>
+                <td>
                     <div class="">
-                        <shiro:hasPermission name="customer:usr:edit">
+                        <shiro:hasPermission name="salemanager:customer:edit">
                         <a href="${ctx}/personnal/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="customer:usr:startstop">
+                        <shiro:hasPermission name="salemanager:customer:startstop">
                         {{if disabledFlg == 1}}
                         <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
                         {{else}}
@@ -79,7 +83,7 @@
             <hr>
         </div>
         <div class="pdtrl20">
-            <shiro:hasPermission name="customer:usr:add">
+            <shiro:hasPermission name="salemanager:customer:add">
             <a href="${ctx}/customer/toadd">
                 <input type="button" class="blue_btn" value="新增客户信息">
             </a>
@@ -108,7 +112,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${ctx}/static/js/mod/personnel/customerlist.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/customer/customerlist.js"></script>
 <script>
     $(function () {
         fullScreen($('.scroll-table'),264);

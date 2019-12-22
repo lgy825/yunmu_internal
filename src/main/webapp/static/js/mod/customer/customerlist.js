@@ -26,7 +26,7 @@ $(function(){
             prevBtnText: '上一页',
             nextBtnText: '下一页',
             remote: {
-                url: ctx + 'sysuser/getpage',
+                url: ctx + 'customer/getpage',
                 params:{
                     customerName: $.trim($("#customerName").val())
                 },

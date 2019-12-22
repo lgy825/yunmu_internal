@@ -1,18 +1,12 @@
 package com.yunmu.back.controller;
 
 import com.yunmu.back.service.contract.ContractService;
-import com.yunmu.back.service.pay.PayService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.contract.Contract;
 import com.yunmu.core.model.contract.ContractExt;
-import com.yunmu.core.model.pay.Pay;
-import com.yunmu.core.model.pay.PayExt;
-import com.yunmu.core.model.project.Project;
-import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.RegxUtils;
-import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,9 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by 13544 on 2019/6/18.
@@ -53,7 +45,7 @@ public class ContractController extends BaseController{
                                                           Integer pageIndex, Integer pageSize,
                                                           String contractCode, String contracName,
                                                           String beginTime, String endTime, String projectId,
-                                                            String contractType) {
+                                                          String contractType) {
         Map<String, Object> params = new HashMap<>();
         params.put("contractCode", contractCode);
         params.put("contracName", contracName);

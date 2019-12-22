@@ -1,6 +1,17 @@
 $(function () {
 
+    $('.p_addBtn').on('click',function(){
+        $('.p_selBox').append($('.p_selingBox:last').clone(true));
+        $('.p_selingBox:last').find(".close-set").show();
+    });
+
+    $(".close-set").click(function () {
+        $(this).parent().remove();
+    });
+
+
     loadProject();
+
     $("#saveBtn").click(function () {
 
         var customerName = $.trim($("#customerName").val());
@@ -42,8 +53,8 @@ $(function () {
             return;
         }
 
-        var banksName = $.trim($("#banksName").val());
-        if (!banksName) {
+        var bankName = $.trim($("#bankName").val());
+        if (!bankName) {
             layer.msg("请输入客户银行卡户名");
             return;
         }
@@ -63,13 +74,50 @@ $(function () {
             return;
         }
 
+        var roomArr = [];
+        var stop = false;
+        $('.p_selingBox').each(function (idx, elem) {
+            var $this = $(elem);
+            var room = {};
+            alert($this.find('.roomNumber').val());
+            if(!$this.find('.roomNumber').val()){
+                layer.msg("请输入房间号");
+                stop = true;
+                return true;
+            }
+            room['roomNumber'] =$this.find('.roomNumber').val();
 
+
+            if(!$this.find('.roomAddr').val()){
+                layer.msg("请输入房间地址");
+                stop = true;
+                return true;
+            }
+            room['roomAddr'] =$this.find('.roomAddr').val();
+
+            if(!$this.find('.roomArea').val()){
+                layer.msg("请输入房间地址");
+                stop = true;
+                return true;
+            }
+            room['roomArea'] =$this.find('.roomArea').val();
+
+
+            room['roomSerialCode'] =$this.find('.roomSerialCode').val();
+            roomArr.push(room);
+        });
+
+        if(stop) {
+            return;
+        }
         $.ajax({
-            url: ctx + "personnal/save",
+            url: ctx + "customer/saveCustomer",
             type: "POST",
             cache: false,
+            async: false,
             dataType: 'json',
-            data: {
+            contentType: "application/json",
+            data:JSON.stringify( {
                 id: $("#customerId").val(),
                 projectId: projectId,
                 customerName: customerName,
@@ -78,16 +126,17 @@ $(function () {
                 customerSex: $("#customerSex").val(),
                 customerAddr: $("#customerAddr").val(),
                 openingBank:openingBank,
-                banksName:banksName,
+                bankName:bankName,
                 bankNumber:bankNumber,
                 idCard:idCard,
-                customerProxyName:$("#customerProxyName").val()
+                customerProxyName:$("#customerProxyName").val(),
+                customerRoomList:roomArr
 
-            },
+            }),
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     layer.msg("保存成功");
-                    location.href = ctx + "personnel/toPersonnellist";
+                    location.href = ctx + "customer/tocustomerlist";
                 } else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);
