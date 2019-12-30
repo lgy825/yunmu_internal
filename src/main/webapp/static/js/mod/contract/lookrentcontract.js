@@ -105,10 +105,6 @@ $(function(){
                     $("#companySel").trigger("change");
                     $("#personnelSel").trigger("change");
 
-
-
-
-
                 } else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);

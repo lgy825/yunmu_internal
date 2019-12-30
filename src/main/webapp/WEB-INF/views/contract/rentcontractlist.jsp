@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>租赁合同管理</title>
+    <title>合同管理</title>
     <%@include file="/static/commons/common.jspf" %>
     <link href="${ctx}/static/css/mricode.pagination.css" rel="stylesheet" />
     <script src="${ctx}/static/js/lib/jsrender.min.js"></script>
@@ -78,14 +78,14 @@
 <body>
 <div class="p20">
     <div class="bgc-ff min620">
-        <div class="b_title">租赁合同管理</div>
+        <div class="b_title">合同管理</div>
         <div class="hr">
             <hr>
         </div>
         <div class="pdtrl20">
             <shiro:hasPermission name="contract:rent:add">
             <a href="${ctx}/contract/toaddRent">
-                <input type="button" class="blue_btn" value="新建租赁合同">
+                <input type="button" class="blue_btn" value="新建合同">
             </a>
             </shiro:hasPermission>
             <a href="" class="none">
