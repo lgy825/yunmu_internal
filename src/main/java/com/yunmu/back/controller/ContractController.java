@@ -7,6 +7,7 @@ import com.yunmu.core.constant.PageResult;
 import com.yunmu.core.model.contract.Contract;
 import com.yunmu.core.model.contract.ContractExt;
 import com.yunmu.core.util.RegxUtils;
+import com.yunmu.core.util.WorkDayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,12 +45,12 @@ public class ContractController extends BaseController{
     @ResponseBody
     public PageResult<ContractExt> getShopPageByCondition(HttpServletRequest request,
                                                           Integer pageIndex, Integer pageSize,
-                                                          String contractCode, String contracName,
+                                                          String contractCode,
                                                           String beginTime, String endTime, String projectId,
                                                           String contractType) {
         Map<String, Object> params = new HashMap<>();
         params.put("contractCode", contractCode);
-        params.put("contracName", contracName);
+        //params.put("contracName", contracName);
         params.put("contractType", contractType);
         params.put("projectId", projectId);
         params.put("pageIndex", pageIndex + 1);
@@ -96,6 +98,24 @@ public class ContractController extends BaseController{
         }
         model.addAttribute("contractId", id);
         return "contract/looktrustcontract";
+    }
+
+
+    @RequestMapping("/getRentFree")
+    @ResponseBody
+    public Result<Contract> getRentFree(Date contractStartTime,Integer count) {
+
+        //Date contractStartTime=contract.getContractStartTime();
+        Contract contract=new Contract();
+        try {
+            Date date= WorkDayUtils.getWorkDayEnd(contractStartTime,30);
+            contract.setRentFreeEndTime(date);
+            contract.setRentFreeStartTime(contractStartTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return createSuccessResult(contract);
+
     }
 
 

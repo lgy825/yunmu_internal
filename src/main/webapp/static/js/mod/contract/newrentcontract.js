@@ -19,9 +19,9 @@ $(function(){
     //rentFreeCount
     $("#rentFreeCount").change(function(){
 
-        timeRentFreeStart.val(su.rentFreeStartTime.split(" ")[0]);
-        timeRentFreeEnd.val(su.rentFreeEndTime.split(" ")[0]);
+
         var contractStartTime = timeContractStart.val();
+        var count=$("#rentFreeCount").val();
         $.ajax({
             url: ctx + "contract/getRentFree",
             type: "GET",
@@ -29,12 +29,14 @@ $(function(){
             async: false,
             dataType: 'json',
             data: {
-                contractStartTime: contractStartTime,
+                count:count,
+                contractStartTime:contractStartTime+" 00:00:00",
             },
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     su = data.resultData;
-                    $("#entrustTel").val(su.personnelTel);
+                    timeRentFreeStart.val(su.rentFreeStartTime.split(" ")[0]);
+                    timeRentFreeEnd.val(su.rentFreeEndTime.split(" ")[0]);
 
                 } else {
                     if (data.resultDesc) {
@@ -351,6 +353,12 @@ $(function(){
             return;
         }
 
+        var customerCode = $.trim($("#customerSel").val());
+        if (!customerCode) {
+            layer.msg("请选择客户");
+            return;
+        }
+
         var contractCode = $.trim($("#contractCode").val());
         if (!contractCode) {
             layer.msg("请输入合同编码");
@@ -373,6 +381,12 @@ $(function(){
         var operativeWay = $.trim($("#operativeWay").val());
         if (!operativeWay) {
             layer.msg("请选择运营方式");
+            return;
+        }
+
+        var projectId = $.trim($("#projectSel").val());
+        if (!projectId) {
+            layer.msg("请选择合同所属的项目");
             return;
         }
 
@@ -436,18 +450,17 @@ $(function(){
             return;
         }
 
-        var rooms = "";
 
         if ($(".rolespan.cur").length < 1) {
             layer.msg("请至少选择一个房间");
             return;
         }
-
+        var roomCodes = "";
         var chooseR = [];
         $(".rolespan.cur").each(function () {
             chooseR.push($(this).attr("ccode"));
         });
-        rooms = chooseR.join(",");
+        roomCodes = chooseR.join(",");
 
         $.ajax({
             url: ctx + "contract/addContract",
@@ -457,11 +470,11 @@ $(function(){
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                //projectId:projectId,
+                projectId:projectId,
                 id:$.trim($("#contractId").val()),
-               // contractName:contractName,
                 contractType:contractType,
                 contractCode:contractCode,
+                customerCode:customerCode,
                 contractStartTime:contractStartTime+" 00:00:00",
                 contractEndTime:contractEndTime+" 23:59:59",
                 operativeWay:operativeWay,
@@ -473,7 +486,8 @@ $(function(){
                 companyCode:companySel,
                 personnelCode:personnelSel,
                 payType:payType,
-                rentIncreaseWay:$.trim($("#rentIncreaseWay").val())
+                rentIncreaseWay:$.trim($("#rentIncreaseWay").val()),
+                roomCode:roomCodes
 
             }),
             success: function (data) {
@@ -514,12 +528,9 @@ $(function(){
             success: function (data) {
                 if (data && data.resultCode === '0') {
                     su = data.resultData;
-                    //$("#projectSel").val(su.projectId);
-                    $("#contractName").val(su.contractName);
+                    $("#projectSel").val(su.projectId);
                     $("#contractCode").val(su.contractCode);
                     $("#rentAmount").val(su.rentAmount);
-                    $("#contractIdentity").val(su.contractIdentity);
-                    $("#rentFreeCount").val(su.rentFreeCount);
                     $("#operativeWay").val(su.operativeWay);
                     timeContractStart.val(su.contractStartTime.split(" ")[0]);
                     timeContractEnd.val(su.contractEndTime.split(" ")[0]);
@@ -528,22 +539,32 @@ $(function(){
                     timeRentFreeEnd.val(su.rentFreeEndTime.split(" ")[0]);
                     $("#rentAmount").val(su.rentAmount);
                     $("#rentIncreaseWay").val(su.rentIncreaseWay);
-                    $("#contractExcute").val(su.contractExcute);
-                    $("#excuteIDcard").val(su.excuteIdcard);
-                    $("#excuteProxy").val(su.excuteProxy);
-                    $("#excuteTel").val(su.excuteTel);
-                    $("#excuteAddr").val(su.excuteAddr);
-                    $("#excuteEmail").val(su.excuteEmail);
                     $("#excuteOpeningBank").val(su.excuteOpeningBank);
                     $("#banksName").val(su.banksName);
                     $("#bankNumber").val(su.bankNumber);
-                    $("#contractEntrust").val(su.contractEntrust);
-                    $("#entrustIDcard").val(su.entrustIdcard);
-                    $("#entrustProxy").val(su.entrustProxy);
-                    $("#entrustTel").val(su.entrustTel);
-                    $("#hourseAddr").val(su.hourseAddr);
-                    $("#hourseArea").val(su.hourseArea);
-                    $("#hourseUses").val(su.hourseUses);
+                    $("#payType").val(su.payType);
+                    $("#contractType").val(su.contractType);
+                    $("#customerSel").val(su.customerCode);
+                    $("#companySel").val(su.companyCode);
+                    $("#personnelSel").val(su.personnelCode);
+                    alert(su.roomCode);
+                    var roomCodes=su.roomCode;
+                    var waitCinema = setInterval(function () {
+                        if ($(".rolespan").length > 0) {
+                            alert(roomCodes);
+                            if (roomCodes) {
+                                $(roomCodes.split(",")).each(function (idx, elem) {
+                                    $(".rolespan[ccode=" + elem + "]").addClass("cur");
+                                });
+                            }
+                            clearInterval(waitCinema);
+                        }
+                    }, 500);
+                    $("#customerSel").trigger("change");
+                    $("#companySel").trigger("change");
+                    $("#personnelSel").trigger("change");
+
+
 
 
 

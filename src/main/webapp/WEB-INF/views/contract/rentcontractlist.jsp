@@ -16,14 +16,12 @@
         <thead>
                 <tr>
                     <th style='width: 10%;'><div>合同编号</div></th>
-                    <th style='width: 10%;'><div>合同名称</div></th>
-                    <th style='width: 10%;'><div>委托方</div></th>
-                    <th style='width: 9%;'><div>合同类型</div></th>
+                    <th style='width: 10%;'><div>销售代表</div></th>
+                    <th style='width: 10%;'><div>客户名称</div></th>
                     <th style='width: 10%;'><div>签约时间</div></th>
-                    <th style='width: 6%;'><div>签约人</div></th>
-                    <th style='width: 9%;'><div>合同状态</div></th>
-                    <th style='width: 6%;'><div>创建人</div></th>
-                    <th style='width: 10%;'><div>创建时间</div></th>
+                    <th style='width: 15%;'><div>免租期</div></th>
+                    <th style='width: 10%;'><div>创建人</div></th>
+                    <th style='width: 15%;'><div>合同期限</div></th>
                     <th style='width: 20%;'><div>操作</div></th>
                 </tr>
         </thead>
@@ -34,36 +32,26 @@
                     <div>{{:contractCode}}</div>
                 </td>
                 <td>
-                    <div>{{:contractName}}</div>
+                    <div>{{:personnelName}}</div>
                 </td>
                 <td>
-                    <div>{{:contractExcute}}</div>
+                    <div>{{:customerName}}</div>
                 </td>
                 <td>
-                    <div>{{:typeName}}</div>
-                </td>
-                <td>
-                    <div>
-                           {{dateTime:contractTime}}
-                    </div>
-                </td>
-                <td>
-                    <div>{{:entrustProxy}}</div>
+                    <div>{{dateTime:contractTime}}</div>
                 </td>
                 <td>
                     <div>
-                    {{if contractStatus==10}}
-                            已授权
-                    {{else}}
-                           未授权
-                    {{/if}}
+                           {{dateTime:rentFreeStartTime}}至{{dateTime:rentFreeEndTime}}
                     </div>
                 </td>
                 <td>
-                    <div>{{:operaterBy}}</div>
+                    <div>{{:createName}}</div>
                 </td>
                 <td>
-                    <div>{{dateTime:createTime}}</div>
+                    <div>
+                           {{dateTime:contractStartTime}}至{{dateTime:contractStartTime}}
+                    </div>
                 </td>
                 <td>
                     <div class="">
@@ -110,7 +98,14 @@
 <%--                    <select class="select  ml20" id="projectSel">--%>
 <%--                    </select>--%>
                     <input id="contractCode" type="text" class="inpW ml20" placeholder="合同编码">
-                    <input id="contractName" type="text" class="inpW ml20" placeholder="合同名称">
+                    <select class="select  ml20" id="projectSel">
+
+                    </select>
+                    <select class="select  ml20" id="contractType">
+                        <option value="-1">请选择合同类型</option>
+                        <option value="10">固定租金</option>
+                        <option value="20">委托分红</option>
+                    </select>
                     <input type="text" class="inpW ml20 timer" id="timeSpick" placeholder="开始时间"/>
                     <span class="zhi">至</span>
                     <input type="text" class="inpW timer" id="timeEpick" placeholder="结束时间"/>

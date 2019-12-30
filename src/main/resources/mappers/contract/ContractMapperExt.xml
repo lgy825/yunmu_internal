@@ -9,6 +9,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
     <result column="room_code" jdbcType="VARCHAR" property="roomCode" />
+    <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
     <result column="personnel_code" jdbcType="VARCHAR" property="personnelCode" />
     <result column="contract_code" jdbcType="VARCHAR" property="contractCode" />
     <result column="contract_type" jdbcType="INTEGER" property="contractType" />
@@ -24,7 +25,7 @@
     <result column="rent_amount" jdbcType="DECIMAL" property="rentAmount" />
     <result column="rent_free_start_time" jdbcType="TIMESTAMP" property="rentFreeStartTime" />
     <result column="rent_free_end_time" jdbcType="TIMESTAMP" property="rentFreeEndTime" />
-    <result column="rent_increase_way" jdbcType="INTEGER" property="rentIncreaseWay" />
+    <result column="rent_increase_way" jdbcType="VARCHAR" property="rentIncreaseWay" />
     <result column="pay_type" jdbcType="INTEGER" property="payType" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
     <result column="contract_time" jdbcType="TIMESTAMP" property="contractTime" />
@@ -104,7 +105,7 @@
     id, project_id, room_code, personnel_code, contract_code, contract_type, contract_status,
     operative_way, contract_start_time, contract_end_time, create_time, create_by, update_time,
     update_by, contract_desc, rent_amount, rent_free_start_time, rent_free_end_time,
-    rent_increase_way, pay_type, del_flag, contract_time, company_code
+    rent_increase_way, pay_type, del_flag, contract_time, company_code,customer_code
   </sql>
 
   <select id="getRentContractPage" parameterType="java.util.Map" resultMap="BaseResultMap">

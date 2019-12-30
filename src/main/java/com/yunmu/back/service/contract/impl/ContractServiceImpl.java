@@ -6,9 +6,12 @@ import com.yunmu.back.service.contract.ContractService;
 import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.contract.ContractMapper;
 import com.yunmu.core.dao.contract.ContractMapperExt;
+import com.yunmu.core.dao.customer.CustomerMapper;
+import com.yunmu.core.dao.personnel.PersonnelMapper;
 import com.yunmu.core.dao.sys.SysUserMapper;
 import com.yunmu.core.model.contract.Contract;
 import com.yunmu.core.model.contract.ContractExt;
+import com.yunmu.core.model.customer.CustomerExt;
 import com.yunmu.core.util.IdUtils;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +35,10 @@ public class ContractServiceImpl implements ContractService {
     private ContractMapper contractMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private CustomerMapper customerMapper;
+    @Autowired
+    private PersonnelMapper personnelMapper;
 
 
     @Override
@@ -57,6 +64,12 @@ public class ContractServiceImpl implements ContractService {
         }
         Page<ContractExt> pageInfo = PageHelper.startPage(pageIndex, pageSize, true);
         List<ContractExt> contractExts=contractMapperExt.getRentContractPage(params);
+        for(ContractExt contractExt:contractExts){
+
+            contractExt.setCustomerName(customerMapper.selectByPrimaryKey(contractExt.getCustomerCode()).getCustomerName());
+            contractExt.setPersonnelName(personnelMapper.selectByPrimaryKey(contractExt.getPersonnelCode()).getPersonnelName());
+            contractExt.setCreateName(sysUserMapper.selectByPrimaryKey(contractExt.getCreateBy()).getUserName());
+        }
 
         return new GenericPage<>(pageIndex, pageSize, contractExts, pageInfo.getTotal());
     }
