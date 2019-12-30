@@ -547,7 +547,6 @@ $(function(){
                     $("#customerSel").val(su.customerCode);
                     $("#companySel").val(su.companyCode);
                     $("#personnelSel").val(su.personnelCode);
-                    alert(su.roomCode);
                     var roomCodes=su.roomCode;
                     var waitCinema = setInterval(function () {
                         if ($(".rolespan").length > 0) {
