@@ -46,7 +46,7 @@
                     <div>
                         {{if status == 10}}
                             已签约
-                        {{else status ==11}}
+                        {{else status ==20}}
                             未签约
                         {{/if}}
                     </div>
@@ -57,15 +57,23 @@
                 <td>
                     <div class="">
                         <shiro:hasPermission name="salemanager:customer:edit">
-                        <a href="${ctx}/personnal/toedit?id={{:id}}">
+                        <a href="${ctx}/customer/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
                         </shiro:hasPermission>
+                        <shiro:hasPermission name="salemanager:customer:look">
+                        <a href="${ctx}/customer/tolook?id={{:id}}">
+                            <input type="button" class="lookbtn gray_btn mr10" value="查看">
+                        </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="salemanager:customer:del">
+                            <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
+                        </shiro:hasPermission>
                         <shiro:hasPermission name="salemanager:customer:startstop">
                         {{if disabledFlg == 1}}
-                        <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="停用">
+                        <input type="button" class="shutbtn gray_btn mr10" data-sid="{{:id}}" value="已签约">
                         {{else}}
-                        <input type="button" class="openbtn gray_btn mr10" data-sid="{{:id}}" value="启用">
+                        <input type="button" class="openbtn gray_btn mt12 mr10" data-sid="{{:id}}" value="未签约">
                         {{/if}}
                         </shiro:hasPermission>
                     </div>
@@ -95,7 +103,12 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
-                    <input id="customerName" type="text" class="inpW ml20" placeholder="姓名">
+                    <input id="customerName" type="text" class="inpW ml20" placeholder="名称">
+                    <select class="select  ml20" id="customerStatus">
+                        <option value="-1">*请选择状态*</option>
+                        <option value="10">未签约</option>
+                        <option value="20">已签约</option>
+                    </select>
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置">
                 </div>

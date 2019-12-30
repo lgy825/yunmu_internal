@@ -6,6 +6,7 @@ import com.yunmu.back.service.owner.OwnerService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
+import com.yunmu.core.model.customer.Customer;
 import com.yunmu.core.model.customer.CustomerExt;
 import com.yunmu.core.model.customer.CustomerRoom;
 import com.yunmu.core.model.owner.Owner;
@@ -52,13 +53,16 @@ public class CustomerController extends BaseController {
     public PageResult<CustomerExt> getShopPageByCondition(HttpServletRequest request,
                                                           Integer pageIndex,
                                                           Integer pageSize,
-                                                          String customerTel,
+                                                          Integer customerStatus,
                                                           String customerName) {
         Map<String, Object> params = new HashMap<>();
         List<Project> projects = ShiroUtils.getAllMyCinemaList();
         List<String> projectIds = projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
         params.put("projectIds", projectIds);
-        params.put("customerTel", customerTel);
+        if(customerStatus!=null && customerStatus!=-1){
+            params.put("customerStatus", customerStatus);
+        }
+
         params.put("customerName", customerName);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
@@ -101,10 +105,10 @@ public class CustomerController extends BaseController {
     @RequestMapping("/tolook")
     public String toLook(String id, Model model) {
         if (StringUtils.isBlank(id)) {
-            return "owner/ownerlist";
+            return "customer/cutomerlist";
         }
-        model.addAttribute("ownerId", id);
-        return "owner/lookowner";
+        model.addAttribute("customerId", id);
+        return "customer/lookcustomer";
     }
 
     @RequestMapping("/get")
@@ -119,28 +123,38 @@ public class CustomerController extends BaseController {
     @RequestMapping("/toedit")
     public String toEdit(String id, Model model) {
         if (StringUtils.isBlank(id)) {
-            return "owner/ownerlist";
+            return "customer/customerlist";
         }
-        model.addAttribute("ownerId", id);
-        return "owner/newowner";
+        model.addAttribute("customerId", id);
+        return "customer/newcustomer";
     }
 
     @RequestMapping("/disable")
     @ResponseBody
     public Result<Boolean> disableOwner(String id) {
-        CustomerExt customerExt = new CustomerExt();
+        Customer customerExt = new Customer();
         customerExt.setId(id);
-        customerExt.setStatus(1);
-        return createSuccessResult(customerService.update(customerExt));
+        customerExt.setStatus(10);
+        return createSuccessResult(customerService.updateStatus(customerExt));
     }
 
     @RequestMapping("/undisable")
     @ResponseBody
     public Result<Boolean> undisableowner(String id) {
-        CustomerExt customerExt = new CustomerExt();
+        Customer customerExt = new Customer();
         customerExt.setId(id);
-        customerExt.setStatus(0);
-        return createSuccessResult(customerService.update(customerExt));
+        customerExt.setStatus(20);
+        return createSuccessResult(customerService.updateStatus(customerExt));
+    }
+
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Result<Boolean> deleteHourse(String id) {
+        Customer customer=new Customer();
+        customer.setId(id);
+        customer.setDelFlag(1);
+        return createSuccessResult(customerService.updateStatus(customer));
     }
 
 

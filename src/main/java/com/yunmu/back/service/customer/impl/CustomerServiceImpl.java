@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -104,6 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insert(CustomerExt customerExt) {
         Customer customer=new Customer();
         BeanUtils.copyProperties(customerExt,customer);
@@ -112,7 +114,7 @@ public class CustomerServiceImpl implements CustomerService {
         //customer.setRoomCount(customer.getCustomerRoomList().size());
         customer.setCreateBy(ShiroUtils.getUserId());
         customer.setCreateTime(date);
-        customer.setStatus(10);
+        //customer.setStatus(10);
         for(CustomerRoom customerRoom:customerExt.getCustomerRoomList()){
             customerRoom.setCreateBy(ShiroUtils.getUserId());
             customerRoom.setCreateTime(date);
@@ -143,7 +145,44 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean update(CustomerExt customerExt) {
-        return null;
+        Customer customer=new Customer();
+        BeanUtils.copyProperties(customerExt,customer);
+        customer.setDelFlag(0);
+        Date date=new Date();
+        //customer.setRoomCount(customer.getCustomerRoomList().size());
+        customer.setUpdateBy(ShiroUtils.getUserId());
+        customer.setUpdateTime(date);
+
+        //
+        CustomerRoomExample customerRoomExample=new CustomerRoomExample();
+        CustomerRoomExample.Criteria criteria=customerRoomExample.createCriteria();
+        criteria.andCustomerCodeEqualTo(customer.getId());
+        criteria.andDelFlagEqualTo(0);
+        int customerRooms=customerRoomMapper.countByExample(customerRoomExample);
+        if(customerRooms>0){
+            customerRoomMapper.deleteByExample(customerRoomExample);
+        }
+
+        for(CustomerRoom customerRoom:customerExt.getCustomerRoomList()){
+            customerRoom.setUpdateBy(ShiroUtils.getUserId());
+            customerRoom.setUpdateTime(date);
+            customerRoom.setProjectId(customer.getProjectId());
+            customerRoom.setDelFlag(0);
+            //customerRoom.setId(IdUtils.getId(10));
+            customerRoom.setStatus(10);
+            customerRoom.setCustomerCode(customer.getId());
+            customerRoomMapper.insertSelective(customerRoom);
+        }
+
+        customerMapper.updateByPrimaryKey(customer);
+        return true;
+    }
+
+    @Override
+    public boolean updateStatus(Customer customer) {
+        customerMapper.updateByPrimaryKey(customer);
+        return false;
     }
 }

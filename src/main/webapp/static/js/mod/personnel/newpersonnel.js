@@ -73,6 +73,8 @@ $(function () {
                 personnelName: personnelName,
                 personnelEmail: personnelEmail,
                 personnelTel: personnelTel,
+                personnelAge: $("#personnelAge").val(),
+                personnelIdCard: $("#personnelIdCard").val(),
                 personnelSex: $("#personnelSex").val(),
                 joinedDate: joinedDate+" 00:00:00",
                 personnelAddr: $("#personnelAddr").val()

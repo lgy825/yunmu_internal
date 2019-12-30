@@ -16,6 +16,41 @@ $(function(){
         $(this).parent().remove();
     });
 
+    //rentFreeCount
+    $("#rentFreeCount").change(function(){
+
+        timeRentFreeStart.val(su.rentFreeStartTime.split(" ")[0]);
+        timeRentFreeEnd.val(su.rentFreeEndTime.split(" ")[0]);
+        var contractStartTime = timeContractStart.val();
+        $.ajax({
+            url: ctx + "contract/getRentFree",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                contractStartTime: contractStartTime,
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    su = data.resultData;
+                    $("#entrustTel").val(su.personnelTel);
+
+                } else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+
+    });
+
     //加载项目
     function loadProject() {
         $.ajax({

@@ -9,6 +9,20 @@ $(function () {
         $(this).parent().remove();
     });
 
+    $("#customerStatus").change(function(){
+        if($("#customerStatus").val()==20){
+            $("#bankNumberStr").show();
+            $("#bankNameStr").show();
+            $("#openingBankStr").show();
+            $("#idCardStr").show();
+        }else{
+            $("#bankNumberStr").hide();
+            $("#bankNameStr").hide();
+            $("#openingBankStr").hide();
+            $("#idCardStr").hide();
+        }
+    });
+
 
     loadProject();
 
@@ -47,31 +61,35 @@ $(function () {
             return;
         }
 
+
         var openingBank = $.trim($("#openingBank").val());
-        if (!openingBank) {
-            layer.msg("请输入客户银行卡开户行");
-            return;
-        }
-
         var bankName = $.trim($("#bankName").val());
-        if (!bankName) {
-            layer.msg("请输入客户银行卡户名");
-            return;
-        }
-
         var idCard = $.trim($("#idCard").val());
-        if (!idCard) {
-            layer.msg("请输入客户社会身份唯一代码");
-            return;
-        }
-
         var bankNumber = $.trim($("#bankNumber").val());
-        if (!bankNumber) {
-            layer.msg("请输入客户银行卡账号");
-            return;
-        }else if (!ValidUtils.validNum(bankNumber)) {
-            layer.msg("开户行只能是数字，不能包含特殊字符");
-            return;
+        if($("#customerStatus").val()==20){
+            if (!openingBank) {
+                layer.msg("请输入客户银行卡开户行");
+                return;
+            }
+            if (!bankName) {
+                layer.msg("请输入客户银行卡户名");
+                return;
+            }
+            if (!bankNumber) {
+                layer.msg("请输入客户银行卡账号");
+                return;
+            }else if (!ValidUtils.validNum(bankNumber)) {
+                layer.msg("开户行只能是数字，不能包含特殊字符");
+                return;
+            }
+            if (!bankName) {
+                layer.msg("请输入客户银行卡户名");
+                return;
+            }
+            if (!idCard) {
+                layer.msg("请输入客户社会身份唯一代码");
+                return;
+            }
         }
 
         var roomArr = [];
@@ -79,7 +97,6 @@ $(function () {
         $('.p_selingBox').each(function (idx, elem) {
             var $this = $(elem);
             var room = {};
-            alert($this.find('.roomNumber').val());
             if(!$this.find('.roomNumber').val()){
                 layer.msg("请输入房间号");
                 stop = true;
@@ -102,7 +119,7 @@ $(function () {
             }
             room['roomArea'] =$this.find('.roomArea').val();
 
-
+            room['id'] =$this.find('.roomId').val();
             room['roomSerialCode'] =$this.find('.roomSerialCode').val();
             roomArr.push(room);
         });
@@ -130,7 +147,8 @@ $(function () {
                 bankNumber:bankNumber,
                 idCard:idCard,
                 customerProxyName:$("#customerProxyName").val(),
-                customerRoomList:roomArr
+                customerRoomList:roomArr,
+                status:$("#customerStatus").val()
 
             }),
             success: function (data) {
@@ -175,25 +193,51 @@ $(function () {
                            });
 
                            // 加载数据 -------------
-                           if ($("#ownerId").val()) {
+                           if ($("#customerId").val()) {
                                $.ajax({
-                                          url: ctx + "owner/get",
+                                          url: ctx + "customer/get",
                                           type: "GET",
                                           cache: false,
                                           async: false,
                                           dataType: 'json',
                                           data: {
-                                              id: $("#ownerId").val(),
+                                              id: $("#customerId").val(),
                                           },
                                           success: function (data) {
                                               if (data && data.resultCode === '0') {
                                                   su = data.resultData;
-                                                  $("#ownerName").val(su.ownerName);
-                                                  $("#ownerPwd").attr("placeholder", "如需修改，请直接输入新密码");
-                                                  $("#ownerEmail").val(su.ownerEmail);
-                                                  $("#ownerTel").val(su.ownerTel);
-                                                  $("#ownerAddr").val(su.ownerAddr);
+                                                  if(su.status==20){
+                                                      $("#bankNumberStr").show();
+                                                      $("#bankNameStr").show();
+                                                      $("#openingBankStr").show();
+                                                      $("#idCardStr").show();
+                                                  }
                                                   $("#projectSel").val(su.projectId);
+                                                  $("#customerName").val(su.customerName);
+                                                  $("#customerProxyName").val(su.customerProxyName);
+                                                  $("#customerSex").val(su.customerSex);
+                                                  $("#customerStatus").val(su.status);
+                                                  $("#customerEmail").val(su.customerEmail);
+                                                  $("#customerTel").val(su.customerTel);
+                                                  $("#customerAddr").val(su.customerAddr);
+                                                  $("#idCard").val(su.idCard);
+                                                  $("#openingBank").val(su.openingBank);
+                                                  $("#bankName").val(su.bankName);
+                                                  $("#bankNumber").val(su.bankNumber);
+
+                                                  $(su.customerRoomList).each(function (idx, customerRoom) {
+                                                      if (idx > 0 && idx < su.customerRoomList.length) {
+                                                          $(".p_addBtn").click();
+                                                      }
+
+                                                      var $room = $(".p_selingBox:last");
+                                                      $room.find('.roomNumber').val(customerRoom.roomNumber);
+                                                      $room.find('.roomAddr').val(customerRoom.roomAddr);
+                                                      $room.find('.roomArea').val(customerRoom.roomArea);
+                                                      $room.find('.roomSerialCode').val(customerRoom.roomSerialCode);
+                                                      $room.find('.roomId').val(customerRoom.id);
+                                                  });
+
                                               } else {
                                                   if (data.resultDesc) {
                                                       layer.msg(data.resultDesc);

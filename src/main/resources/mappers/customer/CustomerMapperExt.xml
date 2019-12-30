@@ -117,6 +117,9 @@
     <if test="customerTel != null and customerTel != ''">
       AND customer_tel LIKE '%${customerTel}%'
     </if>
+    <if test="customerStatus != null and customerStatus != ''">
+      AND status =#{customerStatus}
+    </if>
     <if test="projectId != null and projectId != ''">
       AND project_id in (${projectId})
     </if>

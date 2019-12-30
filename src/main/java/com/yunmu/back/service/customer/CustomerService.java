@@ -20,4 +20,6 @@ public interface CustomerService {
     public CustomerExt getCustomerById(String id);
 
     Boolean update(CustomerExt customerExt);
+
+    boolean updateStatus(Customer customer);
 }

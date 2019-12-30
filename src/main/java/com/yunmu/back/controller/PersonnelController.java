@@ -4,6 +4,7 @@ import com.yunmu.back.service.contract.PersonnelService;
 import com.yunmu.core.base.BaseController;
 import com.yunmu.core.base.Result;
 import com.yunmu.core.constant.PageResult;
+import com.yunmu.core.model.customer.Customer;
 import com.yunmu.core.model.personnel.Personnel;
 import com.yunmu.core.model.personnel.PersonnelExt;
 import com.yunmu.core.model.project.Project;
@@ -105,20 +106,29 @@ public class PersonnelController extends BaseController {
 
     @RequestMapping("/disable")
     @ResponseBody
-    public Result<Boolean> disableOwner(String id) {
+    public Result<Boolean> disable(String id) {
         Personnel personnel = new Personnel();
         personnel.setId(id);
-        personnel.setPersonnelStatus(1);
-        return createSuccessResult(personnalService.update(personnel));
+        personnel.setPersonnelStatus(11);
+        return createSuccessResult(personnalService.updateStatus(personnel));
     }
 
-    @RequestMapping("/undisableowner")
+    @RequestMapping("/undisable")
     @ResponseBody
-    public Result<Boolean> undisableowner(String id) {
+    public Result<Boolean> undisable(String id) {
         Personnel personnel = new Personnel();
         personnel.setId(id);
-        personnel.setPersonnelStatus(0);
-        return createSuccessResult(personnalService.update(personnel));
+        personnel.setPersonnelStatus(10);
+        return createSuccessResult(personnalService.updateStatus(personnel));
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Result<Boolean> deleteHourse(String id) {
+        Personnel personnel = new Personnel();
+        personnel.setId(id);
+        personnel.setDelFlag(1);
+        return createSuccessResult(personnalService.updateStatus(personnel));
     }
 
 

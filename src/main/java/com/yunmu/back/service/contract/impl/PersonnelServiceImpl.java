@@ -85,4 +85,10 @@ public class PersonnelServiceImpl implements PersonnelService {
         }
         //return false;
     }
+
+    @Override
+    public boolean updateStatus(Personnel personnel) {
+        personnelMapper.updateByPrimaryKey(personnel);
+        return true;
+    }
 }

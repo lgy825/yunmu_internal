@@ -382,14 +382,15 @@ $(function () {
                                     $("#orderStatus").val(su.orderStatus);
                                     timeSpick.val(su.orderStartDate.split(" ")[0]);
                                     timeEpick.val(su.orderEndTime.split(" ")[0]);
-                                    if(su.orderStatus){
+                                    if(su.orderStatus==10){
                                         $("#completeStr").show();
+                                        timeComplete.val(su.completeTime.split(" ")[0]);
                                     }else{
                                         $("#completeStr").hide();
                                     }
-                                    timeComplete.val(su.completeTime.split(" ")[0]);
 
-                                    $("#orderStatus").attr("disabled",true);
+
+                                    //$("#orderStatus").attr("disabled",true);
 
                                 } else {
                                     if (data.resultDesc) {

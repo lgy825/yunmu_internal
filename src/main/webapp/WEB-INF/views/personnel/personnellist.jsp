@@ -43,9 +43,9 @@
                 </td>
                 <td>
                     <div>
-                        {{if status == 10}}
+                        {{if personnelStatus == 10}}
                             在职
-                        {{else status ==11}}
+                        {{else personnelStatus ==11}}
                             离职
                         {{/if}}
                     </div>
@@ -56,6 +56,9 @@
                         <a href="${ctx}/personnel/toedit?id={{:id}}">
                             <input type="button" class="editbtn gray_btn mr10" value="编辑">
                         </a>
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="contract:personnel:delete">
+                            <input type="button" class="delete gray_btn mr10" data-sid="{{:id}}" value="删除">
                         </shiro:hasPermission>
                         <shiro:hasPermission name="contract:personnel:startstop">
                         {{if disabledFlg == 1}}

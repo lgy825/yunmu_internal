@@ -28,12 +28,12 @@
                 <div class="mt12">
                     <div class="align-r">姓名</div>
                     <input id="personnelName" maxlength="15" type="text" class="inpW set-inpwid ml8" placeholder="请输入客户姓名">
-                    <span class="color-lred ml8 none">* 不超过15个字，不能出现其他特殊字符</span>
+                    <span class="color-lred ml8">* 不超过15个字，不能出现其他特殊字符</span>
                 </div>
 
                 <div class="mt12">
-                    <div class="align-r mr8 mt6">性别</div>
-                    <select id="personnelSex" class="select ml20 wid-128">
+                    <div class="align-r">性别</div>
+                    <select id="personnelSex" class="select ml8">
                         <option value="1">男</option>
                         <option value="2">女</option>
                     </select>

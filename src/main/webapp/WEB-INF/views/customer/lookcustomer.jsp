@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>新建客户信息</title>
+    <title>查看客户信息</title>
     <%@include file="/static/commons/common.jspf" %>
 </head>
 <body>
 <div class="p20">
     <div class="bgc-ff">
         <!-- 广告投放 -->
-        <div class="b_title">新建客户信息</div>
+        <div class="b_title">查看客户信息</div>
         <div class="hr">
             <hr>
         </div>
@@ -63,7 +63,7 @@
                     <input id="customerAddr" maxlength="50" type="text" class="inpW set-inpwid ml8" placeholder="请输入用户地址">
                     <span class="color-lred ml8 none">请输入用户的地址，可为空</span>
                 </div>
-                <div class="mt12 none" id="idCardStr">
+                <div class="mt12">
                     <div class="align-r">社会统一代码</div>
                     <input id="idCard" maxlength="32" type="text" class="inpW set-inpwid ml8" placeholder="请输入客户社会统一代码">
                     <span class="color-lred ml8 none">请输入客户社会统一代码</span>
@@ -97,7 +97,6 @@
                         <div class="bore6 p_selingBox mb20 p20 relative">
                             <span class="close-set" style="display: none;"></span>
                             <div class="p20">
-                                <input id="roomId" class="roomId" type="hidden" />
                                 <p>
                                     <div class="b_label lab_wid1">房间号:</div>
                                     <input  type="text" class="inpW inpWid4 mr8 roomNumber" maxlength="64" placeholder="房屋地址">
@@ -128,7 +127,6 @@
             </div>
             <div class="tc mt30">
                 <div class="pl88 mt30">
-                    <input id="saveBtn" type="button" class="blue_btn blue_btn30" value="创建完成">
                     <a href="${ctx}/customer/tocustomerlist">
                         <input type="button" class="gray_btn gray-btn30 ml20" value="返回客户列表">
                     </a>
@@ -140,5 +138,5 @@
 </body>
 
 <!-- scripts -->
-<script type="text/javascript" src="${ctx}/static/js/mod/customer/newcustomer.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/mod/customer/lookcustomer.js"></script>
 </html>

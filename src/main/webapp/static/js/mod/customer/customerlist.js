@@ -7,6 +7,8 @@ $(function(){
     });
 
 
+
+
     function loadPage() {
         if($("#pagetotal").pagination()) {
             $("#pagetotal").pagination('destroy');
@@ -28,7 +30,8 @@ $(function(){
             remote: {
                 url: ctx + 'customer/getpage',
                 params:{
-                    customerName: $.trim($("#customerName").val())
+                    customerName: $.trim($("#customerName").val()),
+                    customerStatus:$("#customerStatus").val()
                 },
                 success: function (data) {
                     // data为ajax返回数据
@@ -46,7 +49,7 @@ $(function(){
 
     $("#customerTable").on("click", ".shutbtn", function () {
         var sid = $(this).data("sid");
-        layer.confirm('停用后该客户将无法关联合同，是否继续？', function () {
+        layer.confirm('该操作把客户置为未签约，是否继续？', function () {
             $.ajax({
                 url: ctx + "customer/disable",
                 type: "GET",
@@ -75,7 +78,7 @@ $(function(){
 
     $("#customerTable").on("click", ".openbtn", function () {
         var sid = $(this).data("sid");
-        layer.confirm('是否继续启用该客户？', function () {
+        layer.confirm('是否继续把该客户置为已签约？', function () {
             $.ajax({
                 url: ctx + "customer/undisable",
                 type: "GET",
@@ -101,4 +104,34 @@ $(function(){
             });
         });
     });
+
+    $("#customerTable").on("click", ".delete", function (){
+        var sid = $(this).data("sid");
+        layer.confirm('删除后将无法恢复，是否继续？', function () {
+            $.ajax({
+                url: ctx + "customer/delete",
+                type: "GET",
+                cache: false,
+                // async: false,
+                dataType: 'json',
+                data: {id: sid},
+                success: function (data) {
+                    if (data && data.resultCode === '0') {
+                        layer.msg('删除成功 !');
+                        loadPage();
+                    } else {
+                        if (data.resultDesc) {
+                            layer.msg(data.resultDesc);
+                        } else {
+                            layer.msg('删除失败 !');
+                        }
+                    }
+                },
+                error: function () {
+                    layer.msg('删除失败 !');
+                }
+            });
+        });
+    });
+
 });

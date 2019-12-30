@@ -73,8 +73,9 @@
                         <p class="mt12">
                             <div class="b_label lab_wid1 relative">打款方式:</div>
                             <select id="payType" class="select ml16 wid-238">
-                                <option value="10">压零至压六</option>
-                                <option value="20">付一至付六</option>
+                                <option value="10">月付</option>
+                                <option value="20">季付</option>
+                                <option value="20">半年付</option>
                             </select>
                             <span class="color-lred">* 请输入运营方式，不超过16字符 </span>
                         </p>
@@ -92,19 +93,26 @@
         </div>
         <div class="p20">
             <div class="pl70 clearfix">
-                <span class="b_label lab_wid1 fl">租期租金明细</span>
+                <span class="b_label lab_wid1 fl">租金/收益明细</span>
                 <div class="pl88 w764">
                     <div class="p_selBox">
                         <div class="bore6 p20 p_selingBox mb20 relative">
                             <p class="mt12">
-                                <div class="b_label lab_wid1 relative">免租时间:</div>
-                                <input type="text" class="inpW inpWid3 timer" id="timeRentFreeStart" placeholder="起租开始日期">
-                                <div class="b_label"> 至 </div>
-                                <input type="text" class="inpW inpWid3 timer" id="timeRentFreeEnd" placeholder="起租结束日期">
+                                <div class="b_label lab_wid1 relative">免租天数:
+                                    <i class="whats"></i>
+                                    <p class="modify-what">此天数是工作日</p>
+                                </div>
+                                <input id="rentFreeCount" type="text" class="inpW inpWid4 mr8" maxlength="32" placeholder="请输入免租天数">
                             </p>
                             <p class="mt12">
-                                <div class="b_label lab_wid1 relative">租金(元/月):</div>
-                                <input id="rentAmount" type="text" class="inpW inpWid4 mr8" maxlength="8" placeholder="租金">
+                                <div class="b_label lab_wid1 relative">免租时间:</div>
+                                <input type="text" class="inpW inpWid3 timer" id="timeRentFreeStart" placeholder="开始日期">
+                                <div class="b_label"> 至 </div>
+                                <input type="text" class="inpW inpWid3 timer" id="timeRentFreeEnd" placeholder="结束日期">
+                            </p>
+                            <p class="mt12">
+                                <div class="b_label lab_wid1 relative">租金/收益(元/月):</div>
+                                <input id="rentAmount" type="text" class="inpW inpWid4 mr8" maxlength="8" placeholder="租金/收益">
                                 <span class="color-lred">* 请输入租金，不超过16字符 </span>
                             </p>
                             <p class="mt12">

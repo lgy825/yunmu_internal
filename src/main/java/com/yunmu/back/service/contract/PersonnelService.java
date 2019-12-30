@@ -14,4 +14,6 @@ public interface PersonnelService {
     public Personnel getPersonnelById(String id);
 
     Boolean update(Personnel personnel);
+
+    boolean updateStatus(Personnel personnel);
 }
