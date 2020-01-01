@@ -125,8 +125,8 @@ public class HourseController extends BaseController {
     public Result<HourseTypeAndHourseVo> getHourseAndType() {
         // TODO 院线用户和影核账号的逻辑判断
 
-        Map<String, List<HourseExt>> hourseMap = Maps.newHashMap();
-        List<HourseExt> hourseExts = hourseService.getAllHourse();
+        Map<String, List<Hourse>> hourseMap = Maps.newHashMap();
+        List<Hourse> hourseExts = hourseService.getAllHourse();
         if(CollectionUtils.isNotEmpty(hourseExts)) {
             hourseExts.forEach(hourseExt -> {
                 if(hourseExt != null) {
@@ -135,7 +135,7 @@ public class HourseController extends BaseController {
                         if (hourseMap.containsKey(hourseId)) {
                             hourseMap.get(hourseId).add(hourseExt);
                         } else {
-                            List<HourseExt> cinemaListTmp = new ArrayList<>();
+                            List<Hourse> cinemaListTmp = new ArrayList<>();
                             cinemaListTmp.add(hourseExt);
                             hourseMap.put(hourseId, cinemaListTmp);
                         }

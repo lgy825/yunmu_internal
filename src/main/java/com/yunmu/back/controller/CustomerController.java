@@ -114,8 +114,8 @@ public class CustomerController extends BaseController {
     @RequestMapping("/get")
     @ResponseBody
     public Result<CustomerExt> update(String id) {
-        if (StringUtils.isBlank(id)) {
-            return createFailedResult("查询失败");
+        if ("-1".equals(id)) {
+            return createFailedResult("请选择客户");
         }
         return createSuccessResult(customerService.getCustomerById(id));
     }

@@ -243,7 +243,7 @@
         </div>
         <div class="tc mt30">
             <input type="button" class="blue_btn blue_btn30 " id="saveBtn"  value="完成创建">
-            <a href="${ctx}/contract/toTrustContractlist">
+            <a href="${ctx}/contract/toRentContractlist">
                 <input type="button" class="gray_btn gray-btn30 ml20" value="返回租赁合同列表">
             </a>
         </div>

@@ -9,9 +9,11 @@ import com.yunmu.core.constant.GenericPage;
 import com.yunmu.core.dao.hourse.HourseMapper;
 import com.yunmu.core.dao.hourse.HourseMapperExt;
 import com.yunmu.core.model.hourse.Hourse;
+import com.yunmu.core.model.hourse.HourseExample;
 import com.yunmu.core.model.hourse.HourseExt;
 import com.yunmu.core.model.hourse.HourseType;
 import com.yunmu.core.model.owner.OwnerExt;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 13544 on 2019/5/20.
@@ -122,7 +125,13 @@ public class HourseServiceImpl implements HourseService {
     }
 
     @Override
-    public List<HourseExt> getAllHourse() {
-        return hourseMapperExt.getAllHourse();
+    public List<Hourse> getAllHourse() {
+        HourseExample hourseExample=new HourseExample();
+        HourseExample.Criteria criteria=hourseExample.createCriteria();
+        criteria.andDelFlagEqualTo(0);
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        criteria.andProjectIdIn(projectIds);
+        return hourseMapper.selectByExample(hourseExample);
     }
 }

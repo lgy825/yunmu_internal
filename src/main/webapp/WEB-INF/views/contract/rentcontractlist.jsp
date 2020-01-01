@@ -15,10 +15,10 @@
     <script id="trTmpl" type="text/x-jrender">
         <thead>
                 <tr>
-                    <th style='width: 10%;'><div>合同编号</div></th>
+                    <th style='width: 10%;'><div>合同类型</div></th>
                     <th style='width: 10%;'><div>销售代表</div></th>
                     <th style='width: 10%;'><div>客户名称</div></th>
-                    <th style='width: 10%;'><div>签约时间</div></th>
+                    <th style='width: 10%;'><div>租金</div></th>
                     <th style='width: 15%;'><div>免租期</div></th>
                     <th style='width: 10%;'><div>创建人</div></th>
                     <th style='width: 15%;'><div>合同期限</div></th>
@@ -29,7 +29,13 @@
         {{for list}}
             <tr>
                 <td>
-                    <div>{{:contractCode}}</div>
+                    <div>
+                       {{if contractType == 10}}
+                            固定租金
+                        {{else contractType ==20}}
+                            收益分成
+                        {{/if}}
+                    </div>
                 </td>
                 <td>
                     <div>{{:personnelName}}</div>
@@ -38,7 +44,9 @@
                     <div>{{:customerName}}</div>
                 </td>
                 <td>
-                    <div>{{dateTime:contractTime}}</div>
+                    <div>
+                        {{:rentAmount}}
+                    </div>
                 </td>
                 <td>
                     <div>

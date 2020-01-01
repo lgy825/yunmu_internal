@@ -22,7 +22,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="contract_desc" jdbcType="VARCHAR" property="contractDesc" />
-    <result column="rent_amount" jdbcType="DECIMAL" property="rentAmount" />
+    <result column="rent_amount" jdbcType="VARCHAR" property="rentAmount" />
     <result column="rent_free_start_time" jdbcType="TIMESTAMP" property="rentFreeStartTime" />
     <result column="rent_free_end_time" jdbcType="TIMESTAMP" property="rentFreeEndTime" />
     <result column="rent_increase_way" jdbcType="VARCHAR" property="rentIncreaseWay" />
