@@ -118,13 +118,13 @@
       AND yo.id LIKE '%${orderId}%'
     </if>
     <if test="beginTime!=null">
-      AND  yo.create_time >= #{beginTime}
+      AND  yo.complete_time >= #{beginTime}
     </if>
     <if test="hourseNumber != null and hourseNumber != ''">
       AND yh.hourse_number LIKE '%${hourseNumber}%'
     </if>
     <if test="searchTimeEnd!=null">
-      AND yo.create_time <![CDATA[<=]]> #{searchTimeEnd}
+      AND yo.complete_time <![CDATA[<=]]> #{searchTimeEnd}
     </if>
     <if test="delFlag!=null">
       AND yo.del_flag =#{delFlag}
@@ -303,7 +303,7 @@
 
 
   <select id="getOrderCount" parameterType="java.util.Map" resultType="Integer">
-    SELECT count(*)
+    SELECT sum(*)
     FROM  yunmu_order yo
     where yo.del_flag=0 and order_status=10 and yo.hourse_code in(
     SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}
