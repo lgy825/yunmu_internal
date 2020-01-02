@@ -22,5 +22,5 @@ public interface HourseService {
 
     boolean deleteByPrimaryKey(String hid);
 
-    List<HourseExt> getAllHourse();
+    List<Hourse> getAllHourse();
 }

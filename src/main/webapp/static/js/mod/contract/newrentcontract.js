@@ -91,7 +91,7 @@ $(function(){
     //加载业务员信息
     function loadPersonnel() {
         $.ajax({
-            url: ctx + "personnel/getpage",
+            url: ctx + "sysuser/getpage",
             type: "GET",
             cache: false,
             async: false,
@@ -105,8 +105,8 @@ $(function(){
                     // // 城市列表
                     $("#personnelSel").select2({placeholder: '请选择业务员'});
                     $("#personnelSel").append("<option value='-1'>*所属业务员*</option>");
-                    $(data.resultData.list).each(function (idx, pro) {
-                        $("#personnelSel").append("<option value='" + pro.id + "'>" + pro.personnelName + "</option>");
+                    $(data.resultData.list).each(function (idx, user) {
+                        $("#personnelSel").append("<option value='" + user.id + "'>" + user.userName + "</option>");
                     });
 
                 }else {
@@ -208,7 +208,7 @@ $(function(){
         // 加载数据 -------------
         if (personnelCode) {
             $.ajax({
-                url: ctx + "personnel/get",
+                url: ctx + "sysuser/get",
                 type: "GET",
                 cache: false,
                 async: false,
@@ -219,7 +219,7 @@ $(function(){
                 success: function (data) {
                     if (data && data.resultCode === '0') {
                         su = data.resultData;
-                        $("#entrustTel").val(su.personnelTel);
+                        $("#entrustTel").val(su.userTel);
 
                     } else {
                         if (data.resultDesc) {
@@ -349,7 +349,7 @@ $(function(){
 
         var contractType = $.trim($("#contractType").val());
         if (!contractType) {
-            layer.msg("请输入合同类型");
+            layer.msg("请选择合同类型");
             return;
         }
 
@@ -416,14 +416,9 @@ $(function(){
         }
 
         var rentAmount = $.trim($("#rentAmount").val());
-        if(contractType==10){
-            if (!rentAmount) {
-                layer.msg("请输入租金");
-                return;
-            }else if (!ValidUtils.validMoney(rentAmount)) {
-                layer.msg("租金不能包含特殊字符，保留一位有效数字");
-                return;
-            }
+        if (!rentAmount) {
+            layer.msg("请输入租金或收益");
+            return;
         }
 
         var rentIncreaseWay = $.trim($("#rentIncreaseWay").val());
@@ -550,7 +545,6 @@ $(function(){
                     var roomCodes=su.roomCode;
                     var waitCinema = setInterval(function () {
                         if ($(".rolespan").length > 0) {
-                            alert(roomCodes);
                             if (roomCodes) {
                                 $(roomCodes.split(",")).each(function (idx, elem) {
                                     $(".rolespan[ccode=" + elem + "]").addClass("cur");

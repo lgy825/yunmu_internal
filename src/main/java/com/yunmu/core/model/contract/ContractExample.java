@@ -405,6 +405,76 @@ public class ContractExample {
             return (Criteria) this;
         }
 
+        public Criteria andCustomerCodeIsNull() {
+            addCriterion("customer_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeIsNotNull() {
+            addCriterion("customer_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeEqualTo(String value) {
+            addCriterion("customer_code =", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeNotEqualTo(String value) {
+            addCriterion("customer_code <>", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeGreaterThan(String value) {
+            addCriterion("customer_code >", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("customer_code >=", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeLessThan(String value) {
+            addCriterion("customer_code <", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeLessThanOrEqualTo(String value) {
+            addCriterion("customer_code <=", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeLike(String value) {
+            addCriterion("customer_code like", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeNotLike(String value) {
+            addCriterion("customer_code not like", value, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeIn(List<String> values) {
+            addCriterion("customer_code in", values, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeNotIn(List<String> values) {
+            addCriterion("customer_code not in", values, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeBetween(String value1, String value2) {
+            addCriterion("customer_code between", value1, value2, "customerCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerCodeNotBetween(String value1, String value2) {
+            addCriterion("customer_code not between", value1, value2, "customerCode");
+            return (Criteria) this;
+        }
+
         public Criteria andPersonnelCodeIsNull() {
             addCriterion("personnel_code is null");
             return (Criteria) this;
@@ -1185,52 +1255,62 @@ public class ContractExample {
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountEqualTo(Long value) {
+        public Criteria andRentAmountEqualTo(String value) {
             addCriterion("rent_amount =", value, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountNotEqualTo(Long value) {
+        public Criteria andRentAmountNotEqualTo(String value) {
             addCriterion("rent_amount <>", value, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountGreaterThan(Long value) {
+        public Criteria andRentAmountGreaterThan(String value) {
             addCriterion("rent_amount >", value, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andRentAmountGreaterThanOrEqualTo(String value) {
             addCriterion("rent_amount >=", value, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountLessThan(Long value) {
+        public Criteria andRentAmountLessThan(String value) {
             addCriterion("rent_amount <", value, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountLessThanOrEqualTo(Long value) {
+        public Criteria andRentAmountLessThanOrEqualTo(String value) {
             addCriterion("rent_amount <=", value, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountIn(List<Long> values) {
+        public Criteria andRentAmountLike(String value) {
+            addCriterion("rent_amount like", value, "rentAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentAmountNotLike(String value) {
+            addCriterion("rent_amount not like", value, "rentAmount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentAmountIn(List<String> values) {
             addCriterion("rent_amount in", values, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountNotIn(List<Long> values) {
+        public Criteria andRentAmountNotIn(List<String> values) {
             addCriterion("rent_amount not in", values, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountBetween(Long value1, Long value2) {
+        public Criteria andRentAmountBetween(String value1, String value2) {
             addCriterion("rent_amount between", value1, value2, "rentAmount");
             return (Criteria) this;
         }
 
-        public Criteria andRentAmountNotBetween(Long value1, Long value2) {
+        public Criteria andRentAmountNotBetween(String value1, String value2) {
             addCriterion("rent_amount not between", value1, value2, "rentAmount");
             return (Criteria) this;
         }
@@ -1365,52 +1445,62 @@ public class ContractExample {
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayEqualTo(Integer value) {
+        public Criteria andRentIncreaseWayEqualTo(String value) {
             addCriterion("rent_increase_way =", value, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayNotEqualTo(Integer value) {
+        public Criteria andRentIncreaseWayNotEqualTo(String value) {
             addCriterion("rent_increase_way <>", value, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayGreaterThan(Integer value) {
+        public Criteria andRentIncreaseWayGreaterThan(String value) {
             addCriterion("rent_increase_way >", value, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRentIncreaseWayGreaterThanOrEqualTo(String value) {
             addCriterion("rent_increase_way >=", value, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayLessThan(Integer value) {
+        public Criteria andRentIncreaseWayLessThan(String value) {
             addCriterion("rent_increase_way <", value, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayLessThanOrEqualTo(Integer value) {
+        public Criteria andRentIncreaseWayLessThanOrEqualTo(String value) {
             addCriterion("rent_increase_way <=", value, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayIn(List<Integer> values) {
+        public Criteria andRentIncreaseWayLike(String value) {
+            addCriterion("rent_increase_way like", value, "rentIncreaseWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentIncreaseWayNotLike(String value) {
+            addCriterion("rent_increase_way not like", value, "rentIncreaseWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentIncreaseWayIn(List<String> values) {
             addCriterion("rent_increase_way in", values, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayNotIn(List<Integer> values) {
+        public Criteria andRentIncreaseWayNotIn(List<String> values) {
             addCriterion("rent_increase_way not in", values, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayBetween(Integer value1, Integer value2) {
+        public Criteria andRentIncreaseWayBetween(String value1, String value2) {
             addCriterion("rent_increase_way between", value1, value2, "rentIncreaseWay");
             return (Criteria) this;
         }
 
-        public Criteria andRentIncreaseWayNotBetween(Integer value1, Integer value2) {
+        public Criteria andRentIncreaseWayNotBetween(String value1, String value2) {
             addCriterion("rent_increase_way not between", value1, value2, "rentIncreaseWay");
             return (Criteria) this;
         }

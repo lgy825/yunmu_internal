@@ -11,6 +11,7 @@ import com.yunmu.core.exception.DataException;
 import com.yunmu.core.model.hourse.HourseType;
 import com.yunmu.core.model.hourse.HourseTypeExample;
 import com.yunmu.core.model.hourse.HourseTypeExt;
+import com.yunmu.core.model.project.Project;
 import com.yunmu.core.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 13544 on 2019/6/18.
@@ -133,7 +135,9 @@ public class HourseTypeServiceImpl implements HourseTypeService {
         HourseTypeExample hourseTypeExample=new HourseTypeExample();
         HourseTypeExample.Criteria criteria=hourseTypeExample.createCriteria();
         criteria.andIdIn(ids);
-
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+        criteria.andProjectIdIn(projectIds);
         return hourseTypeMapper.selectByExample(hourseTypeExample);
     }
 }

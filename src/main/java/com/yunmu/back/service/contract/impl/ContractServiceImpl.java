@@ -41,6 +41,7 @@ public class ContractServiceImpl implements ContractService {
     private PersonnelMapper personnelMapper;
 
 
+
     @Override
     public GenericPage<ContractExt> getPageByCondition(Map<String, Object> params) {
         int pageIndex = 1, pageSize = 10;
@@ -67,7 +68,7 @@ public class ContractServiceImpl implements ContractService {
         for(ContractExt contractExt:contractExts){
 
             contractExt.setCustomerName(customerMapper.selectByPrimaryKey(contractExt.getCustomerCode()).getCustomerName());
-            contractExt.setPersonnelName(personnelMapper.selectByPrimaryKey(contractExt.getPersonnelCode()).getPersonnelName());
+            contractExt.setPersonnelName(sysUserMapper.selectByPrimaryKey(contractExt.getPersonnelCode()).getUserName());
             contractExt.setCreateName(sysUserMapper.selectByPrimaryKey(contractExt.getCreateBy()).getUserName());
         }
 
