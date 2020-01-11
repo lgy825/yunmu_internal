@@ -132,6 +132,9 @@
     <if test="orderStatus!=null">
       AND yo.order_status =#{orderStatus}
     </if>
+    <if test="projectId!=null and projectId != ''" >
+      AND yo.project_id =#{projectId}
+    </if>
     <if test="projectIds!=null and projectIds.size>0">
       and yo.project_id in
       <foreach collection="projectIds" item="project" index="index" open="(" close=")" separator=",">

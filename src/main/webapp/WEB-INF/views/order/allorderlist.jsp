@@ -135,6 +135,9 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
+                    <select class="select  ml20" id="projectSel">
+
+                    </select>
                     <input id="orderId" type="text" class="inpW ml20" placeholder="订单号">
                     <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
                     <select class="select  ml20" id="orderStatus">
@@ -248,6 +251,7 @@
     </div>
 </div>
 <script type="text/javascript" src="${ctx}/static/js/mod/order/orderlist.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>
 <%--<script type="text/javascript" src="${ctx}/static/js/lib/ss_helper.js"></script>--%>
 <script>
     $(function () {

@@ -45,7 +45,7 @@
                 </td>
                 <td>
                     <div>
-                        {{:rentAmount}}
+                        {{:roomCount}}
                     </div>
                 </td>
                 <td>

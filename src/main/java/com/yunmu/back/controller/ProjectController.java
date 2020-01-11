@@ -115,7 +115,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping("/getProject")
     @ResponseBody
-    public Result<List<Project>> getCinema() {
+    public Result<List<Project>> getProject() {
 
         return createSuccessResult(projectService.getProjects());
 
@@ -127,5 +127,7 @@ public class ProjectController extends BaseController {
 
         return createSuccessResult(projectService.delete(id));
     }
+
+
 
 }

@@ -44,9 +44,9 @@
                 </td>
                 <td>
                     <div>
-                        {{if status == 10}}
+                        {{if status == 20}}
                             已签约
-                        {{else status ==20}}
+                        {{else status ==10}}
                             未签约
                         {{/if}}
                     </div>

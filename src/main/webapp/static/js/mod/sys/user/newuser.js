@@ -25,6 +25,10 @@ $(function () {
             return;
         }
         var companyCode = $("#companySel").val();
+        if ($("#companySel").val() == -1) {
+            layer.msg("请选择员工所属公司");
+            return;
+        }
 
         var password = $.trim($("#password").val());
         if (!$("#userId").val()) {

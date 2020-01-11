@@ -16,6 +16,10 @@ $(function () {
         }
 
         var companyCode = $("#companySel").val();
+        if ($("#companySel").val() == -1) {
+            layer.msg("请选择角色所属公司");
+            return;
+        }
 
         if($(".menuchk.cur").length < 1) {
             layer.msg("请选择权限");

@@ -78,8 +78,8 @@ $(function () {
             if (!bankNumber) {
                 layer.msg("请输入客户银行卡账号");
                 return;
-            }else if (!ValidUtils.validNum(bankNumber)) {
-                layer.msg("开户行只能是数字，不能包含特殊字符");
+            }else if (!ValidUtils.validNum(bankNumber,19)) {
+                layer.msg("银行账号只能是数字，不能包含特殊字符");
                 return;
             }
             if (!bankName) {

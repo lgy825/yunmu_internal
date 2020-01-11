@@ -50,7 +50,7 @@
                 <td>
                     <div class="">
                         <shiro:hasPermission name="paymana:pay:edit">
-                        <input type="button" onclick="editType('{{:payId}}','{{:projectId}}','{{:typeName}}','{{:payType}}','{{:payDesc}}','{{:payAmount}}')" class="edit gray_btn mr10" value="编辑">
+                        <input type="button" onclick="editType('{{:payId}}','{{:projectId}}','{{:payName}}','{{:payType}}','{{:payDesc}}','{{:payAmount}}')" class="edit gray_btn mr10" value="编辑">
                         </shiro:hasPermission>
                         <shiro:hasPermission name="paymana:pay:del">
                         <input type="button"  onclick="deletePay('{{:payId}}')" class="gray_btn" value="删除">

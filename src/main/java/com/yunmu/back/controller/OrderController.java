@@ -80,7 +80,7 @@ public class OrderController extends BaseController {
                                                        String beginTime,
                                                        String endTime,
                                                        String orderId,String hourseNumber,Integer orderStatus,
-                                                       Model model) {
+                                                       String  projectId) {
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);
         params.put("hourseNumber",hourseNumber);
@@ -96,9 +96,14 @@ public class OrderController extends BaseController {
             params.put("searchTimeEnd", endTime+"23:59:59");
         }
         params.put("delFlag",0);
-        List<Project> projects= ShiroUtils.getAllMyCinemaList();
-        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-        params.put("projectIds",projectIds);
+        if(projectId==null && !"".equals(projectId)){
+            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+            params.put("projectIds",projectIds);
+        }else{
+            params.put("projectId",projectId);
+        }
+
 
         return createSuccessPageResult(orderSercvice.getPageByCondition(params));
     }
