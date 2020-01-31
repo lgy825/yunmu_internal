@@ -108,6 +108,9 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
+                    <select class="select  ml20" id="projectSel">
+
+                    </select>
                     <input id="uName" type="text" class="inpW ml20" placeholder="用户名">
                     <input id="uTel" type="text" class="inpW ml20" placeholder="电话">
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">

@@ -42,14 +42,18 @@ public class PayController extends BaseController{
     public PageResult<PayExt> getShopPageByCondition(HttpServletRequest request,
                                                      Integer pageIndex,
                                                      Integer pageSize,
-                                                     String payName) {
+                                                     String payName,String projectId) {
         Map<String, Object> params = new HashMap<>();
         params.put("payName", payName);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
-        List<Project> projects= ShiroUtils.getAllMyCinemaList();
-        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-        params.put("projectIds",projectIds);
+        if(projectId==null && !"".equals(projectId)){
+            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+            params.put("projectIds",projectIds);
+        }else{
+            params.put("projectId",projectId);
+        }
         return createSuccessPageResult(payService.getPageByCondition(params));
     }
 

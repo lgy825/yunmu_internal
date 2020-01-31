@@ -2,11 +2,47 @@ $(function(){
 
 
     loadPage();
+    loadProject();
 
 
     $("#searchBtn").click(function () {
         loadPage();
     });
+
+    function loadProject() {
+        $.ajax({
+            url: ctx + "project/getpage",
+            type: "GET",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                pageIndex: 1,
+                pageSize: 99999
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    // // 城市列表
+                    $("#projectSel").select2({placeholder: '请选择所属项目'});
+                    $("#projectSel").append("<option value='-1'>*所属项目*</option>");
+                    $(data.resultData.list).each(function (idx, pro) {
+                        $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
+                    });
+
+                }else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('查询失败 !');
+            }
+        });
+    }
+
 
 
     function loadPage() {
@@ -30,8 +66,9 @@ $(function(){
             remote: {
                 url: ctx + 'owner/getpage',
                 params:{
-                    uName: $.trim($("#uName").val()),
-                    uTel:$.trim($("#uTel").val())
+                    projectId:$("#projectSel").val() == -1 ? null : $("#projectSel").val(),
+                    ownerName: $.trim($("#uName").val()),
+                    ownerTel:$.trim($("#uTel").val())
                 },
                 success: function (data) {
                     // data为ajax返回数据

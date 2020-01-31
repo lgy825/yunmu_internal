@@ -13,7 +13,8 @@
     <div class="select-search">
         <form action="">
             <div>
-                <input type="text" class="inpW inpWid1 ml20" placeholder="请选择项目可多选"/>
+                <select class="select  ml20" id="projectSel">
+                </select>
                 <input type="button" class="blue_btn ml20" value="更新数据"/>
             </div>
         </form>
@@ -151,5 +152,8 @@
         });
 
     });
+</script>
+<script type="text/javascript">
+
 </script>
 </html>

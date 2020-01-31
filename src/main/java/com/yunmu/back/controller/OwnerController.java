@@ -60,15 +60,20 @@ public class OwnerController extends BaseController {
                                                        Integer pageIndex,
                                                        Integer pageSize,
                                                        String ownerTel,
-                                                       String ownerName) {
+                                                       String ownerName,String projectId) {
         Map<String, Object> params = new HashMap<>();
-        List<Project> projects = ShiroUtils.getAllMyCinemaList();
-        List<String> projectIds = projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-        params.put("projectIds", projectIds);
+
         params.put("ownerTel", ownerTel);
         params.put("ownerName", ownerName);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
+        if(projectId==null && !"".equals(projectId)){
+            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+            params.put("projectIds",projectIds);
+        }else{
+            params.put("projectId",projectId);
+        }
         return createSuccessPageResult(ownerService.getPageByCondition(params));
     }
 

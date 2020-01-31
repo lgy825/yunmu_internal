@@ -45,14 +45,18 @@ public class HourseTypeController extends BaseController {
     public PageResult<HourseTypeExt> getShopPageByCondition(HttpServletRequest request,
                                                             Integer pageIndex,
                                                             Integer pageSize,
-                                                            String typeName) {
+                                                            String typeName,String projectId) {
         Map<String, Object> params = new HashMap<>();
         params.put("typeName", typeName);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
-        List<Project> projects= ShiroUtils.getAllMyCinemaList();
-        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-        params.put("projectIds",projectIds);
+        if(projectId==null && !"".equals(projectId)){
+            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+            params.put("projectIds",projectIds);
+        }else{
+            params.put("projectId",projectId);
+        }
         return createSuccessPageResult(hourseTypeService.getPageByCondition(params));
     }
 

@@ -2,7 +2,7 @@ $(function(){
 
 
     loadPage();
-    $("#searchBtn").click(function () {
+    $("#searcheType").click(function () {
         loadPage();
     });
 
@@ -95,6 +95,7 @@ function loadPage() {
         remote: {
             url: ctx + 'hourseType/getpage',
             params:{
+                projectId:$("#projectSels").val() == -1 ? null : $("#projectSels").val(),
                 typeName: $.trim($("#typeName").val())
             },
             success: function (data) {

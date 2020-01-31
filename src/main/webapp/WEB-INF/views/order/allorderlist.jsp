@@ -187,9 +187,9 @@
                     <div>
                         <div>
                             <div class="label labelWid1 relative">
-                                入住总天数
+                                入住总人次
                                 <i class="whats"></i>
-                                <p class="modify-what">所有客房的入住总天数</p>
+                                <p class="modify-what">所有客房的入住总人次</p>
                             </div>
                             <b class="color-red" id="orderCountAll"></b>
                         </div>

@@ -89,6 +89,9 @@
         <div class="select-search pdtrl20">
             <form action="">
                 <div>
+                    <select class="select  ml20" id="projectSel">
+
+                    </select>
                     <input id="hourseNumber" type="text" class="inpW ml20" placeholder="房间号">
                     <input id="areaCode" type="text" class="inpW ml20" placeholder="地区号">
                     <input id="searchBtn" type="button" class="blue_btn ml20" value="查询">

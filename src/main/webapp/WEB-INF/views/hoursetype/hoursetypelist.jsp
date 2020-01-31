@@ -68,6 +68,9 @@
         <div class="select-search p20">
             <form action="">
                 <div>
+                    <select class="select  ml20" id="projectSels">
+
+                    </select>
                     <input type="text" id="typeName" class="inpW ml20"  placeholder="房间类别名称">
                     <input type="button" id="searcheType" class="blue_btn ml20" value="查询">
                     <input id="resetBtn" type="button" class="blue_btn ml20" value="重置"/>
@@ -164,6 +167,12 @@
                                $("#projectSel").append("<option value='-1'>*所属项目*</option>");
                                $(data.resultData.list).each(function (idx, pro) {
                                    $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
+                               });
+
+                               $("#projectSels").select2({placeholder: '请选择所属项目'});
+                               $("#projectSels").append("<option value='-1'>*所属项目*</option>");
+                               $(data.resultData.list).each(function (idx, pro) {
+                                   $("#projectSels").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
                                });
                            }else {
                                if (data.resultDesc) {

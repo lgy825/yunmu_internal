@@ -108,8 +108,8 @@
     <if test="ownerTel != null and ownerTel != ''">
       AND owner_tel LIKE '%${ownerTel}%'
     </if>
-    <if test="projectId != null and projectId != ''">
-      AND project_id in (${projectId})
+    <if test="projectId!=null and projectId != ''" >
+      AND project_id =#{projectId}
     </if>
     <if test="projectIds!=null and projectIds.size>0">
       and project_id in

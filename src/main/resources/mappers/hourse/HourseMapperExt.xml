@@ -115,6 +115,9 @@
     <if test="areaCode != null and areaCode != ''">
       AND area_code LIKE '%${areaCode}%'
     </if>
+    <if test="projectId!=null and projectId != ''" >
+      AND project_id =#{projectId}
+    </if>
     <if test="projectIds!=null and projectIds.size>0">
       and project_id in
       <foreach collection="projectIds" item="project" index="index" open="(" close=")" separator=",">

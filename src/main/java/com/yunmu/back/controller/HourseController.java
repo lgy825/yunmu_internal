@@ -53,15 +53,19 @@ public class HourseController extends BaseController {
                                                         Integer pageIndex,
                                                         Integer pageSize,
                                                         String hNumber,
-                                                        String hNumberArea) {
+                                                        String hNumberArea,String projectId) {
         Map<String, Object> params = new HashMap<>();
-        List<Project> projects= ShiroUtils.getAllMyCinemaList();
-        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-        params.put("projectIds",projectIds);
         params.put("hNumber", hNumber);
         params.put("hNumberArea", hNumberArea);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
+        if(projectId==null && !"".equals(projectId)){
+            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+            params.put("projectIds",projectIds);
+        }else{
+            params.put("projectId",projectId);
+        }
         return createSuccessPageResult(hourseService.getPageByCondition(params));
     }
 

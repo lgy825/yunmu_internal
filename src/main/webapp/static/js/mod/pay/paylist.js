@@ -63,6 +63,7 @@ function loadPage() {
         remote: {
             url: ctx + 'pay/getpage',
             params:{
+                projectId:$("#projectSels").val() == -1 ? null : $("#projectSels").val(),
                 payName: $.trim($("#payName").val())
             },
             success: function (data) {
@@ -164,7 +165,7 @@ function updatePay() {
         cache: false,
         dataType: 'json',
         data: {
-            id:id,
+            payId:id,
             payName: payName,
             projectId:projectId,
             payAmount:payAmount,
