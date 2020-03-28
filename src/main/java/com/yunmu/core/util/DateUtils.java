@@ -17,7 +17,10 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 	private static final String[] parsePatterns = { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd HHmm", "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm" };
 	private static final int[] dayOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	private static final String[] weekDays = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
-	
+
+	public static final String DATETIME_PATTERN="yyyy-MM-dd HH:mm:ss";
+
+	public static final String DATE_PATTERN="yyyy-MM-dd";
 	/**
 	 * 
 	 * 将CST格式的日期串转为标准格式
@@ -654,5 +657,21 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 		  e.printStackTrace();
 		}
 		return false;
+	}
+
+	public static  String parseToDateTimeStr(Date date){
+		return parseDateToStr(date,DATETIME_PATTERN);
+	}
+
+	public static  String parseToDateStr(Date date){
+		return parseDateToStr(date,DATE_PATTERN);
+	}
+
+	public static String parseDateToStr(Date date,String pattern){
+		if(date==null|| StringUtils.isEmpty(pattern))
+			return null;
+		SimpleDateFormat dateFormat=new SimpleDateFormat(pattern);
+		String result = dateFormat.format(date);
+		return result;
 	}
 }

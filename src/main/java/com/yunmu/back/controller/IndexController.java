@@ -2,7 +2,9 @@ package com.yunmu.back.controller;
 
 import com.google.code.kaptcha.Producer;
 
+import com.google.common.collect.Maps;
 import com.yunmu.back.service.FileStorageService;
+import com.yunmu.back.service.index.IndexService;
 import com.yunmu.back.service.project.ProjectService;
 import com.yunmu.back.service.sys.SysUserService;
 import com.yunmu.core.base.BaseController;
@@ -12,6 +14,8 @@ import com.yunmu.core.constant.ResultConstants;
 import com.yunmu.core.model.project.Project;
 import com.yunmu.core.model.sys.SysMenu;
 import com.yunmu.core.model.sys.SysUser;
+import com.yunmu.core.util.CalculateUtils;
+import com.yunmu.core.util.DateUtils;
 import com.yunmu.core.util.ShiroUtils;
 import com.yunmu.core.util.ValidCodeUtil;
 
@@ -45,6 +49,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -69,6 +74,8 @@ public class IndexController extends BaseController {
     private SysUserService sysUserService;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private IndexService indexService;
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -318,34 +325,88 @@ public class IndexController extends BaseController {
         }
     }
 
-//    @GetMapping("/downloadFile/{fileName:.+}")
-//    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-//        // Load file as Resource
-//        Resource resource = fileStorageService.loadFileAsResource(fileName);
-//
-//        // Try to determine file's content type
-//        String contentType = null;
-//        try {
-//            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-//        } catch (IOException ex) {
-//            logger.info("Could not determine file type.");
-//        }
-//
-//        // Fallback to the default content type if type could not be determined
-//        if(contentType == null) {
-//            contentType = "application/octet-stream";
-//        }
-//
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType(contentType))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-//                .body(resource);
-//    }
 
     @RequestMapping("/workbench")
     public ModelAndView toWorkbench() {
         ModelAndView view=new ModelAndView("/index/workbench");
+
+        //订单今天总收益
+        Date today=new Date();
+        long time=today.getTime()-24*60*60*1000;
+        Date yesterday=new Date(time);
+        String yeStr= DateUtils.parseToDateStr(yesterday);
+        String realTime=DateUtils.parseToDateStr(today);
+        String startTime=DateUtils.parseDate(today)+" 00:00:00";
+        String yeStartStr=DateUtils.parseDate(yesterday)+" 00:00:00";
+
+        List<Project> projects= ShiroUtils.getAllMyCinemaList();
+        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+
+
+        //获取今天订单的总收益
+        Map<String,Object> todayResult=indexService.getSellData(startTime,projectIds,realTime);
+        //获取昨天数据
+        Map<String,Object> yesResult=indexService.getSellData(yeStartStr,projectIds,yeStr);
+        view.addObject("todayResult",todayResult);
+        view.addObject("yesResult",yesResult);
         return view;
+    }
+
+    private Map<String,Object> compareWithYesterday(String today,String yesDay){
+        Map<String,Object> result= Maps.newHashMap();
+        boolean ismax=true;//今天的数据是否大于昨天的数据
+        String dataStr="-";
+        if(today.equals("-")||yesDay.equals("-")){
+            result.put("isMax",new Boolean(ismax));
+            result.put("data",dataStr);
+            return result;
+        }
+        try{
+            Double num1=Double.valueOf(today);
+            Double num2=Double.valueOf(yesDay);
+            Double temp=null;
+            if(num2 == 0.0) {
+                result.put("isMax",new Boolean(ismax));
+                result.put("data",dataStr);
+                return result;
+            } else {
+                if (num1.compareTo(num2) < 0) {
+                    ismax = false;
+                    temp = (num2 - num1) / num2 * 100;
+                } else {
+                    temp = (num1 - num2) / num2 * 100;
+                }
+            }
+            dataStr= CalculateUtils.toDecimal(temp,1);
+        }catch (Exception e){
+            log.debug("数值转化失败，非程序异常，显式处理");
+        }finally {
+            result.put("isMax",new Boolean(ismax));
+            result.put("data",dataStr);
+        }
+        return result;
+
+    }
+
+    /**
+     * 计算num1/num2所占比例，结果保留1位小数，如果结果数值异常，那么返回"-"
+     * @param num1
+     * @param num2
+     * @return
+     */
+    private String calculateRate(String num1,String num2,int scale){
+        String result="-";
+        try{
+            Double n1=Double.valueOf(num1);
+            Double n2=Double.valueOf(num2);
+            if(n2 == 0){
+                return result;
+            }
+            result = CalculateUtils.toDecimal(n1 / n2 * 100, scale);
+        }catch (Exception e){
+            log.info("异常数值计算结果",e);
+        }
+        return result;
     }
 
 
