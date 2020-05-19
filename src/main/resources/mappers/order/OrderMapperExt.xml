@@ -306,7 +306,7 @@
 
 
   <select id="getOrderCount" parameterType="java.util.Map" resultType="Integer">
-    SELECT sum(*)
+    SELECT count(*)
     FROM  yunmu_order yo
     where yo.del_flag=0 and order_status=10 and yo.hourse_code in(
     SELECT id from yunmu_hourse where del_flag=0 and hourse_number=#{hourseNumber}

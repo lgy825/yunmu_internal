@@ -13,14 +13,14 @@
     <script id="trTmpl" type="text/x-jrender">
         <thead>
                 <tr>
-                    <th style='width: 10%;'><div>序号</div></th>
-                    <th style='width: 10%;'><div>支出名称</div></th>
+                    <th style='width: 5%;'><div>序号</div></th>
+                    <th style='width: 15%;'><div>支出名称</div></th>
                     <th style='width: 10%;'><div>支出金额(元)</div></th>
                     <th style='width: 10%;'><div>支出类型</div></th>
                     <th style='width: 10%;'><div>所属项目</div></th>
                     <th style='width: 18%;'><div>类型描述</div></th>
-                    <th style='width: 12%;'><div>添加时间</div></th>
-                    <th style='width: 20%;'><div>操作</div></th>
+                    <th style='width: 18%;'><div>添加时间</div></th>
+                    <th style='width: 14%;'><div>操作</div></th>
                 </tr>
         </thead>
         <tbody>

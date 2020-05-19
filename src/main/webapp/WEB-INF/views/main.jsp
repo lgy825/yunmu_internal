@@ -307,12 +307,43 @@
             layer.msg("两次密码输入不一致");
             return;
         }
+        $.ajax({
+            url:  "${ctx}/selectWeakPass",
+            type: "POST",
+            cache: false,
+            async: false,
+            dataType: 'json',
+            data: {
+                password: oldpass
+            },
+            success: function (data) {
+                if (data && data.resultCode === '0') {
+                    if (data.resultData == false) {
+                        layer.msg("原密码输入错误");
+                        return;
+                    }else {
+                        repassword();
+                    }
+                } else {
+                    if (data.resultDesc) {
+                        layer.msg(data.resultDesc);
+                    } else {
+                        layer.msg('原密码查询失败 !');
+                    }
+                }
+            },
+            error: function () {
+                layer.msg('原密码查询失败 !');
+            }
+        });
     }
+
+
 
     function repassword() {
         var newpass = $.trim($("#newpass").val());
         $.ajax({
-            url: ctx + "index/updatePassWord",
+            url:  "${ctx}/updatePassWord",
             type: "POST",
             cache: false,
             async: false,

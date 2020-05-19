@@ -407,6 +407,16 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public boolean updatePassWord(SysUser sysUser) {
+        if(org.apache.commons.lang3.StringUtils.isNotBlank(sysUser.getPassword())) {
+            try {
+                sysUser.setPassword(MD5Util.getEncryptedPwd(sysUser.getPassword()));
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                logger.error("加密密码失败:" + sysUser.getPassword(), e);
+                throw new DataException("保存用户失败");
+            }
+        } else {
+            sysUser.setPassword(null);
+        }
         sysUserMapper.updateByPrimaryKeySelective(sysUser);
         return true;
     }
@@ -430,7 +440,24 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserMapperExt.getMenusByUserId(userId);
     }
 
+    @Override
+    public boolean selectWeakPass(String password) {
+        String userId=ShiroUtils.getUserId();
 
+//        SysUser sysUser=sysUserMapper.selectByPrimaryKey(userId);
+//        if(org.apache.commons.lang3.StringUtils.isNotBlank(password)) {
+//            try {
+//                String temp=MD5Util.getEncryptedPwd(sysUser.getPassword());
+//                if(temp.equals(sysUser.getPassword())){
+//                    return true;
+//                }
+//            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+//                logger.error("加密密码失败:" + sysUser.getPassword(), e);
+//                throw new DataException("密码校验失败");
+//            }
+//        }
+        return true;
+    }
 
 
 }

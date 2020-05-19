@@ -39,4 +39,7 @@ public interface SysUserService {
 
     //Boolean beFirstLogin(String userId);
 
+
+    boolean selectWeakPass(String password);
+
 }

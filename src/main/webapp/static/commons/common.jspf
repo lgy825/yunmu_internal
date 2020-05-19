@@ -46,6 +46,9 @@
         validMoney: function (money) {
             return /(^[1-9][0-9]*(\.[0-9]{1,2})?$)|(^0.[0-9]{1,2}$)/.test(money);
         },
+        validMoney2: function (money) {
+            return /(^-?[1-9][0-9]*(\.[0-9]{1,2})?$)|(^-?0.[0-9]{1,2}$)/.test(money);
+        },
         validDiscount: function (discount) {
             return /(^[1-9](\.[0-9])?$)|^10$|^0.[0-9]$/.test(discount);
         },
@@ -64,9 +67,9 @@
         validText: function (text, minLength, maxLength) {
             var regStr;
             if(arguments.length === 1) {
-                regStr = "^[~_*%#!！.。，,\\-\\(\\)\\（\\）\\w\\u4E00-\\u9FA5]*$";
+                regStr = "^[~_*%#!！.。：，,\\-\\(\\)\\（\\）\\w\\u4E00-\\u9FA5]*$";
             } else if(arguments.length === 3) {
-                regStr = "^[~_*%#!！.。，,\\-\\(\\)\\（\\）\\w\u4E00-\u9FA5]{"+minLength+","+maxLength+"}$";
+                regStr = "^[~_*%#!！.。：，,\\-\\(\\)\\（\\）\\w\u4E00-\u9FA5]{"+minLength+","+maxLength+"}$";
             } else {
                 return false;
             }
@@ -90,9 +93,11 @@
         },
         validNameSpcechar:function () {
             return new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]") ;
+        },
+        validPassWord:function(password){
+            return new RegExp("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,}$").test(password);
         }
     };
-
     // 禁用日期框浏览器缓存
     try{
         window.onload=function (){

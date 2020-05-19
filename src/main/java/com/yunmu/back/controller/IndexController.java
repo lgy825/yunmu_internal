@@ -281,6 +281,14 @@ public class IndexController extends BaseController {
         return createSuccessResult(sysUserService.updatePassWord(sysUser));
     }
 
+
+    @RequestMapping("/selectWeakPass")
+    @ResponseBody
+    public Result<Boolean> selectWeakPass(String password) {
+        Boolean selectWeek = sysUserService.selectWeakPass(password);
+        return createSuccessResult(selectWeek);
+    }
+
     /**
      * 下载文件
      * @param id appid
