@@ -128,6 +128,15 @@ public class ProjectController extends BaseController {
         return createSuccessResult(projectService.delete(id));
     }
 
+    //获取下拉选项中所能管理的项目
+    @RequestMapping("/getProjectShiro")
+    @ResponseBody
+    public Result<List<Project>> getProjectShiro() {
+        List<Project> list=ShiroUtils.getAllMyCinemaList();
+
+        return createSuccessResult(list);
+    }
+
 
 
 }

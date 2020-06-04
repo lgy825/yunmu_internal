@@ -156,19 +156,22 @@
       AND yo.id LIKE '%${orderId}%'
     </if>
     <if test="beginTime!=null">
-      AND  yo.create_time >= #{beginTime}
+      AND  yo.complete_time >= #{beginTime}
     </if>
     <if test="hourseNumber != null and hourseNumber != ''">
       AND yh.hourse_number LIKE '%${hourseNumber}%'
     </if>
     <if test="searchTimeEnd!=null">
-      AND yo.create_time <![CDATA[<=]]> #{searchTimeEnd}
+      AND yo.complete_time <![CDATA[<=]]> #{searchTimeEnd}
     </if>
     <if test="delFlag!=null">
       AND yo.del_flag =#{delFlag}
     </if>
-    <if test="orderStatus!=null">
+    <if test="orderStatus!=null and orderStatus != ''">
       AND yo.order_status =#{orderStatus}
+    </if>
+    <if test="projectId!=null and projectId != ''">
+      AND yo.project_id =#{projectId}
     </if>
     <if test="projectIds!=null and projectIds.size>0">
       and yo.project_id in

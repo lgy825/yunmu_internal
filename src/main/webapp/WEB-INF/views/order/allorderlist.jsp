@@ -48,7 +48,13 @@
                     </div>
                 </td>
                 <td>
-                    <div>{{:orderCount}}</div>
+                    <div>
+                        {{if orderCount == 0}}
+                                钟点房
+                        {{else}}
+                               {{:orderCount}}
+                        {{/if}}
+                    </div>
                 </td>
                 <td>
                     <div>{{:sourceWay}}</div>

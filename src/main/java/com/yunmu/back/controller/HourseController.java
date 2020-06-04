@@ -59,7 +59,7 @@ public class HourseController extends BaseController {
         params.put("hNumberArea", hNumberArea);
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
-        if(projectId==null && !"".equals(projectId)){
+        if(projectId==null || "".equals(projectId)){
             List<Project> projects= ShiroUtils.getAllMyCinemaList();
             List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
             params.put("projectIds",projectIds);

@@ -90,13 +90,13 @@ public class OrderController extends BaseController {
             params.put("orderStatus", orderStatus);
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
-            params.put("beginTime", beginTime+"00:00:00");
+            params.put("beginTime", beginTime+" 00:00:00");
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
-            params.put("searchTimeEnd", endTime+"23:59:59");
+            params.put("searchTimeEnd", endTime+" 23:59:59");
         }
         params.put("delFlag",0);
-        if(projectId==null && !"".equals(projectId)){
+        if(projectId==null || "".equals(projectId)){
             List<Project> projects= ShiroUtils.getAllMyCinemaList();
             List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
             params.put("projectIds",projectIds);
@@ -112,7 +112,7 @@ public class OrderController extends BaseController {
     @ResponseBody
     public Result<IncomSummaryObj> getIncomSummary(String beginTime, String endTime,
                                                    String orderId, String hourseNumber,
-                                                   Integer orderStatus) {
+                                                   Integer orderStatus,String  projectId) {
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);
         params.put("hourseNumber",hourseNumber);
@@ -120,15 +120,19 @@ public class OrderController extends BaseController {
             params.put("orderStatus", orderStatus);
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
-            params.put("beginTime", beginTime+"00:00:00");
+            params.put("beginTime", beginTime+" 00:00:00");
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
-            params.put("searchTimeEnd", endTime+"23:59:59");
+            params.put("searchTimeEnd", endTime+" 23:59:59");
         }
         params.put("delFlag",0);
-        List<Project> projects= ShiroUtils.getAllMyCinemaList();
-        List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
-        params.put("projectIds",projectIds);
+        if(projectId==null || "".equals(projectId)){
+            List<Project> projects= ShiroUtils.getAllMyCinemaList();
+            List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
+            params.put("projectIds",projectIds);
+        }else{
+            params.put("projectId",projectId);
+        }
         //获取订单汇总信息
         return createSuccessResult(orderSercvice.getIncomSummary(params));
     }
@@ -148,10 +152,10 @@ public class OrderController extends BaseController {
         params.put("pageIndex", pageIndex + 1);
         params.put("pageSize", pageSize);
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", beginTime)) {
-            params.put("beginTime", beginTime+"00:00:00");
+            params.put("beginTime", beginTime+" 00:00:00");
         }
         if(RegxUtils.valid("^\\d{4}\\-\\d{2}\\-\\d{2}$", endTime)) {
-            params.put("searchTimeEnd", endTime+"23:59:59");
+            params.put("searchTimeEnd", endTime+" 23:59:59");
         }
         List<Project> projects= ShiroUtils.getAllMyCinemaList();
         List<String> projectIds=projects.stream().map(cinema -> cinema.getId()).collect(Collectors.toList());
@@ -251,32 +255,35 @@ public class OrderController extends BaseController {
 
     @RequestMapping("/exportOrder")
     @ResponseBody
-    public void toExport(String orderId,String hourseNumber,String beginTime,String endTime,
+    public void toExport(String orderId,String hourseNumber,String beginTime,String endTime,Integer orderStatus,String projectId,
                          HttpServletResponse response) {
         OutputStream os = null;
         ExportExcel ee = null;
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, Object> params = Maps.newHashMap();
         if(orderId!=null && !"".equals(orderId)){
             params.put("orderId", orderId);
+        }
+        if(projectId!=null && !"".equals(projectId)){
+            params.put("projectId", projectId);
+        }
+        if(orderStatus!=null  ){
+            params.put("orderStatus", orderStatus);
         }
         if(!"".equals(hourseNumber) && hourseNumber!=null){
             params.put("hourseNumber", hourseNumber);
         }
         if(beginTime!=null && !"".equals(beginTime)){
-            params.put("beginTime", beginTime+"00:00:00");
+            params.put("beginTime", beginTime+" 00:00:00");
         }
         if(endTime!=null && !"".equals(endTime)){
-            params.put("endTime", endTime+"23:59:59");
+            params.put("searchTimeEnd", endTime+" 23:59:59");
         }
+        params.put("delFlag",0);
         try {
             //根据参数获取导出的订单列表
             List<OrderExt> orderList = orderSercvice.getOrdersByDate(params);
             //计算总收益
-            double orderRec=orderSercvice.getAllRecByParam(params);
-            double orderAct=orderSercvice.getAllActByParam(params);
-            BigDecimal bigDecimal=new BigDecimal(orderRec);
-            double orderPay=bigDecimal.subtract(new BigDecimal(orderAct)).setScale(2,BigDecimal.ROUND_UP).doubleValue();
-            int orderCount=orderSercvice.getCountByCondition(params);
+            IncomSummaryObj incomSummaryObj=orderSercvice.getIncomSummary(params);
             //计算总支出
             List<String> headList = Lists.newArrayList();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -294,10 +301,10 @@ public class OrderController extends BaseController {
             List<String> parmList = Lists.newArrayList();
             parmList.add("房间号:" + hourseNumber);
             parmList.add("导出数量:" + orderList.size());
-            parmList.add("订单总收益:"+orderRec);
-            parmList.add("应收总金额:"+orderAct);
-            parmList.add("支出总金额:"+orderPay);
-            parmList.add("入住总天数:"+orderCount);
+            parmList.add("订单总收益:"+incomSummaryObj.getOrderRecAmountAll());
+            parmList.add("应收总金额:"+incomSummaryObj.getOrderActmountAll());
+            parmList.add("支出总金额:"+incomSummaryObj.getOrderPayAmountAll());
+            parmList.add("入住总天数:"+incomSummaryObj.getOrderCountAll());
             ee = new ExportExcel("业主收支列表", headList, parmList);
             if (orderList != null) {
                 List<List<String>> list = new ArrayList<List<String>>();

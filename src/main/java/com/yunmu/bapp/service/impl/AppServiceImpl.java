@@ -18,6 +18,7 @@ import com.yunmu.core.dao.source.OrderSourceMapper;
 import com.yunmu.core.dao.sys.AppVersionMapper;
 import com.yunmu.core.dao.sys.BussinessMapper;
 import com.yunmu.core.exception.DataException;
+import com.yunmu.core.model.hourse.HourseExample;
 import com.yunmu.core.model.order.Order;
 import com.yunmu.core.model.order.OrderDetail;
 import com.yunmu.core.model.order.OrderDetailExample;
@@ -110,10 +111,16 @@ public class AppServiceImpl implements AppService{
         double recAmountAll=orderMapperExt.getRecAmountByCondition(params);
         //获取房子出租的天数
         int count=orderMapperExt.getCountByCondition(params);
+        HourseExample hourseExample=new HourseExample();
+        HourseExample.Criteria criteria=hourseExample.createCriteria();
+        criteria.andDelFlagEqualTo(0);
+        criteria.andOwnerCodeEqualTo(params.get("ownerId"));
+        int hourseCount= hourseMapper.countByExample(hourseExample);
+
         //获取房子出租率
         Calendar now = Calendar.getInstance();
         int day=now.get(Calendar.DAY_OF_MONTH);
-        String houseRate=Math.round((count*100)/day)+"";
+        String houseRate=Math.round((count*100)/(hourseCount*day))+"";
         //获取应收
         double actAmountAll=orderMapperExt.getActAmountByCondition(params);
         //获取支出

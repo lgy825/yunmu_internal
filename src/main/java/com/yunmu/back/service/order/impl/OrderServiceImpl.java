@@ -158,6 +158,19 @@ public class OrderServiceImpl implements OrderService {
                 //order.setOrderStatus(0);
                 //获取订单的时间间隔
                 int dayCount= Dates.comparePastDate(order.getOrderStartDate(),order.getOrderEndTime());
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
+                String temp=sdf.format(order.getOrderEndTime())+" 00:00:00";
+                try {
+                    Date date1=sdf2.parse(temp);
+                    if(dayCount==0 && date1.compareTo(order.getOrderEndTime())<=0){
+                        dayCount+=1;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
                 order.setOrderCount(dayCount);
                 order.setOrderActAmount(actAmount);
 
@@ -427,8 +440,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderExt> getOrdersByDate(Map<String, String> params) {
-        List<OrderExt> orderList=orderMapperExt.getOrderExport(params);
+    public List<OrderExt> getOrdersByDate(Map<String, Object> params) {
+        List<OrderExt> orderList=orderMapperExt.getOrderPage(params);
         if(orderList!=null){
             for(OrderExt orderExt:orderList){
                 if(orderExt.getHourseCode()!=null){
@@ -448,17 +461,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public double getAllRecByParam(Map<String, String> params) {
-
-        return orderMapperExt.getAllRecByParam(params);
-    }
-
-    @Override
-    public double getAllActByParam(Map<String, String> params) {
-        return orderMapperExt.getAllActByParam(params);
-    }
-
-    @Override
     public boolean updateOrderStatus(Order order) {
         order.setUpdateBy(ShiroUtils.getUser().getId());
         order.setUpdateTime(new Date());
@@ -467,11 +469,6 @@ public class OrderServiceImpl implements OrderService {
 //        }
         orderMapper.updateByPrimaryKeySelective(order);
         return true;
-    }
-
-    @Override
-    public int getCountByCondition(Map<String, String> params) {
-        return orderMapperExt.getOrderCount(params);
     }
 
     @Override

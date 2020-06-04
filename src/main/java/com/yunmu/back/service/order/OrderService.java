@@ -30,16 +30,9 @@ public interface OrderService {
 
     OrderExt get(String id);
 
-    List<OrderExt> getOrdersByDate(Map<String,String> params);
-
-    double getAllRecByParam(Map<String,String> params);
-
-    double getAllActByParam(Map<String,String> params);
+    List<OrderExt> getOrdersByDate(Map<String,Object> params);
 
     boolean updateOrderStatus(Order order);
-
-    int getCountByCondition(Map<String,String> params);
-
 
     IncomSummaryObj getIncomSummary(Map<String, Object> params);
 
