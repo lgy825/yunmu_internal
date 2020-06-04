@@ -23,15 +23,6 @@ $(function(){
                     $(data.resultData).each(function (idx, pro) {
                         $("#projectSel").append("<option value='" + pro.id + "'>" + pro.projectName + "</option>");
                     });
-
-                    getSS();
-                    if(sessionStorage.getItem(ss_prefix + "_projectSel") && sessionStorage.getItem(ss_prefix + "_projectSel") !== "null"){
-                        var cinemas = sessionStorage.getItem(ss_prefix + "_projectSel").split(",");
-                        //$("#cinemaCode").select2('val', [11062001,11061501]).trigger('change');
-                        $("#projectSel").val(cinemas);
-                    } else {
-                        $("#projectSel").val("-1");
-                    }
                 }else {
                     if (data.resultDesc) {
                         layer.msg(data.resultDesc);
